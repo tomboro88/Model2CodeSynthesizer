@@ -135,6 +135,18 @@ extern "C" {
             Tkind_cbase2_t;
 
     /**
+     * @brief The virtual table type for the Tkind_logger_s struct.
+     */
+    typedef struct Tkind_logger_vt_s \
+            Tkind_logger_vt_t;
+
+    /**
+     * @brief The type representing the Tkind_logger_s struct.
+     */
+    typedef struct Tkind_logger_s \
+            Tkind_logger_t;
+
+    /**
      * @brief The virtual table type for the Tkind_ctest_s struct.
      */
     typedef struct Tkind_ctest_vt_s \
@@ -205,6 +217,35 @@ extern "C" {
          * @return 
          */
         float (*p_GetFloatProp)(Tkind_cbase2_t* const p_obj);
+    };
+
+    /**
+     * @brief This is an example logging functionality modelled as an Interface,
+     * providing dynamic dependency injection.
+     * @details It can easily be replaced with different functionalities just by
+     * replacing proper virtual table with function pointers. For example this
+     * example project will use puts function, but unit tests will use some
+     * custom function used for verifying the correct operation of the code.
+     */
+    struct Tkind_logger_s
+    {
+        /**
+         * @brief The pointer to the virtual table of the logger class.
+         */
+        const Tkind_logger_vt_t*        p_vtable;
+    };
+
+    /**
+     * @brief The virtual table struct for the Tkind_logger_s struct. Contains
+     * pointers to all virtual methods of the class.
+     */
+    struct Tkind_logger_vt_s
+    {
+        /**
+         * @param [in] p_obj The pointer to the self object.
+         * @param [in] p_str A pointer to the string that will be logged.
+         */
+        void (*p_record)(Tkind_logger_t* const p_obj, const char* const p_str);
     };
 
     /**
@@ -817,8 +858,7 @@ extern "C" {
     }tkind_ctest_l_queue_t;
     
     /**
-     * This is a comment linked 
-     * to the ctest type
+     * @brief This is a comment linked to the ctest type.
      */
     struct Tkind_ctest_s
     {
@@ -906,6 +946,9 @@ extern "C" {
         /**
          */
         double                          pi;
+        /**
+         */
+        Tkind_logger_t*                 logger;
     };
 
     /**
@@ -1107,6 +1150,9 @@ extern "C" {
     void Tkind_ctest_m(Tkind_ctest_t* const p_obj);
     void Tkind_ctest_n(Tkind_ctest_t* const p_obj);
     void Tkind_ctest_o(Tkind_ctest_t* const p_obj);
+
+    void Tkind_logger_record(Tkind_logger_t* const p_obj,\
+                             const char* const p_str);
 
 #ifdef  __cplusplus
 }

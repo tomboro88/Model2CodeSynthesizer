@@ -15,18 +15,7 @@ target_link_libraries(event_pool
         fifo
 )
 
-target_compile_options(event_pool PRIVATE
-    $<$<CONFIG:Coverage>:
-        -O0
-        -g
-        -fprofile-arcs
-        -ftest-coverage
-    >
-)
-
-target_link_options(event_pool PRIVATE
-    $<$<CONFIG:Coverage>:
-        -fprofile-arcs
-        -ftest-coverage
-    >
+target_link_libraries(event_pool
+    PRIVATE
+        coverage_compile
 )

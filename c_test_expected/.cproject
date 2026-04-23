@@ -27,7 +27,7 @@
 					<folderInfo id="cmake4eclipse.mbs.config.debug.311300299." name="/" resourcePath="">
 						<toolChain id="cmake4eclipse.mbs.config.debug.toolChain.1291902376" name="CMake driven" superClass="cmake4eclipse.mbs.config.debug.toolChain">
 							<targetPlatform id="cmake4eclipse.mbs.targetPlatform.cmake.2083696407" name="Any Platform" superClass="cmake4eclipse.mbs.targetPlatform.cmake"/>
-							<builder buildPath="/c_test_expected/_build/Debug" id="cmake4eclipse.mbs.builder.555434590" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
+							<builder buildPath="/c_test_expected/_build/Debug" enableAutoBuild="false" id="cmake4eclipse.mbs.builder.555434590" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
 							<tool id="cmake4eclipse.mbs.toolchain.tool.dummy.1263759330" name="CMake" superClass="cmake4eclipse.mbs.toolchain.tool.dummy">
 								<inputType id="cmake4eclipse.mbs.inputType.c.403222283" superClass="cmake4eclipse.mbs.inputType.c"/>
 								<inputType id="cmake4eclipse.mbs.inputType.cpp.528485452" superClass="cmake4eclipse.mbs.inputType.cpp"/>
@@ -37,7 +37,9 @@
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="de.marw.cmake4eclipse.mbs.settings"/>
+			<storageModule buildDir="_build/${ConfigName}" moduleId="de.marw.cmake4eclipse.mbs.settings">
+				<options/>
+			</storageModule>
 		</cconfiguration>
 		<cconfiguration id="cmake4eclipse.mbs.config.cmake.301168869">
 			<storageModule buildSystemId="de.marw.cmake4eclipse.mbs.cmake4eclipse" id="cmake4eclipse.mbs.config.cmake.301168869" moduleId="org.eclipse.cdt.core.settings" name="Default">
@@ -56,7 +58,7 @@
 					<folderInfo id="cmake4eclipse.mbs.config.cmake.301168869." name="/" resourcePath="">
 						<toolChain id="cmake4eclipse.mbs.config.cmake.toolChain.1873081938" name="CMake driven" superClass="cmake4eclipse.mbs.config.cmake.toolChain">
 							<targetPlatform id="cmake4eclipse.mbs.targetPlatform.cmake.1088438221" name="Any Platform" superClass="cmake4eclipse.mbs.targetPlatform.cmake"/>
-							<builder buildPath="/c_test_expected/_build/Default" id="cmake4eclipse.mbs.builder.820238134" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
+							<builder buildPath="/c_test_expected/_build/Default" enableAutoBuild="false" id="cmake4eclipse.mbs.builder.820238134" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
 							<tool id="cmake4eclipse.mbs.toolchain.tool.dummy.1628589924" name="CMake" superClass="cmake4eclipse.mbs.toolchain.tool.dummy">
 								<inputType id="cmake4eclipse.mbs.inputType.c.1506248120" superClass="cmake4eclipse.mbs.inputType.c"/>
 								<inputType id="cmake4eclipse.mbs.inputType.cpp.1324824581" superClass="cmake4eclipse.mbs.inputType.cpp"/>
@@ -90,7 +92,7 @@
 					<folderInfo id="cmake4eclipse.mbs.config.release.1365721452." name="/" resourcePath="">
 						<toolChain id="cmake4eclipse.mbs.config.release.toolChain.121443997" name="CMake driven" superClass="cmake4eclipse.mbs.config.release.toolChain">
 							<targetPlatform id="cmake4eclipse.mbs.targetPlatform.cmake.630177458" name="Any Platform" superClass="cmake4eclipse.mbs.targetPlatform.cmake"/>
-							<builder buildPath="/c_test_expected/_build/Release" id="cmake4eclipse.mbs.builder.1329870782" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
+							<builder buildPath="/c_test_expected/_build/Release" enableAutoBuild="false" id="cmake4eclipse.mbs.builder.1329870782" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
 							<tool id="cmake4eclipse.mbs.toolchain.tool.dummy.818643547" name="CMake" superClass="cmake4eclipse.mbs.toolchain.tool.dummy">
 								<inputType id="cmake4eclipse.mbs.inputType.c.716753030" superClass="cmake4eclipse.mbs.inputType.c"/>
 								<inputType id="cmake4eclipse.mbs.inputType.cpp.622137185" superClass="cmake4eclipse.mbs.inputType.cpp"/>
@@ -124,7 +126,7 @@
 					<folderInfo id="cmake4eclipse.mbs.config.cmake.301168869.18696596." name="/" resourcePath="">
 						<toolChain id="cmake4eclipse.mbs.config.cmake.toolChain.1269329115" name="CMake driven" superClass="cmake4eclipse.mbs.config.cmake.toolChain">
 							<targetPlatform id="cmake4eclipse.mbs.targetPlatform.cmake.1685485515" name="Any Platform" superClass="cmake4eclipse.mbs.targetPlatform.cmake"/>
-							<builder buildPath="/c_test_expected/_build/Default" id="cmake4eclipse.mbs.builder.1168940108" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
+							<builder buildPath="/c_test_expected/_build/Default" enableAutoBuild="false" id="cmake4eclipse.mbs.builder.1168940108" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CMake Builder" superClass="cmake4eclipse.mbs.builder"/>
 							<tool id="cmake4eclipse.mbs.toolchain.tool.dummy.1465817270" name="CMake" superClass="cmake4eclipse.mbs.toolchain.tool.dummy">
 								<inputType id="cmake4eclipse.mbs.inputType.c.2028673838" superClass="cmake4eclipse.mbs.inputType.c"/>
 								<inputType id="cmake4eclipse.mbs.inputType.cpp.1704380649" superClass="cmake4eclipse.mbs.inputType.cpp"/>

@@ -51,6 +51,9 @@ static float Tkind_ctest_get_flt_from_uint(Tkind_cbase2_t* const p_obj);
 
 static void Tkind_ctest_init_df(Tkind_ctest_t* const p_obj);
 
+static void Tkind_sm1_rec_log(Tkind_sm1_t* const p_obj,\
+                              const char* const p_str);
+
 static void Tkind_sm1_exit_region2(Tkind_sm1_t* const p_obj);
 static void Tkind_sm1_exit_region3(Tkind_sm1_t* const p_obj);
 static void Tkind_sm1_exit_region4(Tkind_sm1_t* const p_obj);
@@ -239,8 +242,7 @@ static inline void
 Tkind_sm1_enter_state1(Tkind_sm1_t* const p_obj)
 {
     p_obj->region1 = TKIND_SM1_STATE1;
-    (void) p_obj;
-    printf("Enter State1");
+    Tkind_sm1_rec_log(p_obj, "Enter State1\n");
 }
 
 /**
@@ -251,8 +253,7 @@ static inline void
 Tkind_sm1_enter_state3(Tkind_sm1_t* const p_obj)
 {
     p_obj->region2 = TKIND_SM1_STATE3;
-    (void) p_obj;
-    printf("Enter State3");
+    Tkind_sm1_rec_log(p_obj, "Enter State3\n");
 }
 
 /**
@@ -275,8 +276,7 @@ static inline void
 Tkind_sm1_enter_state2(Tkind_sm1_t* const p_obj)
 {
     p_obj->region2 = TKIND_SM1_STATE2;
-    (void) p_obj;
-    printf("Enter State2");
+    Tkind_sm1_rec_log(p_obj, "Enter State2\n");
 }
 
 /**
@@ -367,6 +367,7 @@ static inline void
 Tkind_sm1_enter_region2(Tkind_sm1_t* const p_obj)
 {
     p_obj->region2 = TKIND_SM1_INITIAL3;
+    Tkind_sm1_rec_log(p_obj, "Initial3 to State2\n");
     Tkind_sm1_enter_state2(p_obj);
 }
 
@@ -396,9 +397,10 @@ Tkind_sm1_enter_region5(Tkind_sm1_t* const p_obj)
  * @param [in] p_obj The pointer to the self object.
  */
 static inline void
-Tkind_Tkind_sm1_enter_region1(Tkind_sm1_t* const p_obj)
+Tkind_sm1_enter_region1(Tkind_sm1_t* const p_obj)
 {
     p_obj->region1 = TKIND_SM1_INITIAL1;
+    Tkind_sm1_rec_log(p_obj, "Initial1 to State1\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_region2(p_obj);
     Tkind_sm1_enter_region5(p_obj);
@@ -413,8 +415,7 @@ Tkind_sm1_exit_state1(Tkind_sm1_t* const p_obj)
 {
     Tkind_sm1_exit_region2(p_obj);
     Tkind_sm1_exit_region5(p_obj);
-    (void) p_obj;
-    printf("Exit State1");
+    Tkind_sm1_rec_log(p_obj, "Exit State1");
 }
 
 /**
@@ -447,8 +448,7 @@ Tkind_sm1_exit_state5(Tkind_sm1_t* const p_obj)
 static inline void
 Tkind_sm1_exit_state2(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State2");
+    Tkind_sm1_rec_log(p_obj, "Exit State2\n");
 }
 
 /**
@@ -616,9 +616,11 @@ Tkind_cbase2_GetFloatProp(Tkind_cbase2_t* const p_obj)
 /**
  * @brief The initialization function of the ctest class.
  * @param p_obj The pointer to the object that should be initialized.
+ * @param p_obj The pointer to the logger object.
  */
 bool
-Tkind_ctest_init(Tkind_ctest_t* const p_obj)
+Tkind_ctest_init(Tkind_ctest_t* const p_obj,
+                 Tkind_logger_t* const p_logger)
 {
     bool b_is_created = false;
 
@@ -626,6 +628,7 @@ Tkind_ctest_init(Tkind_ctest_t* const p_obj)
             && Tkind_cbase2_init(&p_obj->cbase2))
     {
         Tkind_ctest_init_df(p_obj);
+        p_obj->p_logger = p_logger;
         /* First it is necessary to initialize fifo objects for each event
          * separately.*/
         fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_I].fifo),
@@ -1137,6 +1140,27 @@ Tkind_ctest_release_event(Tkind_ctest_t* const p_obj)
 
     return b_is_released;
 }
+
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str A pointer to the string that will be logged.
+ */
+void
+Tkind_logger_record(Tkind_logger_t* const p_obj, const char* const p_str)
+{
+    /*Code for handling a virtual operation.*/
+    if((NULL != p_obj) && (NULL != p_obj->p_vtable))
+    {
+        void (*p_record)(Tkind_logger_t* const p_obj, const char* const p_str)
+            = p_obj->p_vtable->p_record;
+
+        if(NULL != p_record)
+        {
+            p_record(p_obj, p_str);
+        }
+    }
+}
+
 /*******************************************************************************
  *
  * Non-public function bodies.
@@ -1221,7 +1245,7 @@ Tkind_ctest_invoke_sm1(Tkind_ctest_t* const p_obj)
     p_obj->sm1.b_test_condition      = false;
 
     /* Execute the initial transition.*/
-    Tkind_Tkind_sm1_enter_region1(&p_obj->sm1);
+    Tkind_sm1_enter_region1(&p_obj->sm1);
 }
 
 /**
@@ -1259,6 +1283,16 @@ Tkind_ctest_get_flt_from_uint(Tkind_cbase2_t* const p_obj)
     }
     
     return result;
+}
+
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str
+ */
+static void
+Tkind_sm1_rec_log(Tkind_sm1_t* const p_obj, const char* const p_str)
+{
+    Tkind_logger_record(p_obj->p_context->p_logger, p_str);
 }
 
 /**
@@ -2418,6 +2452,7 @@ Tkind_sm1_dispatch_a_state2(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state2(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State2 to State3\n");
     Tkind_sm1_enter_state3(p_obj);
     Tkind_sm1_enter_region3(p_obj);
 

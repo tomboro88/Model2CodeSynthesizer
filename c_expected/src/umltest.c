@@ -31,6 +31,7 @@
  * Private function prototypes.
  *
  ******************************************************************************/
+static void main_record(Tkind_logger_t* const p_obj, const char* const p_str);
 /*******************************************************************************
  *
  * Static data declarations.
@@ -50,8 +51,10 @@ int
 main(void)
 {
     printf("Initialize my_ctest:\n");
+    const Tkind_logger_vt_t logger_funcs = {.p_record = main_record};
+    Tkind_logger_t local_logger = {.p_vtable = &logger_funcs};
     Tkind_ctest_t my_ctest = {0};
-    Tkind_ctest_init(&my_ctest);
+    Tkind_ctest_init(&my_ctest, &local_logger);
     Tkind_cbase1_SetUintProp(&my_ctest.cbase1, 123);
     Tkind_cbase2_SetFloatProp(&my_ctest.cbase2, 13.0f);
     printf("\nPolymorphism example:\n"
@@ -81,4 +84,10 @@ main(void)
  * Non-public function bodies.
  *
  ******************************************************************************/
+static void
+main_record(Tkind_logger_t* const p_obj, const char* const p_str)
+{
+    (void) p_obj;
+    (void) puts(p_str);
+}
 /*** end of file ***/

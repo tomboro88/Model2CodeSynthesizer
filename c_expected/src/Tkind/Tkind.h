@@ -148,6 +148,18 @@ extern "C" {
             Tkind_ctest_t;
 
     /**
+     * @brief The virtual table type for the Tkind_logger_s struct.
+     */
+    typedef struct Tkind_logger_vt_s \
+            Tkind_logger_vt_t;
+
+    /**
+     * @brief The type representing the Tkind_logger_s struct.
+     */
+    typedef struct Tkind_logger_s \
+            Tkind_logger_t;
+
+    /**
      * @brief The type representing the Tkind_sm1_s struct.
      */
     typedef struct Tkind_sm1_s \
@@ -400,6 +412,29 @@ extern "C" {
     };
 
     /**
+     */
+    struct Tkind_logger_s
+    {
+        /**
+         * @brief The pointer to the virtual table of the logger class.
+         */
+        const Tkind_logger_vt_t*        p_vtable;
+    };
+
+    /**
+     * @brief The virtual table struct for the Tkind_logger_s struct. Contains
+     * pointers to all virtual methods of the class.
+     */
+    struct Tkind_logger_vt_s
+    {
+        /**
+         * @param [in] p_obj The pointer to the self object.
+         * @param [in] p_str A pointer to the string that will be logged.
+         */
+        void (*p_record)(Tkind_logger_t* const p_obj, const char* const p_str);
+    };
+
+    /**
      * @brief The enumeration of all substates of Region1 Region of sm1
      * StateMachine.
      */
@@ -593,6 +628,11 @@ extern "C" {
         /**
          */
         double                          pi;
+        /**
+         * The pointer to an object used to record the executed statemachine
+         * transition comments.
+         */
+        Tkind_logger_t*                 p_logger;
     };
 
     bool Tkind_cbase1_init(Tkind_cbase1_t* const p_obj);
@@ -605,7 +645,8 @@ extern "C" {
                                    float const param1);
     float Tkind_cbase2_GetFloatProp(Tkind_cbase2_t* const p_obj);
 
-    bool Tkind_ctest_init(Tkind_ctest_t* const p_obj);
+    bool Tkind_ctest_init(Tkind_ctest_t* const p_obj,
+                          Tkind_logger_t* const p_logger);
     bool Tkind_ctest_a(Tkind_ctest_t* const p_obj);
     bool Tkind_ctest_b(Tkind_ctest_t* const p_obj);
     bool Tkind_ctest_c(Tkind_ctest_t* const p_obj);
@@ -624,6 +665,9 @@ extern "C" {
     bool Tkind_ctest_fetch_event(Tkind_ctest_t* const p_obj);
     bool Tkind_ctest_dispatch_event(Tkind_ctest_t* const p_obj);
     bool Tkind_ctest_release_event(Tkind_ctest_t* const p_obj);
+
+    void Tkind_logger_record(Tkind_logger_t* const p_obj,\
+                             const char* const p_str);
 
 #ifdef  __cplusplus
 }

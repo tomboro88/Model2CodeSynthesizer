@@ -6,11 +6,14 @@
   </ownedComment>
   <packagedElement xmi:type="uml:Package" xmi:id="_-IUdANw3Ee-clukbqF5Mtw" name="Tkind">
     <ownedComment xmi:type="uml:Comment" xmi:id="_se4ncKU1EfCJwtlh12_YdQ" annotatedElement="_F3pgMNw4Ee-clukbqF5Mtw">
-      <body>This is a comment linked 
-to the ctest type</body>
+      <body>@brief This is a comment linked to the ctest type.</body>
     </ownedComment>
     <ownedComment xmi:type="uml:Comment" xmi:id="_jv0wIKU2EfCJwtlh12_YdQ" annotatedElement="_-IUdANw3Ee-clukbqF5Mtw">
       <body>A Package containing test diagrams for different kinds of transitions: internal, external and local.</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_MR3kQBduEfGmVulf-GfgLw" annotatedElement="_Ij1hQBaHEfG70Ybw1j3UxQ">
+      <body>@brief This is an example logging functionality modelled as an Interface, providing dynamic dependency injection.
+@details It can easily be replaced with different functionalities just by replacing proper virtual table with function pointers. For example this example project will use puts function, but unit tests will use some custom function used for verifying the correct operation of the code.</body>
     </ownedComment>
     <packagedElement xmi:type="uml:Class" xmi:id="_F3pgMNw4Ee-clukbqF5Mtw" name="ctest">
       <generalization xmi:type="uml:Generalization" xmi:id="_IThkwKTCEfCF5Mxlt2zVCg" general="_6-nZIKTBEfCF5Mxlt2zVCg"/>
@@ -27,26 +30,42 @@ It is automatically detected by the generator and included as a literal constant
       <ownedAttribute xmi:type="uml:Property" xmi:id="_-ZDxMKU5EfCJwtlh12_YdQ" name="pi" type="_5MrL4KU5EfCJwtlh12_YdQ">
         <defaultValue xmi:type="uml:LiteralReal" xmi:id="_PIx20KU6EfCJwtlh12_YdQ" name="PI_LITERAL_CONSTANT" value="3.14"/>
       </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_MgmxcBaKEfG70Ybw1j3UxQ" name="logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" aggregation="shared" association="_CA9DMBdwEfGmVulf-GfgLw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ckz8YBdwEfGmVulf-GfgLw"/>
+      </ownedAttribute>
       <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_nbBJMNw4Ee-clukbqF5Mtw" name="sm1">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_qkc70L4zEfCF3MoXlXpSFw" name="b_test_condition" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_8OVngBdzEfGmVulf-GfgLw" visibility="private" specification="_kvleEBdzEfGmVulf-GfgLw">
+          <language>C</language>
+          <body>Tkind_logger_record(p_obj->p_context->p_logger, p_str);</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_kvleEBdzEfGmVulf-GfgLw" name="rec_log" visibility="private" method="_8OVngBdzEfGmVulf-GfgLw">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_vtL0EBdzEfGmVulf-GfgLw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wpcoABdzEfGmVulf-GfgLw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wpnAEBdzEfGmVulf-GfgLw" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
         <region xmi:type="uml:Region" xmi:id="_vunXENw4Ee-clukbqF5Mtw" name="Region1">
           <transition xmi:type="uml:Transition" xmi:id="_kVUYANxCEe-clukbqF5Mtw" source="_xRPncNw4Ee-clukbqF5Mtw" target="_MQR5Ydw8Ee-clukbqF5Mtw">
             <trigger xmi:type="uml:Trigger" xmi:id="_31jbIN27Ee-8CKMu-ENa-A" event="_3iswkN27Ee-8CKMu-ENa-A"/>
           </transition>
-          <transition xmi:type="uml:Transition" xmi:id="_iqpLUN21Ee-8CKMu-ENa-A" source="_gwLpwN21Ee-8CKMu-ENa-A" target="_xRPncNw4Ee-clukbqF5Mtw"/>
+          <transition xmi:type="uml:Transition" xmi:id="_iqpLUN21Ee-8CKMu-ENa-A" source="_gwLpwN21Ee-8CKMu-ENa-A" target="_xRPncNw4Ee-clukbqF5Mtw">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_f4n9EDnLEfGpzs3AXu5PVg">
+              <language>C</language>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;Initial1 to State1\n&quot;);</body>
+            </effect>
+          </transition>
           <transition xmi:type="uml:Transition" xmi:id="_2YuTwPh1Ee-9W4mcsGdJGQ" source="_xRPncNw4Ee-clukbqF5Mtw" target="_vz5U0Ph1Ee-9W4mcsGdJGQ">
             <trigger xmi:type="uml:Trigger" xmi:id="_SdvdsPh2Ee-9W4mcsGdJGQ" event="_SJivUPh2Ee-9W4mcsGdJGQ"/>
           </transition>
           <subvertex xmi:type="uml:State" xmi:id="_xRPncNw4Ee-clukbqF5Mtw" name="State1">
             <entry xmi:type="uml:OpaqueBehavior" xmi:id="_L--osN3WEe-K46f0PJjDaQ">
               <language>C</language>
-              <body>(void) p_obj;
-printf(&quot;Enter State1&quot;);</body>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State1\n&quot;);</body>
             </entry>
             <exit xmi:type="uml:OpaqueBehavior" xmi:id="_RAjsMN3WEe-K46f0PJjDaQ">
               <language>C</language>
-              <body>(void) p_obj;
-printf(&quot;Exit State1&quot;);</body>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State1&quot;);</body>
             </exit>
             <region xmi:type="uml:Region" xmi:id="_y0mQkNw4Ee-clukbqF5Mtw" name="Region2">
               <ownedComment xmi:type="uml:Comment" xmi:id="_175kIN22Ee-8CKMu-ENa-A" annotatedElement="_y0qiANw4Ee-clukbqF5Mtw">
@@ -55,14 +74,20 @@ printf(&quot;Exit State1&quot;);</body>
               <ownedComment xmi:type="uml:Comment" xmi:id="_mGkNsN23Ee-8CKMu-ENa-A" annotatedElement="_F56XwNw9Ee-clukbqF5Mtw">
                 <body>Only external transitions are linked to this state</body>
               </ownedComment>
-              <ownedComment xmi:type="uml:Comment" xmi:id="_9fL68OAdEe-Dn89-xPPa6w" annotatedElement="_Jr4YENw-Ee-clukbqF5Mtw">
-                <body>This transition needs Region3 (not State3) exit, and then State5 entry</body>
-              </ownedComment>
               <ownedComment xmi:type="uml:Comment" xmi:id="_x1Ai4OJ6Ee-YJfJPhIaSCQ" annotatedElement="_3KcSoNw8Ee-clukbqF5Mtw">
                 <body>This transition needs Region2 exit and then Region2 entry</body>
               </ownedComment>
-              <transition xmi:type="uml:Transition" xmi:id="_Vr7UcNw8Ee-clukbqF5Mtw" source="_HZtMANw8Ee-clukbqF5Mtw" target="_9oHWINw7Ee-clukbqF5Mtw"/>
+              <transition xmi:type="uml:Transition" xmi:id="_Vr7UcNw8Ee-clukbqF5Mtw" source="_HZtMANw8Ee-clukbqF5Mtw" target="_9oHWINw7Ee-clukbqF5Mtw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_weHvsDnLEfGpzs3AXu5PVg">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Initial3 to State2\n&quot;);</body>
+                </effect>
+              </transition>
               <transition xmi:type="uml:Transition" xmi:id="_TsIKcNw9Ee-clukbqF5Mtw" kind="local" source="_9oHWINw7Ee-clukbqF5Mtw" target="_y0qiANw4Ee-clukbqF5Mtw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_rmyb0DzVEfG-8_6xv8-naA">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;State2 to State3\n&quot;);</body>
+                </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_C5N5sN24Ee-8CKMu-ENa-A" event="_CqC1QN24Ee-8CKMu-ENa-A"/>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_VRmTcNw9Ee-clukbqF5Mtw" source="_9oHWINw7Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
@@ -81,15 +106,16 @@ printf(&quot;Exit State1&quot;);</body>
               <subvertex xmi:type="uml:State" xmi:id="_y0qiANw4Ee-clukbqF5Mtw" name="State3">
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_khO3gN3LEe-T8tGVws-ENQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Enter State3&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State3\n&quot;);</body>
                 </entry>
                 <exit xmi:type="uml:OpaqueBehavior" xmi:id="_JnoQcN3OEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Exit State3&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State3\n&quot;);</body>
                 </exit>
                 <region xmi:type="uml:Region" xmi:id="_9VgDgNw4Ee-clukbqF5Mtw" name="Region3">
+                  <ownedComment xmi:type="uml:Comment" xmi:id="_9fL68OAdEe-Dn89-xPPa6w" annotatedElement="_Jr4YENw-Ee-clukbqF5Mtw">
+                    <body>This transition needs Region3 (not State3) exit, and then State5 entry</body>
+                  </ownedComment>
                   <transition xmi:type="uml:Transition" xmi:id="_3KcSoNw8Ee-clukbqF5Mtw" kind="local" source="_9VifwNw4Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                     <trigger xmi:type="uml:Trigger" xmi:id="_2clvAN25Ee-8CKMu-ENa-A" event="_2COHMN25Ee-8CKMu-ENa-A"/>
                   </transition>
@@ -116,13 +142,11 @@ printf(&quot;Exit State5&quot;);</body>
               <subvertex xmi:type="uml:State" xmi:id="_9oHWINw7Ee-clukbqF5Mtw" name="State2">
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_Dn9WYN21Ee-8CKMu-ENa-A">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Enter State2&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State2\n&quot;);</body>
                 </entry>
                 <exit xmi:type="uml:OpaqueBehavior" xmi:id="_OjLlcN3DEe-8CKMu-ENa-A">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Exit State2&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State2\n&quot;);</body>
                 </exit>
               </subvertex>
               <subvertex xmi:type="uml:Pseudostate" xmi:id="_HZtMANw8Ee-clukbqF5Mtw" name="Initial3"/>
@@ -275,6 +299,17 @@ return result;</body>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_gM9jwN28Ee-8CKMu-ENa-A" name="m"/>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_CMnssOAZEe-Dn89-xPPa6w" name="n"/>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_RWp50Ph2Ee-9W4mcsGdJGQ" name="o"/>
+      <nestedClassifier xmi:type="uml:Interface" xmi:id="_Ij1hQBaHEfG70Ybw1j3UxQ" name="logger">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_YZyGQBaHEfG70Ybw1j3UxQ" name="record">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_wvklYBaHEfG70Ybw1j3UxQ" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_wvklYRaHEfG70Ybw1j3UxQ" annotatedElement="_wvklYBaHEfG70Ybw1j3UxQ">
+              <body>A pointer to the string that will be logged.</body>
+            </ownedComment>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eYfD4BaIEfG70Ybw1j3UxQ"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eI-oQBaIEfG70Ybw1j3UxQ" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+      </nestedClassifier>
     </packagedElement>
     <packagedElement xmi:type="uml:CallEvent" xmi:id="_CqC1QN24Ee-8CKMu-ENa-A" name="a" operation="_CMSiQN24Ee-8CKMu-ENa-A"/>
     <packagedElement xmi:type="uml:CallEvent" xmi:id="_O8xyMN24Ee-8CKMu-ENa-A" name="b" operation="_Ot7d4N24Ee-8CKMu-ENa-A"/>
@@ -357,6 +392,12 @@ This is important for critical events, that are sent only ocassionally, and cann
     <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_x334YL4uEfCF3MoXlXpSFw" name="CTEST_M_CNT" value="2"/>
     <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0kz_wL4uEfCF3MoXlXpSFw" name="CTEST_K_CNT" value="2"/>
     <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2-IAgL4uEfCF3MoXlXpSFw" name="CTEST_L_CNT" value="2"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_CA9DMBdwEfGmVulf-GfgLw" name="A_logger_ctest" visibility="package" memberEnd="_MgmxcBaKEfG70Ybw1j3UxQ _CBFmEBdwEfGmVulf-GfgLw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_CBFmEBdwEfGmVulf-GfgLw" name="ctest" type="_F3pgMNw4Ee-clukbqF5Mtw" association="_CA9DMBdwEfGmVulf-GfgLw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CBFmERdwEfGmVulf-GfgLw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CBGNIBdwEfGmVulf-GfgLw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
   </packagedElement>
   <packagedElement xmi:type="uml:Package" xmi:id="_tzRuEAHPEfCgXv5ODs4Seg" name="TJunction">
     <ownedComment xmi:type="uml:Comment" xmi:id="_krpNQKU4EfCJwtlh12_YdQ" annotatedElement="_tzRuEAHPEfCgXv5ODs4Seg">
