@@ -287,8 +287,7 @@ static inline void
 Tkind_sm1_enter_state4(Tkind_sm1_t* const p_obj)
 {
     p_obj->region2 = TKIND_SM1_STATE4;
-    (void) p_obj;
-    printf("Enter State4");
+    Tkind_sm1_rec_log(p_obj, "Enter State4\n");
 }
 
 /**
@@ -311,8 +310,7 @@ static inline void
 Tkind_sm1_enter_state7(Tkind_sm1_t* const p_obj)
 {
     p_obj->region5 = TKIND_SM1_STATE7;
-    (void) p_obj;
-    printf("Enter State7");
+    Tkind_sm1_rec_log(p_obj, "Enter State7\n");
 }
 
 /**
@@ -323,8 +321,7 @@ static inline void
 Tkind_sm1_enter_state8(Tkind_sm1_t* const p_obj)
 {
     p_obj->region5 = TKIND_SM1_STATE8;
-    (void) p_obj;
-    printf("Enter State8");
+    Tkind_sm1_rec_log(p_obj, "Enter State8\n");
 }
 
 /**
@@ -335,8 +332,7 @@ static inline void
 Tkind_sm1_enter_state9(Tkind_sm1_t* const p_obj)
 {
     p_obj->region6 = TKIND_SM1_STATE9;
-    (void) p_obj;
-    printf("Enter State9");
+    Tkind_sm1_rec_log(p_obj, "Enter State9\n");
 }
 
 /**
@@ -415,7 +411,7 @@ Tkind_sm1_exit_state1(Tkind_sm1_t* const p_obj)
 {
     Tkind_sm1_exit_region2(p_obj);
     Tkind_sm1_exit_region5(p_obj);
-    Tkind_sm1_rec_log(p_obj, "Exit State1");
+    Tkind_sm1_rec_log(p_obj, "Exit State1\n");
 }
 
 /**
@@ -2334,6 +2330,7 @@ Tkind_sm1_dispatch_i_state1(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State1 to State7\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_state7(p_obj);
     Tkind_sm1_enter_region2(p_obj);
@@ -2433,6 +2430,7 @@ Tkind_sm1_dispatch_o_state1(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State1 to Choice1\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_choice1(p_obj);
     Tkind_sm1_enter_region2(p_obj);
@@ -2471,6 +2469,7 @@ Tkind_sm1_dispatch_b_state2(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state2(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State2 to State4\n");
     Tkind_sm1_enter_state4(p_obj);
     Tkind_sm1_enter_region4(p_obj);
 
@@ -2801,11 +2800,13 @@ Tkind_sm1_enter_choice1(Tkind_sm1_t* const p_obj)
 
     if(p_obj->b_test_condition)
     {
+        Tkind_sm1_rec_log(p_obj, "Choice1 to State8\n");
         Tkind_sm1_enter_state8(p_obj);
         Tkind_sm1_enter_region6(p_obj);
     }
     else
     {
+    	Tkind_sm1_rec_log(p_obj, "Choice1 to State1\n");
         Tkind_sm1_enter_region5(p_obj);
     }
     

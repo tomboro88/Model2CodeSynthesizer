@@ -13,8 +13,6 @@ void run_all_tests(void)
 	RUN_TEST_GROUP(Tkind);
 	RUN_TEST_GROUP(TkindSm1ZeroInit);
 	RUN_TEST_GROUP(TkindSm1State2);
-	RUN_TEST_GROUP(TkindSm1State2EventA);
-	RUN_TEST_GROUP(TkindSm1State2FetchEventA);
 }
 
 int main(int argc, const char* argv[])

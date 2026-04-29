@@ -66,68 +66,70 @@ TEST_GROUP_RUNNER(TkindSm1State2)
 {
     RUN_TEST_CASE(TkindSm1State2, InitResultsInInitialTransition);
     RUN_TEST_CASE(TkindSm1State2, AReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseAReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, BReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchBReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchBReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseBReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, CReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchCReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchCReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseCReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, DReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchDReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchDReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseDReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, EReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchEReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchEReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseEReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, FReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchFReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchFReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseFReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, GReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchGReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchGReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseGReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, HReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchHReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchHReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseHReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, IReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchIReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchIReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseIReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, JReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchJReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchJReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseJReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, KReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchKReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchKReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseKReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, LReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchLReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchLReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, MReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchMReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchMReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseMReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, NReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchNReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchNReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseNReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, OReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, FetchOWithTrueChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DispatchOWithTrueChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, ReleaseOWithTrueChoice1ReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, FetchReturnsFalse);
     RUN_TEST_CASE(TkindSm1State2, DispatchReturnsFalse);
     RUN_TEST_CASE(TkindSm1State2, ReleaseReturnsFalse);
 }
 
-TEST_GROUP_RUNNER(TkindSm1State2EventA)
-{
-    RUN_TEST_CASE(TkindSm1State2EventA, InitResultsInInitialTransition);
-    RUN_TEST_CASE(TkindSm1State2EventA, AReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, BReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, CReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, DReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, EReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, FReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, GReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, HReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, IReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, JReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, KReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, LReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, MReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, NReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, OReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, FetchReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2EventA, DispatchReturnsFalse);
-    RUN_TEST_CASE(TkindSm1State2EventA, ReleaseReturnsFalse);
-}
-
-TEST_GROUP_RUNNER(TkindSm1State2FetchEventA)
-{
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, InitResultsInInitialTransition);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, AReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, BReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, CReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, DReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, EReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, FReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, GReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, HReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, IReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, JReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, KReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, LReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, MReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, NReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, OReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, FetchReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, DispatchReturnsTrue);
-    RUN_TEST_CASE(TkindSm1State2FetchEventA, ReleaseReturnsFalse);
-}
 /*** end of file ***/

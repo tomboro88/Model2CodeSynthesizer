@@ -47,6 +47,10 @@ It is automatically detected by the generator and included as a literal constant
         </ownedOperation>
         <region xmi:type="uml:Region" xmi:id="_vunXENw4Ee-clukbqF5Mtw" name="Region1">
           <transition xmi:type="uml:Transition" xmi:id="_kVUYANxCEe-clukbqF5Mtw" source="_xRPncNw4Ee-clukbqF5Mtw" target="_MQR5Ydw8Ee-clukbqF5Mtw">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_P_TicEG3EfGP59nR7Np73Q">
+              <language>C</language>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;State1 to State7\n&quot;);</body>
+            </effect>
             <trigger xmi:type="uml:Trigger" xmi:id="_31jbIN27Ee-8CKMu-ENa-A" event="_3iswkN27Ee-8CKMu-ENa-A"/>
           </transition>
           <transition xmi:type="uml:Transition" xmi:id="_iqpLUN21Ee-8CKMu-ENa-A" source="_gwLpwN21Ee-8CKMu-ENa-A" target="_xRPncNw4Ee-clukbqF5Mtw">
@@ -56,6 +60,10 @@ It is automatically detected by the generator and included as a literal constant
             </effect>
           </transition>
           <transition xmi:type="uml:Transition" xmi:id="_2YuTwPh1Ee-9W4mcsGdJGQ" source="_xRPncNw4Ee-clukbqF5Mtw" target="_vz5U0Ph1Ee-9W4mcsGdJGQ">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_psPcsEQSEfGGcuW7Di30VA">
+              <language>C</language>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;State1 to Choice1\n&quot;);</body>
+            </effect>
             <trigger xmi:type="uml:Trigger" xmi:id="_SdvdsPh2Ee-9W4mcsGdJGQ" event="_SJivUPh2Ee-9W4mcsGdJGQ"/>
           </transition>
           <subvertex xmi:type="uml:State" xmi:id="_xRPncNw4Ee-clukbqF5Mtw" name="State1">
@@ -65,13 +73,13 @@ It is automatically detected by the generator and included as a literal constant
             </entry>
             <exit xmi:type="uml:OpaqueBehavior" xmi:id="_RAjsMN3WEe-K46f0PJjDaQ">
               <language>C</language>
-              <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State1&quot;);</body>
+              <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State1\n&quot;);</body>
             </exit>
             <region xmi:type="uml:Region" xmi:id="_y0mQkNw4Ee-clukbqF5Mtw" name="Region2">
               <ownedComment xmi:type="uml:Comment" xmi:id="_175kIN22Ee-8CKMu-ENa-A" annotatedElement="_y0qiANw4Ee-clukbqF5Mtw">
                 <body>Only local transitions are linked with this state</body>
               </ownedComment>
-              <ownedComment xmi:type="uml:Comment" xmi:id="_mGkNsN23Ee-8CKMu-ENa-A" annotatedElement="_F56XwNw9Ee-clukbqF5Mtw">
+              <ownedComment xmi:type="uml:Comment" xmi:id="_mGkNsN23Ee-8CKMu-ENa-A" annotatedElement="_y0mQkNw4Ee-clukbqF5Mtw">
                 <body>Only external transitions are linked to this state</body>
               </ownedComment>
               <ownedComment xmi:type="uml:Comment" xmi:id="_x1Ai4OJ6Ee-YJfJPhIaSCQ" annotatedElement="_3KcSoNw8Ee-clukbqF5Mtw">
@@ -91,6 +99,10 @@ It is automatically detected by the generator and included as a literal constant
                 <trigger xmi:type="uml:Trigger" xmi:id="_C5N5sN24Ee-8CKMu-ENa-A" event="_CqC1QN24Ee-8CKMu-ENa-A"/>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_VRmTcNw9Ee-clukbqF5Mtw" source="_9oHWINw7Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_SG3owEDvEfGss4HVwiSwQw">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;State2 to State4\n&quot;);</body>
+                </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_PJJaQN24Ee-8CKMu-ENa-A" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" kind="local" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
@@ -153,13 +165,11 @@ printf(&quot;Exit State5&quot;);</body>
               <subvertex xmi:type="uml:State" xmi:id="_F56XwNw9Ee-clukbqF5Mtw" name="State4">
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_HeMQAN3UEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Enter State4&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State4\n&quot;);</body>
                 </entry>
                 <exit xmi:type="uml:OpaqueBehavior" xmi:id="_SBDx0N3UEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Exit State4&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State4\n&quot;);</body>
                 </exit>
                 <region xmi:type="uml:Region" xmi:id="_HMO7QNw9Ee-clukbqF5Mtw" name="Region4">
                   <transition xmi:type="uml:Transition" xmi:id="_LWi_kNw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
@@ -200,34 +210,38 @@ printf(&quot;Exit State6&quot;);</body>
                     <body>p_obj->b_test_condition</body>
                   </specification>
                 </ownedRule>
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_b7rBEEQYEfGGcuW7Di30VA">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Choice1 to State8\n&quot;);</body>
+                </effect>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_6bp9sPh1Ee-9W4mcsGdJGQ" guard="_SqoNsPh3Ee-9W4mcsGdJGQ" kind="local" source="_vz5U0Ph1Ee-9W4mcsGdJGQ" target="_xRPncNw4Ee-clukbqF5Mtw">
                 <ownedRule xmi:type="uml:Constraint" xmi:id="_SqoNsPh3Ee-9W4mcsGdJGQ">
                   <specification xmi:type="uml:Expression" xmi:id="_UVqzMPh3Ee-9W4mcsGdJGQ" symbol="else"/>
                 </ownedRule>
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_yufgUEQSEfGGcuW7Di30VA">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Choice1 to State1\n&quot;);</body>
+                </effect>
               </transition>
               <subvertex xmi:type="uml:State" xmi:id="_MQR5Ydw8Ee-clukbqF5Mtw" name="State7">
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_jRjMwN3VEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Enter State7&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State7\n&quot;);</body>
                 </entry>
                 <exit xmi:type="uml:OpaqueBehavior" xmi:id="_n_CPkN3VEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Exit State7&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State7\n&quot;);</body>
                 </exit>
               </subvertex>
               <subvertex xmi:type="uml:State" xmi:id="_N0T38Nw8Ee-clukbqF5Mtw" name="State8">
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_xToAYN3VEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Enter State8&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State8\n&quot;);</body>
                 </entry>
                 <exit xmi:type="uml:OpaqueBehavior" xmi:id="_0ePiQN3VEe-K46f0PJjDaQ">
                   <language>C</language>
-                  <body>(void) p_obj;
-printf(&quot;Exit State8&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State8\n&quot;);</body>
                 </exit>
                 <region xmi:type="uml:Region" xmi:id="_PLqscNw8Ee-clukbqF5Mtw" name="Region6">
                   <transition xmi:type="uml:Transition" xmi:id="_cqmvENxCEe-clukbqF5Mtw" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
@@ -240,13 +254,11 @@ printf(&quot;Exit State8&quot;);</body>
                   <subvertex xmi:type="uml:State" xmi:id="_PLtIsNw8Ee-clukbqF5Mtw" name="State9">
                     <entry xmi:type="uml:OpaqueBehavior" xmi:id="_5USEIN3VEe-K46f0PJjDaQ">
                       <language>C</language>
-                      <body>(void) p_obj;
-printf(&quot;Enter State9&quot;);</body>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State9\n&quot;);</body>
                     </entry>
                     <exit xmi:type="uml:OpaqueBehavior" xmi:id="_Cqu2IN3WEe-K46f0PJjDaQ">
                       <language>C</language>
-                      <body>(void) p_obj;
-printf(&quot;Exit State9&quot;);</body>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State9\n&quot;);</body>
                     </exit>
                   </subvertex>
                   <subvertex xmi:type="uml:Pseudostate" xmi:id="_-JSFUNxCEe-clukbqF5Mtw" name="Initial4"/>

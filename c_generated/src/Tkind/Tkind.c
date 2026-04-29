@@ -276,8 +276,7 @@ static inline void
 sm1_enter_state4(Tkind_sm1_t* const p_obj)
 {
     p_obj->region2 = TKIND_SM1_STATE4;
-    (void) p_obj;
-    printf("Enter State4");
+    Tkind_sm1_rec_log(p_obj, "Enter State4\n");
 }
 
 /**
@@ -300,8 +299,7 @@ static inline void
 sm1_enter_state7(Tkind_sm1_t* const p_obj)
 {
     p_obj->region5 = TKIND_SM1_STATE7;
-    (void) p_obj;
-    printf("Enter State7");
+    Tkind_sm1_rec_log(p_obj, "Enter State7\n");
 }
 
 /**
@@ -312,8 +310,7 @@ static inline void
 sm1_enter_state8(Tkind_sm1_t* const p_obj)
 {
     p_obj->region5 = TKIND_SM1_STATE8;
-    (void) p_obj;
-    printf("Enter State8");
+    Tkind_sm1_rec_log(p_obj, "Enter State8\n");
 }
 
 /**
@@ -324,8 +321,7 @@ static inline void
 sm1_enter_state9(Tkind_sm1_t* const p_obj)
 {
     p_obj->region6 = TKIND_SM1_STATE9;
-    (void) p_obj;
-    printf("Enter State9");
+    Tkind_sm1_rec_log(p_obj, "Enter State9\n");
 }
 
 /**
@@ -404,7 +400,7 @@ sm1_exit_state1(Tkind_sm1_t* const p_obj)
 {
     sm1_exit_region2(p_obj);
     sm1_exit_region5(p_obj);
-    Tkind_sm1_rec_log(p_obj, "Exit State1");
+    Tkind_sm1_rec_log(p_obj, "Exit State1\n");
 }
 
 /**
@@ -436,8 +432,7 @@ sm1_exit_state5(Tkind_sm1_t* const p_obj)
 static inline void
 sm1_exit_state2(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State2");
+    Tkind_sm1_rec_log(p_obj, "Exit State2\n");
 }
 
 /**
@@ -448,8 +443,7 @@ static inline void
 sm1_exit_state4(Tkind_sm1_t* const p_obj)
 {
     sm1_exit_region4(p_obj);
-    (void) p_obj;
-    printf("Exit State4");
+    Tkind_sm1_rec_log(p_obj, "Exit State4\n");
 }
 
 /**
@@ -470,8 +464,7 @@ sm1_exit_state6(Tkind_sm1_t* const p_obj)
 static inline void
 sm1_exit_state7(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State7");
+    Tkind_sm1_rec_log(p_obj, "Exit State7\n");
 }
 
 /**
@@ -482,8 +475,7 @@ static inline void
 sm1_exit_state8(Tkind_sm1_t* const p_obj)
 {
     sm1_exit_region6(p_obj);
-    (void) p_obj;
-    printf("Exit State8");
+    Tkind_sm1_rec_log(p_obj, "Exit State8\n");
 }
 
 /**
@@ -493,8 +485,7 @@ sm1_exit_state8(Tkind_sm1_t* const p_obj)
 static inline void
 sm1_exit_state9(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State9");
+    Tkind_sm1_rec_log(p_obj, "Exit State9\n");
 }
 
 /*******************************************************************************
@@ -1885,6 +1876,7 @@ sm1_dispatch_i_state1(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State1 to State7\n");
     sm1_enter_state1(p_obj);
     sm1_enter_state7(p_obj);
     sm1_enter_region2(p_obj);
@@ -1984,6 +1976,7 @@ sm1_dispatch_o_state1(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State1 to Choice1\n");
     sm1_enter_state1(p_obj);
     sm1_enter_choice1(p_obj);
     sm1_enter_region2(p_obj);
@@ -2022,6 +2015,7 @@ sm1_dispatch_b_state2(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state2(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State2 to State4\n");
     sm1_enter_state4(p_obj);
     sm1_enter_region4(p_obj);
 
@@ -2352,11 +2346,13 @@ sm1_enter_choice1(Tkind_sm1_t* const p_obj)
 
     if(p_obj->b_test_condition)
     {
+        Tkind_sm1_rec_log(p_obj, "Choice1 to State8\n");
         sm1_enter_state8(p_obj);
         sm1_enter_region6(p_obj);
     }
     else
     {
+        Tkind_sm1_rec_log(p_obj, "Choice1 to State1\n");
         sm1_enter_region5(p_obj);
     }
     

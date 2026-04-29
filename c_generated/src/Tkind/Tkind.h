@@ -1005,7 +1005,6 @@ extern "C" {
          */
         TKIND_SM1_STATE2,
         /**
-         * Only external transitions are linked to this state
          */
         TKIND_SM1_STATE4,
         /**
@@ -1106,6 +1105,7 @@ extern "C" {
          */
         tkind_sm1_region1_t             region1;
         /**
+         * Only external transitions are linked to this state
          */
         tkind_sm1_region2_t             region2;
         /**
