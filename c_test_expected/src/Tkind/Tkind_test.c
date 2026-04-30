@@ -1029,3 +1029,574 @@ TEST(TkindSm1State2, ReleaseReturnsFalse)
     ctest_logger_given(Tkind_ctest_release_event(&ctest_obj));
 }
 
+/*******************************************************************************
+ *
+ * Test group TkindSm1State3.
+ *
+ ******************************************************************************/
+static void test_enter_state3(void)
+{
+    test_init_logger_buffer();
+    Tkind_ctest_init(&ctest_obj, &test_logger);
+
+    Tkind_ctest_a(&ctest_obj);
+    Tkind_ctest_fetch_event(&ctest_obj);
+    Tkind_ctest_dispatch_event(&ctest_obj);
+    Tkind_ctest_release_event(&ctest_obj);
+}
+
+TEST_GROUP(TkindSm1State3);
+
+TEST_SETUP(TkindSm1State3)
+{
+    p_expected_logger = NULL;
+    test_enter_state3();
+    test_init_logger_buffer();
+}
+
+TEST_TEAR_DOWN(TkindSm1State3)
+{
+
+}
+
+/*================================TEST_CASES==================================*/
+TEST(TkindSm1State3, InitResultsInInitialTransition)
+{
+    ctest_logger_expect(true, "Initial1 to State1\n"
+                              "Enter State1\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_logger_given(Tkind_ctest_init(&ctest_obj, &test_logger));
+}
+
+TEST(TkindSm1State3, AReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_a(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchAReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_a(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchAReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_a(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseAReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_a(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, BReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_b(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchBReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_b(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchBReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_b(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseBReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_b(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, CReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_c(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchCReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_c(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchCReturnsTrue)
+{
+    ctest_logger_expect(true, "State3 to State5\n"
+                              "Enter State5\n");
+    ctest_logger_given(Tkind_ctest_c(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseCReturnsTrue)
+{
+    ctest_logger_expect(true, "State3 to State5\n"
+                              "Enter State5\n");
+    ctest_logger_given(Tkind_ctest_c(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_d(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchDReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_d(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchDReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_d(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseDReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_d(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, EReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_e(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchEReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_e(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchEReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_e(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseEReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_e(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_f(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchFReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_f(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchFReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_f(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseFReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_f(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, GReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_g(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchGReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_g(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchGReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_g(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseGReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_g(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, HReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_h(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchHReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_h(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchHReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_h(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseHReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_h(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, IReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_i(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchIReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_i(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchIReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to State7\n"
+                              "Enter State1\n"
+                              "Enter State7\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_logger_given(Tkind_ctest_i(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseIReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to State7\n"
+                              "Enter State1\n"
+                              "Enter State7\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_logger_given(Tkind_ctest_i(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, JReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_j(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchJReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_j(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchJReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_j(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseJReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_j(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, KReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_k(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchKReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_k(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchKReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_k(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseKReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_k(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, LReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_l(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchLReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_l(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchLReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_l(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, MReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_m(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchMReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_m(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchMReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_m(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseMReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_m(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, NReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_n(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchNReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_n(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchNReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_n(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseNReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_n(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, OReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchOWithFalseChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_obj.sm1.b_test_condition = false;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchOWithFalseChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to Choice1\n"
+                              "Enter State1\n"
+                              "Choice1 to State1\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_obj.sm1.b_test_condition = false;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseOWithFalseChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to Choice1\n"
+                              "Enter State1\n"
+                              "Choice1 to State1\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_obj.sm1.b_test_condition = false;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchOWithTrueChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, NULL);
+    ctest_obj.sm1.b_test_condition = true;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchOWithTrueChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to Choice1\n"
+                              "Enter State1\n"
+                              "Choice1 to State8\n"
+                              "Enter State8\n"
+                              "Enter State9\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_obj.sm1.b_test_condition = true;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseOWithTrueChoice1ReturnsTrue)
+{
+    ctest_logger_expect(true, "Exit State3\n"
+                              "Exit State1\n"
+                              "State1 to Choice1\n"
+                              "Enter State1\n"
+                              "Choice1 to State8\n"
+                              "Enter State8\n"
+                              "Enter State9\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    ctest_obj.sm1.b_test_condition = true;
+    ctest_logger_given(Tkind_ctest_o(&ctest_obj)
+                       && Tkind_ctest_fetch_event(&ctest_obj)
+                       && Tkind_ctest_dispatch_event(&ctest_obj)
+                       && Tkind_ctest_release_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, FetchReturnsFalse)
+{
+    ctest_logger_expect(false, NULL);
+    ctest_logger_given(Tkind_ctest_fetch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, DispatchReturnsFalse)
+{
+    ctest_logger_expect(false, NULL);
+    ctest_logger_given(Tkind_ctest_dispatch_event(&ctest_obj));
+}
+
+TEST(TkindSm1State3, ReleaseReturnsFalse)
+{
+    ctest_logger_expect(false, NULL);
+    ctest_logger_given(Tkind_ctest_release_event(&ctest_obj));
+}
+

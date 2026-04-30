@@ -132,4 +132,73 @@ TEST_GROUP_RUNNER(TkindSm1State2)
     RUN_TEST_CASE(TkindSm1State2, ReleaseReturnsFalse);
 }
 
+TEST_GROUP_RUNNER(TkindSm1State3)
+{
+    RUN_TEST_CASE(TkindSm1State3, InitResultsInInitialTransition);
+    RUN_TEST_CASE(TkindSm1State3, AReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, BReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchBReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchBReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseBReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, CReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchCReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchCReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseCReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchDReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchDReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseDReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, EReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchEReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchEReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseEReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchFReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchFReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseFReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, GReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchGReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchGReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseGReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, HReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchHReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchHReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseHReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, IReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchIReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchIReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseIReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, JReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchJReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchJReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseJReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, KReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchKReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchKReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseKReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, LReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchLReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchLReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, MReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchMReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchMReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseMReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, NReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchNReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchNReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseNReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, OReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseOWithFalseChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchOWithTrueChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, DispatchOWithTrueChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseOWithTrueChoice1ReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State3, FetchReturnsFalse);
+    RUN_TEST_CASE(TkindSm1State3, DispatchReturnsFalse);
+    RUN_TEST_CASE(TkindSm1State3, ReleaseReturnsFalse);
+}
 /*** end of file ***/

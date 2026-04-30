@@ -108,7 +108,7 @@ It is automatically detected by the generator and included as a literal constant
               <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" kind="local" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
                 <effect xmi:type="uml:OpaqueBehavior" xmi:id="_S4rFEOQQEe-pVI6Tkq5fmw" name="c_effect">
                   <language>C</language>
-                  <body>printf(&quot;c event transition fired!&quot;);</body>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;State3 to State5\n&quot;);</body>
                 </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_THN84N25Ee-8CKMu-ENa-A" event="_S0RywN25Ee-8CKMu-ENa-A"/>
               </transition>
@@ -140,13 +140,11 @@ It is automatically detected by the generator and included as a literal constant
                   <subvertex xmi:type="uml:State" xmi:id="_9VifwNw4Ee-clukbqF5Mtw" name="State5">
                     <entry xmi:type="uml:OpaqueBehavior" xmi:id="_4MdkoN3OEe-K46f0PJjDaQ">
                       <language>C</language>
-                      <body>(void) p_obj;
-printf(&quot;Enter State5&quot;);</body>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State5\n&quot;);</body>
                     </entry>
                     <exit xmi:type="uml:OpaqueBehavior" xmi:id="_-tvuEN3TEe-K46f0PJjDaQ">
                       <language>C</language>
-                      <body>(void) p_obj;
-printf(&quot;Exit State5&quot;);</body>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State5\n&quot;);</body>
                     </exit>
                   </subvertex>
                 </region>

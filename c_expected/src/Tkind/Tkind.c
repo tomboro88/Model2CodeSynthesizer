@@ -264,8 +264,7 @@ static inline void
 Tkind_sm1_enter_state5(Tkind_sm1_t* const p_obj)
 {
     p_obj->region3 = TKIND_SM1_STATE5;
-    (void) p_obj;
-    printf("Enter State5");
+    Tkind_sm1_rec_log(p_obj, "Enter State5\n");
 }
 
 /**
@@ -422,8 +421,7 @@ static inline void
 Tkind_sm1_exit_state3(Tkind_sm1_t* const p_obj)
 {
     Tkind_sm1_exit_region3(p_obj);
-    (void) p_obj;
-    printf("Exit State3");
+    Tkind_sm1_rec_log(p_obj, "Exit State3\n");
 }
 
 /**
@@ -2488,7 +2486,7 @@ Tkind_sm1_dispatch_c_state3(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_region3(p_obj);
-    printf("c event transition fired!");
+    Tkind_sm1_rec_log(p_obj, "State3 to State5\n");
     Tkind_sm1_enter_state5(p_obj);
 
     return result;
