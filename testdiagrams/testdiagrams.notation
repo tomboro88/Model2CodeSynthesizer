@@ -587,7 +587,7 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_MhDOYtw-Ee-clukbqF5Mtw" type="Transition_GuardLabel">
         <styles xmi:type="notation:BooleanValueStyle" xmi:id="_VlWnsN3DEe-8CKMu-ENa-A" name="IS_UPDATED_POSITION" booleanValue="true"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_MhDOY9w-Ee-clukbqF5Mtw" x="1" y="-18"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_MhDOY9w-Ee-clukbqF5Mtw" x="95" y="-55"/>
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_MhDOZNw-Ee-clukbqF5Mtw" type="Transition_StereotypeLabel">
         <styles xmi:type="notation:BooleanValueStyle" xmi:id="_Vlz6sN3DEe-8CKMu-ENa-A" name="IS_UPDATED_POSITION" booleanValue="true"/>

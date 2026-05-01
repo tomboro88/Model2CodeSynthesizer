@@ -1,0 +1,122 @@
+/*
+ * @file {{ group_name }}_test.c
+ *
+ * @brief Source code of the {{ group_name }} group test cases.
+ * @author tomboro88
+ * @date   1 may 2026
+ * @copyright (c) 2026 tomboro88. All rights reserved.
+ * @license MIT – see LICENSE file in project root
+ * @project github.com/tomboro88/M2T4Embedded
+ */
+#include "Tkind_test.h"
+
+/*******************************************************************************
+ *
+ * Test group {{ group_name }}.
+ *
+ ******************************************************************************/
+TEST_GROUP({{ group_name }});
+
+void tkind_test_enter_{{state_name}}(void)
+{
+    tkind_test_init_logger_buffer();
+    Tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger);
+
+    /*Tkind_ctest_a(&tkind_ctest_obj);
+    Tkind_ctest_fetch_event(&tkind_ctest_obj);
+    Tkind_ctest_dispatch_event(&tkind_ctest_obj);
+    Tkind_ctest_release_event(&tkind_ctest_obj);*/
+}
+
+TEST_SETUP({{ group_name }})
+{
+    tkind_test_init_logger_buffer();
+    tkind_test_enter_{{state_name}}();
+    tkind_test_init_logger_buffer();
+}
+
+TEST_TEAR_DOWN({{ group_name }})
+{
+
+}
+
+/*================================TEST_CASES==================================*/
+TEST({{ group_name }}, InitResultsInInitialTransition)
+{
+    tkind_ctest_logger_expect(true, "Initial1 to State1\n"
+                              "Enter State1\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n");
+    tkind_ctest_logger_given(Tkind_ctest_init(&tkind_ctest_obj, 
+                                              &tkind_test_logger));
+}
+
+{% for event in events %}
+/* --------------------------------- Event {{ event | upper }} -------------------------------- */
+TEST({{ group_name }}, {{ event | upper }}ReturnsTrue)
+{
+    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj));
+}
+
+TEST({{ group_name }}, Fetch{{ event | upper }}ReturnsTrue)
+{
+    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+                       && Tkind_ctest_fetch_event(&tkind_ctest_obj));
+}
+
+TEST({{ group_name }}, Dispatch{{ event | upper }}ReturnsTrue)
+{
+    tkind_ctest_logger_expect(true, NULL); 
+    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+                       && Tkind_ctest_fetch_event(&tkind_ctest_obj)
+                       && Tkind_ctest_dispatch_event(&tkind_ctest_obj));
+}
+
+TEST({{ group_name }}, Release{{ event | upper }}ReturnsTrue)
+{
+    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+                       && Tkind_ctest_fetch_event(&tkind_ctest_obj)
+                       && Tkind_ctest_dispatch_event(&tkind_ctest_obj)
+                       && Tkind_ctest_release_event(&tkind_ctest_obj));
+}
+
+{% endfor %}
+/* ------------------------------ Queue errors ------------------------------ */
+TEST({{ group_name }}, FetchReturnsFalse)
+{
+    tkind_ctest_logger_expect(false, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_fetch_event(&tkind_ctest_obj));
+}
+
+TEST({{ group_name }}, DispatchReturnsFalse)
+{
+    tkind_ctest_logger_expect(false, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_dispatch_event(&tkind_ctest_obj));
+}
+
+TEST({{ group_name }}, ReleaseReturnsFalse)
+{
+    tkind_ctest_logger_expect(false, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_release_event(&tkind_ctest_obj));
+}
+
+/*==============================TEST_GROUP_RUNNER=============================*/
+
+TEST_GROUP_RUNNER({{ group_name }})
+{
+    RUN_TEST_CASE({{ group_name }}, InitResultsInInitialTransition);
+{% for event in events %}
+    RUN_TEST_CASE({{ group_name }}, {{ event | upper }}ReturnsTrue);
+    RUN_TEST_CASE({{ group_name }}, Fetch{{ event | upper }}ReturnsTrue);
+    RUN_TEST_CASE({{ group_name }}, Dispatch{{ event | upper }}ReturnsTrue);
+    RUN_TEST_CASE({{ group_name }}, Release{{ event | upper }}ReturnsTrue);
+{% endfor %}
+
+    RUN_TEST_CASE({{ group_name }}, FetchReturnsFalse);
+    RUN_TEST_CASE({{ group_name }}, DispatchReturnsFalse);
+    RUN_TEST_CASE({{ group_name }}, ReleaseReturnsFalse);
+}
+

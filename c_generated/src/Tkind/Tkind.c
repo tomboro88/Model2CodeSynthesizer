@@ -286,8 +286,7 @@ static inline void
 sm1_enter_state6(Tkind_sm1_t* const p_obj)
 {
     p_obj->region4 = TKIND_SM1_STATE6;
-    (void) p_obj;
-    printf("Enter State6");
+    Tkind_sm1_rec_log(p_obj, "Enter State6\n");
 }
 
 /**
@@ -451,8 +450,7 @@ sm1_exit_state4(Tkind_sm1_t* const p_obj)
 static inline void
 sm1_exit_state6(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State6");
+    Tkind_sm1_rec_log(p_obj, "Exit State6\n");
 }
 
 /**
@@ -2082,6 +2080,7 @@ sm1_dispatch_f_state4(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state4(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State4 to State6\n");
     sm1_enter_state4(p_obj);
     sm1_enter_state6(p_obj);
 

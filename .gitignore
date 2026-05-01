@@ -2,4 +2,4 @@ tbo.acceleo.psm.uml.gen.c/bin
 *.emtl
 *.class
 /c_generated/Debug/*
-
+/.vscode/

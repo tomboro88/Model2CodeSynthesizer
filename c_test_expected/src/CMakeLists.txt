@@ -8,7 +8,10 @@ target_sources(test_expected
         event_pool/event_pool_test.c
         event_pool/event_pool_test_runner.c
         Tkind/Tkind_test.c
-        Tkind/Tkind_test_runner.c
+        Tkind/TkindSm1ZeroInit_test.c
+        Tkind/TkindSm1State2_test.c
+        Tkind/TkindSm1State3_test.c
+        Tkind/TkindSm1State4_test.c
 )
 
 target_link_libraries(test_expected
