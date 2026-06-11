@@ -17,6 +17,9 @@
 #include <string.h>
 #include <stddef.h>
 
+#define TKIND_CBASE1_TEST_PROP1_DEFAULT (101u)
+#define TKIND_CBASE2_TEST_PROP1_DEFAULT (-3.14f)
+
 /* Common data declarations (extern) */
 extern Tkind_logger_t tkind_test_logger;
 extern Tkind_ctest_t tkind_ctest_obj;
@@ -27,6 +30,8 @@ void tkind_ctest_logger_expect(bool const b_is_result_ok,
                                const char* const p_str);
 void tkind_ctest_logger_given(bool const b_is_result_ok);
 void tkind_test_enter_state3(void);
+void tkind_test_enter_state4(void);
+void tkind_test_enter_state7(void);
 
 #endif // TKIND_TEST_COMMON_H
 

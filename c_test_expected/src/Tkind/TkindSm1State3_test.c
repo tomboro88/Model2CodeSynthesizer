@@ -545,6 +545,7 @@ TEST(TkindSm1State3, DispatchOWithTrueChoice1ReturnsTrue)
                               "Enter State1\n"
                               "Choice1 to State8\n"
                               "Enter State8\n"
+                              "Initial4 to State9\n"
                               "Enter State9\n"
                               "Initial3 to State2\n"
                               "Enter State2\n");
@@ -562,6 +563,7 @@ TEST(TkindSm1State3, ReleaseOWithTrueChoice1ReturnsTrue)
                               "Enter State1\n"
                               "Choice1 to State8\n"
                               "Enter State8\n"
+                              "Initial4 to State9\n"
                               "Enter State9\n"
                               "Initial3 to State2\n"
                               "Enter State2\n");

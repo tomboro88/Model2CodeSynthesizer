@@ -8,12 +8,112 @@ def generate_test_file():
     env = jinja2.Environment(loader=template_loader)
     
     # Definiujemy listę zdarzeń
-    events = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o']
+    events = [
+        {
+            'name': 'a',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'b',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'c',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'd',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'e',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'f',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'g',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'h',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'i',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'j',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'k',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'l',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'm',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'n',
+            'variants': [
+                {'suffix': '', 'setup': None, 'logs': 'NULL'}
+            ]
+        },
+        {
+            'name': 'o',
+            'variants': [
+                {
+                    'suffix': 'WithFalseChoice1', 
+                    'setup': 'tkind_ctest_obj.sm1.b_test_condition = false;', 
+                    'logs': 'NULL'
+                },
+                {
+                    'suffix': 'WithTrueChoice1', 
+                    'setup': 'tkind_ctest_obj.sm1.b_test_condition = true;', 
+                    'logs': 'NULL'
+                }
+            ]
+        }
+    ]
     
     # Dane do szablonu
     data = {
-        'group_name': 'TkindSm1State4',
-        'state_name': 'State4',
+        'group_name': 'TkindSm1State9',
+        'state_name': 'State9',
         'events': events
     }
     

@@ -23,11 +23,9 @@
 
 TEST_GROUP(fifo);
 
-static fifo_t fifo_obj =
-    { };
+static fifo_t fifo_obj = {0};
 
-static fifo_t fifo_obj_copied =
-    { };
+static fifo_t fifo_obj_copied = {0};
 
 static void
 fifo_assert_equal_copy(void)
@@ -499,7 +497,7 @@ TEST(fifo, false_on_enqueue_null)
 
 TEST(fifo, true_on_enqueue_ok)
 {
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         TEST_ASSERT_TRUE(fifo_enqueue(&fifo_obj));
     }
@@ -508,7 +506,7 @@ TEST(fifo, true_on_enqueue_ok)
 
 TEST(fifo, not_empty_after_enqueue)
 {
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         if (fifo_enqueue(&fifo_obj))
         {
@@ -523,7 +521,7 @@ TEST(fifo, not_empty_after_enqueue)
 
 TEST(fifo, full_after_enqueue_all)
 {
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         if (fifo_is_not_full(&fifo_obj))
         {
@@ -540,8 +538,7 @@ TEST(fifo, full_after_enqueue_all)
 
 TEST(fifo, enqueue_increments_tail)
 {
-    int buffer[FIFO_TEST_BUFFER_SIZE + 1] =
-        { };
+    int buffer[FIFO_TEST_BUFFER_SIZE + 1] = {0};
 
     bool b_is_not_full = true;
 
@@ -561,7 +558,7 @@ TEST(fifo, enqueue_increments_tail)
     }
 
     /*Verify the contents of the filled data buffer.*/
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         TEST_ASSERT_EQUAL((i + 1), buffer[i]);
     }
@@ -575,7 +572,7 @@ TEST(fifo, true_on_dequeue_ok)
     {
     }
 
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         TEST_ASSERT_TRUE(fifo_dequeue(&fifo_obj));
     }
@@ -589,7 +586,7 @@ TEST(fifo, dequeue_ok_when_not_empty)
     {
     }
 
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         if (fifo_is_not_empty(&fifo_obj))
         {
@@ -607,8 +604,7 @@ TEST(fifo, dequeue_ok_when_not_empty)
 
 TEST(fifo, dequeue_increments_head)
 {
-    int buffer[FIFO_TEST_BUFFER_SIZE + 1] =
-        { };
+    int buffer[FIFO_TEST_BUFFER_SIZE + 1] = {0};
 
     bool b_is_not_full = true;
 
@@ -627,10 +623,8 @@ TEST(fifo, dequeue_increments_head)
         }
     }
 
-    bool b_is_not_empty = true;
-
     /*Verify the contents of the dequeued data.*/
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE; ++i)
     {
         /*The head index must be captured before calling dequeue.*/
         fifo_size_t head = fifo_obj.head;
@@ -686,7 +680,7 @@ TEST(fifo, check_size_always_ok)
 
     TEST_ASSERT_TRUE(fifo_check_with_size(&fifo_obj, FIFO_TEST_BUFFER_SIZE));
 
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE * 2; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE * 2u; ++i)
     {
         TEST_ASSERT_TRUE(fifo_is_not_full(&fifo_obj));
         TEST_ASSERT_TRUE(fifo_enqueue(&fifo_obj));
@@ -709,7 +703,7 @@ TEST(fifo, check_size_always_ok)
     TEST_ASSERT_FALSE(fifo_is_not_full(&fifo_obj));
     TEST_ASSERT_TRUE(fifo_is_not_empty(&fifo_obj));
 
-    for (int i = 0; i < FIFO_TEST_BUFFER_SIZE * 2; ++i)
+    for (size_t i = 0u; i < FIFO_TEST_BUFFER_SIZE * 2; ++i)
     {
         TEST_ASSERT_TRUE(fifo_dequeue(&fifo_obj));
         TEST_ASSERT_TRUE(fifo_is_not_full(&fifo_obj));
@@ -725,10 +719,9 @@ TEST(fifo, check_size_always_ok)
 
 TEST(fifo, correct_data_in_buffer)
 {
-    int buffer[FIFO_TEST_BUFFER_SIZE + 1] =
-            { };
+    int buffer[FIFO_TEST_BUFFER_SIZE + 1u] = {0};
 
-    for(int i = 0; i < (FIFO_TEST_BUFFER_SIZE); ++i)
+    for(size_t i = 0u; i < (FIFO_TEST_BUFFER_SIZE); ++i)
     {
         /*The tail index must be captured before calling enqueue.*/
         fifo_size_t tail = fifo_obj.tail;
@@ -744,7 +737,7 @@ TEST(fifo, correct_data_in_buffer)
         }
     }
 
-    for(int i = 0; i < (FIFO_TEST_BUFFER_SIZE*2); ++i)
+    for(size_t i = 0u; i < (FIFO_TEST_BUFFER_SIZE*2u); ++i)
     {
         /*The head index must be captured before calling dequeue.*/
         fifo_size_t head = fifo_obj.head;
@@ -771,7 +764,8 @@ TEST(fifo, correct_data_in_buffer)
         }
     }
 
-    for(int i = (FIFO_TEST_BUFFER_SIZE*2); i < (FIFO_TEST_BUFFER_SIZE*3); ++i)
+    for(size_t i = (FIFO_TEST_BUFFER_SIZE*2u);
+            i < (FIFO_TEST_BUFFER_SIZE*3u); ++i)
     {
         /*The head index must be captured before calling dequeue.*/
         fifo_size_t head = fifo_obj.head;

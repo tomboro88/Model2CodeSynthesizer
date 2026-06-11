@@ -204,6 +204,9 @@ Tkind_ctest_fifo_sizes[TKIND_CTEST_EVENT_COUNT] =
 /**
  * @brief Obtains the pointer to the specialized ctest class from the pointer to
  * the cbase2 class.
+ * @details This function is static inline, so that it is available practically
+ * only to the virtual functions for casting Tkind_cbase2_t to the specialized
+ * types.
  * @param [out] pp_ctest The pointer to the location where the
  *                       seeked child pointer should be stored.
  * @param [in] p_cbase2 The pointer to the base class object.
@@ -219,16 +222,11 @@ Tkind_cbase2_try_as_ctest(Tkind_cbase2_t* const p_cbase2,
     /* Check if this is really ctest class object by checking the specialized
          virtual function table which was assigned by ctest class constructor.*/
     if((NULL != pp_ctest) && (NULL != p_cbase2)
-            && (offsetof(Tkind_ctest_t, cbase2) <= (uintptr_t)p_cbase2)
             && (&Tkind_ctest_vtable.cbase2 == p_cbase2->p_vtable))
     {
-        Tkind_ctest_t* p_temp = (Tkind_ctest_t*)((uintptr_t)p_cbase2
-                                             - offsetof(Tkind_ctest_t, cbase2));
-        if(NULL != p_temp)
-        {
-            *pp_ctest = p_temp;
-            b_is_copied = true;
-        }
+        *pp_ctest = (Tkind_ctest_t*)(
+                         (uintptr_t)p_cbase2 - offsetof(Tkind_ctest_t, cbase2));
+        b_is_copied = true;
     }
 
     return b_is_copied;
@@ -373,6 +371,7 @@ static inline void
 Tkind_sm1_enter_region6(Tkind_sm1_t* const p_obj)
 {
     p_obj->region6 = TKIND_SM1_INITIAL4;
+    Tkind_sm1_rec_log(p_obj, "Initial4 to State9\n");
     Tkind_sm1_enter_state9(p_obj);
 }
 
@@ -430,8 +429,7 @@ Tkind_sm1_exit_state3(Tkind_sm1_t* const p_obj)
 static inline void
 Tkind_sm1_exit_state5(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State5");
+    Tkind_sm1_rec_log(p_obj, "Exit State5\n");
 }
 
 /**
@@ -462,8 +460,7 @@ Tkind_sm1_exit_state4(Tkind_sm1_t* const p_obj)
 static inline void
 Tkind_sm1_exit_state6(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State6");
+    Tkind_sm1_rec_log(p_obj, "Exit State6\n");
 }
 
 /**
@@ -473,8 +470,7 @@ Tkind_sm1_exit_state6(Tkind_sm1_t* const p_obj)
 static inline void
 Tkind_sm1_exit_state7(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State7");
+    Tkind_sm1_rec_log(p_obj, "Exit State7\n");
 }
 
 /**
@@ -485,8 +481,7 @@ static inline void
 Tkind_sm1_exit_state8(Tkind_sm1_t* const p_obj)
 {
     Tkind_sm1_exit_region6(p_obj);
-    (void) p_obj;
-    printf("Exit State8");
+    Tkind_sm1_rec_log(p_obj, "Exit State8\n");
 }
 
 /**
@@ -496,8 +491,7 @@ Tkind_sm1_exit_state8(Tkind_sm1_t* const p_obj)
 static inline void
 Tkind_sm1_exit_state9(Tkind_sm1_t* const p_obj)
 {
-    (void) p_obj;
-    printf("Exit State9");
+    Tkind_sm1_rec_log(p_obj, "Exit State9\n");
 }
 
 /*******************************************************************************
@@ -616,85 +610,101 @@ Tkind_ctest_init(Tkind_ctest_t* const p_obj,
 {
     bool b_is_created = false;
 
-    if((NULL != p_obj) && Tkind_cbase1_init(&p_obj->cbase1)
+    if((NULL != p_obj)
+            && Tkind_cbase1_init(&p_obj->cbase1)
             && Tkind_cbase2_init(&p_obj->cbase2))
     {
         Tkind_ctest_init_df(p_obj);
         p_obj->p_logger = p_logger;
         /* First it is necessary to initialize fifo objects for each event
          * separately.*/
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_I].fifo),
+        b_is_created = fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_I].fifo),
                         TKIND_CTEST_I_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_I].p_next_events
                                               = p_obj->event_pool.i_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_O].fifo),
-                        TKIND_CTEST_O_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_O].fifo),
+                             TKIND_CTEST_O_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_O].p_next_events
                                               = p_obj->event_pool.o_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
-                        TKIND_CTEST_A_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
+                             TKIND_CTEST_A_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
                                               = p_obj->event_pool.a_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_B].fifo),
-                        TKIND_CTEST_B_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_B].fifo),
+                             TKIND_CTEST_B_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_B].p_next_events
                                               = p_obj->event_pool.b_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_C].fifo),
-                        TKIND_CTEST_C_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_C].fifo),
+                             TKIND_CTEST_C_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_C].p_next_events
                                               = p_obj->event_pool.c_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_F].fifo),
-                        TKIND_CTEST_F_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_F].fifo),
+                             TKIND_CTEST_F_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_F].p_next_events
                                               = p_obj->event_pool.f_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_E].fifo),
-                        TKIND_CTEST_E_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_E].fifo),
+                             TKIND_CTEST_E_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_E].p_next_events
                                               = p_obj->event_pool.e_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_D].fifo),
-                        TKIND_CTEST_D_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_D].fifo),
+                             TKIND_CTEST_D_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_D].p_next_events
                                               = p_obj->event_pool.d_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_N].fifo),
-                        TKIND_CTEST_N_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_N].fifo),
+                             TKIND_CTEST_N_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_N].p_next_events
                                               = p_obj->event_pool.n_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_H].fifo),
-                        TKIND_CTEST_H_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_H].fifo),
+                             TKIND_CTEST_H_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_H].p_next_events
                                               = p_obj->event_pool.h_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_G].fifo),
-                        TKIND_CTEST_G_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_G].fifo),
+                             TKIND_CTEST_G_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_G].p_next_events
                                               = p_obj->event_pool.g_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_J].fifo),
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_J].fifo),
                         TKIND_CTEST_J_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_J].p_next_events
                                               = p_obj->event_pool.j_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_M].fifo),
-                        TKIND_CTEST_M_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_M].fifo),
+                             TKIND_CTEST_M_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_M].p_next_events
                                               = p_obj->event_pool.m_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
-                        TKIND_CTEST_K_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
+                             TKIND_CTEST_K_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_K].p_next_events
                                               = p_obj->event_pool.k_next_events;
 
-        fifo_initialize((&p_obj->event_pool.fifo_pool[TKIND_CTEST_L].fifo),
-                        TKIND_CTEST_L_CNT, 0u, 0u);
+        b_is_created = b_is_created && fifo_initialize(
+                             (&p_obj->event_pool.fifo_pool[TKIND_CTEST_L].fifo),
+                             TKIND_CTEST_L_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_L].p_next_events
                                               = p_obj->event_pool.l_next_events;
 
@@ -706,10 +716,11 @@ Tkind_ctest_init(Tkind_ctest_t* const p_obj,
 
         /* Then the initialized fifo_pool can be used to initialize the
          * event_pool manager.*/
-        b_is_created = event_pool_initialize(&p_obj->event_pool.manager,
-                                             p_obj->event_pool.fifo_pool,
-                                             Tkind_ctest_fifo_sizes,
-                                             TKIND_CTEST_EVENT_COUNT);
+        b_is_created = b_is_created
+                        && event_pool_initialize(&p_obj->event_pool.manager,
+                                                 p_obj->event_pool.fifo_pool,
+                                                 Tkind_ctest_fifo_sizes,
+                                                 TKIND_CTEST_EVENT_COUNT);
         /* Initialize the state machine. */
         Tkind_ctest_invoke_sm1(p_obj);
     }
@@ -2601,6 +2612,7 @@ Tkind_sm1_dispatch_d_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_region3(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State3\n");
     Tkind_sm1_enter_region3(p_obj);
 
     return result;
@@ -2618,6 +2630,7 @@ Tkind_sm1_dispatch_e_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_region2(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State1\n");
     Tkind_sm1_enter_region2(p_obj);
 
     return result;
@@ -2635,6 +2648,7 @@ Tkind_sm1_dispatch_n_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state3(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State6\n");
     Tkind_sm1_enter_state4(p_obj);
     Tkind_sm1_enter_state6(p_obj);
 
@@ -2653,6 +2667,7 @@ Tkind_sm1_dispatch_g_state6(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state4(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State6 to State4\n");
     Tkind_sm1_enter_state4(p_obj);
     Tkind_sm1_enter_region4(p_obj);
 
@@ -2671,6 +2686,7 @@ Tkind_sm1_dispatch_h_state6(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State6 to State1\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_region2(p_obj);
     Tkind_sm1_enter_region5(p_obj);
@@ -2690,6 +2706,7 @@ Tkind_sm1_dispatch_j_state7(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state7(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State7 to State8\n");
     Tkind_sm1_enter_state8(p_obj);
     Tkind_sm1_enter_region6(p_obj);
 
@@ -2740,6 +2757,7 @@ Tkind_sm1_dispatch_m_state8(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State8 to State1\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_region2(p_obj);
     Tkind_sm1_enter_region5(p_obj);
@@ -2759,6 +2777,7 @@ Tkind_sm1_dispatch_k_state9(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state8(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State9 to State8\n");
     Tkind_sm1_enter_state8(p_obj);
     Tkind_sm1_enter_region6(p_obj);
 
@@ -2777,6 +2796,7 @@ Tkind_sm1_dispatch_l_state9(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     Tkind_sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State9 to State1\n");
     Tkind_sm1_enter_state1(p_obj);
     Tkind_sm1_enter_region2(p_obj);
     Tkind_sm1_enter_region5(p_obj);

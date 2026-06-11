@@ -9,6 +9,11 @@
  * @project github.com/tomboro88/M2T4Embedded
  */
 
+/*******************************************************************************
+ *
+ * Include statements.
+ *
+ ******************************************************************************/
 #include <unity_fixture.h>
 #include <Tkind.h>
 #include <string.h>
@@ -16,15 +21,27 @@
 
 /*******************************************************************************
  *
- * Test helper code
+ * Data type, constant, and macro definitions.
  *
  ******************************************************************************/
-#define TEST_LOGGER_BUFFER_SIZE 256u
+#define TEST_LOGGER_BUFFER_SIZE 1024u
 #define TEST_LOGGER_BUFFER_DATA_POS sizeof(forbidden_pattern)
 #define TEST_LOGGER_BUFFER_GUARD2_POS \
                          (TEST_LOGGER_BUFFER_SIZE + TEST_LOGGER_BUFFER_DATA_POS)
 #define TEST_LOGGER_BUFFER_FILL '\xA5'
-
+/*******************************************************************************
+ *
+ * Private function prototypes.
+ *
+ ******************************************************************************/
+static void test_capture_logger(Tkind_logger_t* const p_obj,
+                                                       const char* const p_str);
+static void test_assert_logger(void);
+/*******************************************************************************
+ *
+ * Static data declarations.
+ *
+ ******************************************************************************/
 static const char forbidden_pattern[] =
                                        {'\xDE', '\xAD', '\xBE', '\xEF', '\x00'};
 
@@ -46,8 +63,6 @@ static const char* p_expected_logger = NULL;
  */
 static bool b_expected_result = false;
 
-static void test_capture_logger(Tkind_logger_t* const p_obj,
-                                                       const char* const p_str);
 /**
  * @brief The virtual table for our test logger object.
  */
@@ -65,6 +80,17 @@ Tkind_logger_t tkind_test_logger = {.p_vtable = &tkind_test_logger_funcs};
  */
 Tkind_ctest_t tkind_ctest_obj = {0};
 
+/*******************************************************************************
+ *
+ * Inline functions.
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * Public function bodies.
+ *
+ ******************************************************************************/
 /**
  * @brief Initializes the local buffer before capturing state machine logs.
  */
@@ -82,6 +108,80 @@ tkind_test_init_logger_buffer(void)
     p_expected_logger = NULL;
 }
 
+void
+tkind_ctest_logger_expect(bool const b_is_result_ok, const char* const p_str)
+{
+    p_expected_logger = p_str;
+    b_expected_result = b_is_result_ok;
+}
+
+void
+tkind_ctest_logger_given(bool const b_is_result_ok)
+{
+    if(b_expected_result)
+    {
+        TEST_ASSERT_TRUE(b_is_result_ok);
+    }
+    else
+    {
+        TEST_ASSERT_FALSE(b_is_result_ok);
+    }
+
+    test_assert_logger();
+}
+/*******************************************************************************
+ *
+ * Test group TkindLogger
+ *
+ ******************************************************************************/
+
+TEST_GROUP(TkindLogger);
+
+TEST_SETUP(TkindLogger)
+{
+    tkind_test_init_logger_buffer();
+}
+
+TEST_TEAR_DOWN(TkindLogger)
+{
+
+}
+
+/*================================TEST_CASES==================================*/
+TEST(TkindLogger, record_empty_string)
+{
+    tkind_ctest_logger_expect(true, "");
+    Tkind_logger_record(&tkind_test_logger, "");
+    tkind_ctest_logger_given(true);
+}
+
+TEST(TkindLogger, record_nonempty_string)
+{
+    tkind_ctest_logger_expect(true, "abc");
+    Tkind_logger_record(&tkind_test_logger, "abc");
+    tkind_ctest_logger_given(true);
+}
+
+TEST(TkindLogger, record_multiple_strings)
+{
+    tkind_ctest_logger_expect(true, "abcdefghi");
+    Tkind_logger_record(&tkind_test_logger, "abc");
+    Tkind_logger_record(&tkind_test_logger, "def");
+    Tkind_logger_record(&tkind_test_logger, "ghi");
+    tkind_ctest_logger_given(true);
+}
+
+TEST_GROUP_RUNNER(TkindLogger)
+{
+    RUN_TEST_CASE(TkindLogger, record_empty_string);
+    RUN_TEST_CASE(TkindLogger, record_nonempty_string);
+    RUN_TEST_CASE(TkindLogger, record_multiple_strings);
+}
+/*******************************************************************************
+ *
+ * Private function bodies.
+ *
+ ******************************************************************************/
 /**
  * @brief The function used to capture the logs from the tested state machines.
  * @param p_obj The pointer to the calling logger object
@@ -135,76 +235,6 @@ test_assert_logger(void)
     TEST_ASSERT_EQUAL_MEMORY(forbidden_pattern,
                              &logger_buffer[TEST_LOGGER_BUFFER_GUARD2_POS],
                                                      sizeof(forbidden_pattern));
-}
-
-void
-tkind_ctest_logger_expect(bool const b_is_result_ok, const char* const p_str)
-{
-    p_expected_logger = p_str;
-    b_expected_result = b_is_result_ok;
-}
-
-void
-tkind_ctest_logger_given(bool const b_is_result_ok)
-{
-    if(b_expected_result)
-    {
-        TEST_ASSERT_TRUE(b_is_result_ok);
-    }
-    else
-    {
-        TEST_ASSERT_FALSE(b_is_result_ok);
-    }
-
-    test_assert_logger();
-}
-/*******************************************************************************
- *
- * Test group TkindLogger.
- *
- ******************************************************************************/
-
-TEST_GROUP(TkindLogger);
-
-TEST_SETUP(TkindLogger)
-{
-    tkind_test_init_logger_buffer();
-}
-
-TEST_TEAR_DOWN(TkindLogger)
-{
-
-}
-
-/*================================TEST_CASES==================================*/
-TEST(TkindLogger, record_empty_string)
-{
-    tkind_ctest_logger_expect(true, "");
-    Tkind_logger_record(&tkind_test_logger, "");
-    tkind_ctest_logger_given(true);
-}
-
-TEST(TkindLogger, record_nonempty_string)
-{
-    tkind_ctest_logger_expect(true, "abc");
-    Tkind_logger_record(&tkind_test_logger, "abc");
-    tkind_ctest_logger_given(true);
-}
-
-TEST(TkindLogger, record_multiple_strings)
-{
-    tkind_ctest_logger_expect(true, "abcdefghi");
-    Tkind_logger_record(&tkind_test_logger, "abc");
-    Tkind_logger_record(&tkind_test_logger, "def");
-    Tkind_logger_record(&tkind_test_logger, "ghi");
-    tkind_ctest_logger_given(true);
-}
-
-TEST_GROUP_RUNNER(TkindLogger)
-{
-    RUN_TEST_CASE(TkindLogger, record_empty_string);
-    RUN_TEST_CASE(TkindLogger, record_nonempty_string);
-    RUN_TEST_CASE(TkindLogger, record_multiple_strings);
 }
 
 /*** end of file ***/

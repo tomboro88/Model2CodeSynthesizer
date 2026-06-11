@@ -17,7 +17,7 @@
  ******************************************************************************/
 TEST_GROUP({{ group_name }});
 
-void tkind_test_enter_{{state_name}}(void)
+void tkind_test_enter_{{state_name | lower}}(void)
 {
     tkind_test_init_logger_buffer();
     Tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger);
@@ -31,7 +31,7 @@ void tkind_test_enter_{{state_name}}(void)
 TEST_SETUP({{ group_name }})
 {
     tkind_test_init_logger_buffer();
-    tkind_test_enter_{{state_name}}();
+    tkind_test_enter_{{state_name | lower}}();
     tkind_test_init_logger_buffer();
 }
 
@@ -50,40 +50,48 @@ TEST({{ group_name }}, InitResultsInInitialTransition)
     tkind_ctest_logger_given(Tkind_ctest_init(&tkind_ctest_obj, 
                                               &tkind_test_logger));
 }
-
 {% for event in events %}
-/* --------------------------------- Event {{ event | upper }} -------------------------------- */
-TEST({{ group_name }}, {{ event | upper }}ReturnsTrue)
+/* --------------------------------- Event {{ event.name | upper }} -------------------------------- */
+TEST({{ group_name }}, {{ event.name | upper }}ReturnsTrue)
 {
     tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj));
+    tkind_ctest_logger_given(Tkind_ctest_{{ event.name }}(&tkind_ctest_obj));
 }
-
-TEST({{ group_name }}, Fetch{{ event | upper }}ReturnsTrue)
+{% for var in event.variants %}
+TEST({{ group_name }}, Fetch{{ event.name | upper }}{{ var.suffix }}ReturnsTrue)
 {
-    tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+    tkind_ctest_logger_expect(true, {{ var.logs }});
+    {%- if var.setup %}
+    {{ var.setup }}
+    {%- endif %}
+    tkind_ctest_logger_given(Tkind_ctest_{{ event.name }}(&tkind_ctest_obj)
                        && Tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
-TEST({{ group_name }}, Dispatch{{ event | upper }}ReturnsTrue)
+TEST({{ group_name }}, Dispatch{{ event.name | upper }}{{ var.suffix }}ReturnsTrue)
 {
-    tkind_ctest_logger_expect(true, NULL); 
-    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+    tkind_ctest_logger_expect(true, {{ var.logs }}); 
+    {%- if var.setup %}
+    {{ var.setup }}
+    {%- endif %}
+    tkind_ctest_logger_given(Tkind_ctest_{{ event.name }}(&tkind_ctest_obj)
                        && Tkind_ctest_fetch_event(&tkind_ctest_obj)
                        && Tkind_ctest_dispatch_event(&tkind_ctest_obj));
 }
 
-TEST({{ group_name }}, Release{{ event | upper }}ReturnsTrue)
+TEST({{ group_name }}, Release{{ event.name | upper }}{{ var.suffix }}ReturnsTrue)
 {
-    tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_given(Tkind_ctest_{{ event }}(&tkind_ctest_obj)
+    tkind_ctest_logger_expect(true, {{ var.logs }});
+    {%- if var.setup %}
+    {{ var.setup }}
+    {%- endif %}
+    tkind_ctest_logger_given(Tkind_ctest_{{ event.name }}(&tkind_ctest_obj)
                        && Tkind_ctest_fetch_event(&tkind_ctest_obj)
                        && Tkind_ctest_dispatch_event(&tkind_ctest_obj)
                        && Tkind_ctest_release_event(&tkind_ctest_obj));
 }
-
 {% endfor %}
+{%- endfor %}
 /* ------------------------------ Queue errors ------------------------------ */
 TEST({{ group_name }}, FetchReturnsFalse)
 {
@@ -109,12 +117,13 @@ TEST_GROUP_RUNNER({{ group_name }})
 {
     RUN_TEST_CASE({{ group_name }}, InitResultsInInitialTransition);
 {% for event in events %}
-    RUN_TEST_CASE({{ group_name }}, {{ event | upper }}ReturnsTrue);
-    RUN_TEST_CASE({{ group_name }}, Fetch{{ event | upper }}ReturnsTrue);
-    RUN_TEST_CASE({{ group_name }}, Dispatch{{ event | upper }}ReturnsTrue);
-    RUN_TEST_CASE({{ group_name }}, Release{{ event | upper }}ReturnsTrue);
-{% endfor %}
-
+    RUN_TEST_CASE({{ group_name }}, {{ event.name | upper }}ReturnsTrue);
+    {% for var in event.variants -%}
+    RUN_TEST_CASE({{ group_name }}, Fetch{{ event.name | upper }}{{ var.suffix }}ReturnsTrue);
+    RUN_TEST_CASE({{ group_name }}, Dispatch{{ event.name | upper }}{{ var.suffix }}ReturnsTrue);
+    RUN_TEST_CASE({{ group_name }}, Release{{ event.name | upper }}{{ var.suffix }}ReturnsTrue);
+    {% endfor %}
+{%- endfor %}
     RUN_TEST_CASE({{ group_name }}, FetchReturnsFalse);
     RUN_TEST_CASE({{ group_name }}, DispatchReturnsFalse);
     RUN_TEST_CASE({{ group_name }}, ReleaseReturnsFalse);

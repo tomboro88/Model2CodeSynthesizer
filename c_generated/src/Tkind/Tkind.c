@@ -362,6 +362,7 @@ static inline void
 sm1_enter_region6(Tkind_sm1_t* const p_obj)
 {
     p_obj->region6 = TKIND_SM1_INITIAL4;
+    Tkind_sm1_rec_log(p_obj, "Initial4 to State9\n");
     sm1_enter_state9(p_obj);
 }
 
@@ -2029,8 +2030,9 @@ sm1_dispatch_c_state3(Tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = CHANGEDSTATE;
 
-    sm1_exit_region3(p_obj);
+    sm1_exit_state3(p_obj);
     Tkind_sm1_rec_log(p_obj, "State3 to State5\n");
+    sm1_enter_state3(p_obj);
     sm1_enter_state5(p_obj);
 
     return result;
@@ -2147,6 +2149,7 @@ sm1_dispatch_d_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_region3(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State3\n");
     sm1_enter_region3(p_obj);
 
     return result;
@@ -2164,6 +2167,7 @@ sm1_dispatch_e_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_region2(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State1\n");
     sm1_enter_region2(p_obj);
 
     return result;
@@ -2181,6 +2185,7 @@ sm1_dispatch_n_state5(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state3(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State5 to State6\n");
     sm1_enter_state4(p_obj);
     sm1_enter_state6(p_obj);
 
@@ -2199,6 +2204,7 @@ sm1_dispatch_g_state6(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state4(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State6 to State4\n");
     sm1_enter_state4(p_obj);
     sm1_enter_region4(p_obj);
 
@@ -2217,6 +2223,7 @@ sm1_dispatch_h_state6(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State6 to State1\n");
     sm1_enter_state1(p_obj);
     sm1_enter_region2(p_obj);
     sm1_enter_region5(p_obj);
@@ -2236,6 +2243,7 @@ sm1_dispatch_j_state7(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state7(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State7 to State8\n");
     sm1_enter_state8(p_obj);
     sm1_enter_region6(p_obj);
 
@@ -2286,6 +2294,7 @@ sm1_dispatch_m_state8(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State8 to State1\n");
     sm1_enter_state1(p_obj);
     sm1_enter_region2(p_obj);
     sm1_enter_region5(p_obj);
@@ -2305,6 +2314,7 @@ sm1_dispatch_k_state9(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state8(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State9 to State8\n");
     sm1_enter_state8(p_obj);
     sm1_enter_region6(p_obj);
 
@@ -2323,6 +2333,7 @@ sm1_dispatch_l_state9(Tkind_sm1_t* const p_obj)
     sm_event_status_t result = CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
+    Tkind_sm1_rec_log(p_obj, "State9 to State1\n");
     sm1_enter_state1(p_obj);
     sm1_enter_region2(p_obj);
     sm1_enter_region5(p_obj);

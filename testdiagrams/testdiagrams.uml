@@ -105,7 +105,7 @@ It is automatically detected by the generator and included as a literal constant
                 </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_PJJaQN24Ee-8CKMu-ENa-A" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
               </transition>
-              <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" kind="local" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
+              <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
                 <effect xmi:type="uml:OpaqueBehavior" xmi:id="_S4rFEOQQEe-pVI6Tkq5fmw" name="c_effect">
                   <language>C</language>
                   <body>Tkind_sm1_rec_log(p_obj, &quot;State3 to State5\n&quot;);</body>
@@ -133,12 +133,24 @@ It is automatically detected by the generator and included as a literal constant
                     <body>This transition needs Region3 (not State3) exit, and then State5 entry</body>
                   </ownedComment>
                   <transition xmi:type="uml:Transition" xmi:id="_3KcSoNw8Ee-clukbqF5Mtw" kind="local" source="_9VifwNw4Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_4zAfoEo1EfGaK54aq4VJyA">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State1\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_2clvAN25Ee-8CKMu-ENa-A" event="_2COHMN25Ee-8CKMu-ENa-A"/>
                   </transition>
                   <transition xmi:type="uml:Transition" xmi:id="_CE_fMNw-Ee-clukbqF5Mtw" kind="local" source="_9VifwNw4Ee-clukbqF5Mtw" target="_y0qiANw4Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_DNrkMEo1EfGaK54aq4VJyA">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State3\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_sNCx0N25Ee-8CKMu-ENa-A" event="_r_GccN25Ee-8CKMu-ENa-A"/>
                   </transition>
                   <transition xmi:type="uml:Transition" xmi:id="_8nepIOAYEe-Dn89-xPPa6w" source="_9VifwNw4Ee-clukbqF5Mtw" target="_HMPiVNw9Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_K2vf8Eo4EfGaK54aq4VJyA">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State6\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_C0dIwOAZEe-Dn89-xPPa6w" event="_Cf5OAOAZEe-Dn89-xPPa6w"/>
                   </transition>
                   <subvertex xmi:type="uml:State" xmi:id="_9VifwNw4Ee-clukbqF5Mtw" name="State5">
@@ -175,9 +187,17 @@ It is automatically detected by the generator and included as a literal constant
                 </exit>
                 <region xmi:type="uml:Region" xmi:id="_HMO7QNw9Ee-clukbqF5Mtw" name="Region4">
                   <transition xmi:type="uml:Transition" xmi:id="_LWi_kNw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_mqb9kEsuEfGsnfpIT_qm-w">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State6 to State1\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_X1szUN27Ee-8CKMu-ENa-A" event="_XcYUYN27Ee-8CKMu-ENa-A"/>
                   </transition>
                   <transition xmi:type="uml:Transition" xmi:id="__P2eENw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_R9-ngEssEfGsnfpIT_qm-w">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State6 to State4\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_P4_bcN27Ee-8CKMu-ENa-A" event="_PTHuQN27Ee-8CKMu-ENa-A"/>
                   </transition>
                   <subvertex xmi:type="uml:State" xmi:id="_HMPiVNw9Ee-clukbqF5Mtw" name="State6">
@@ -198,9 +218,17 @@ It is automatically detected by the generator and included as a literal constant
                 <body>This region has no initial transition and allows to verify the correctness of transition sequences in this case</body>
               </ownedComment>
               <transition xmi:type="uml:Transition" xmi:id="_XqPzkNxCEe-clukbqF5Mtw" source="_MQR5Ydw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_YMlYcE2VEfGdEYrLSN6WNw">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;State7 to State8\n&quot;);</body>
+                </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_HID74N28Ee-8CKMu-ENa-A" name="j" event="_ETBBYN28Ee-8CKMu-ENa-A"/>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_amWYUNxCEe-clukbqF5Mtw" source="_N0T38Nw8Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_8Ynw4E8WEfGpr7uMeamuig">
+                  <language>C</language>
+                  <body>Tkind_sm1_rec_log(p_obj, &quot;State8 to State1\n&quot;);</body>
+                </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_iuIgAN28Ee-8CKMu-ENa-A" event="_iePp4N28Ee-8CKMu-ENa-A"/>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_31OuAPh1Ee-9W4mcsGdJGQ" guard="_s8gbgPh2Ee-9W4mcsGdJGQ" source="_vz5U0Ph1Ee-9W4mcsGdJGQ" target="_N0T38Nw8Ee-clukbqF5Mtw">
@@ -245,12 +273,25 @@ It is automatically detected by the generator and included as a literal constant
                 </exit>
                 <region xmi:type="uml:Region" xmi:id="_PLqscNw8Ee-clukbqF5Mtw" name="Region6">
                   <transition xmi:type="uml:Transition" xmi:id="_cqmvENxCEe-clukbqF5Mtw" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_uBUUIE8WEfGpr7uMeamuig">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State9 to State8\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_RHL3cN28Ee-8CKMu-ENa-A" event="_P8nhwN28Ee-8CKMu-ENa-A"/>
                   </transition>
                   <transition xmi:type="uml:Transition" xmi:id="_gWUL0NxCEe-clukbqF5Mtw" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_1JOyAE8WEfGpr7uMeamuig">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;State9 to State1\n&quot;);</body>
+                    </effect>
                     <trigger xmi:type="uml:Trigger" xmi:id="_YNiPEN28Ee-8CKMu-ENa-A" event="_X-bcEN28Ee-8CKMu-ENa-A"/>
                   </transition>
-                  <transition xmi:type="uml:Transition" xmi:id="__noSoNxCEe-clukbqF5Mtw" source="_-JSFUNxCEe-clukbqF5Mtw" target="_PLtIsNw8Ee-clukbqF5Mtw"/>
+                  <transition xmi:type="uml:Transition" xmi:id="__noSoNxCEe-clukbqF5Mtw" source="_-JSFUNxCEe-clukbqF5Mtw" target="_PLtIsNw8Ee-clukbqF5Mtw">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_K8o5cEsxEfGsnfpIT_qm-w">
+                      <language>C</language>
+                      <body>Tkind_sm1_rec_log(p_obj, &quot;Initial4 to State9\n&quot;);</body>
+                    </effect>
+                  </transition>
                   <subvertex xmi:type="uml:State" xmi:id="_PLtIsNw8Ee-clukbqF5Mtw" name="State9">
                     <entry xmi:type="uml:OpaqueBehavior" xmi:id="_5USEIN3VEe-K46f0PJjDaQ">
                       <language>C</language>

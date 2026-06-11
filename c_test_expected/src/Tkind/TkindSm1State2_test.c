@@ -10,6 +10,21 @@
  */
 #include "Tkind_test.h"
 
+#define TKIND_CTEST_EVENT_COUNT_SUM  (TKIND_CTEST_I_CNT\
+                                      + TKIND_CTEST_O_CNT\
+                                      + TKIND_CTEST_A_CNT\
+                                      + TKIND_CTEST_B_CNT\
+                                      + TKIND_CTEST_C_CNT\
+                                      + TKIND_CTEST_F_CNT\
+                                      + TKIND_CTEST_E_CNT\
+                                      + TKIND_CTEST_D_CNT\
+                                      + TKIND_CTEST_N_CNT\
+                                      + TKIND_CTEST_H_CNT\
+                                      + TKIND_CTEST_G_CNT\
+                                      + TKIND_CTEST_J_CNT\
+                                      + TKIND_CTEST_M_CNT\
+                                      + TKIND_CTEST_K_CNT\
+                                      + TKIND_CTEST_L_CNT)
 
 /*******************************************************************************
  *
@@ -36,7 +51,114 @@ TEST(TkindSm1State2, InitResultsInInitialTransition)
                               "Enter State1\n"
                               "Initial3 to State2\n"
                               "Enter State2\n");
-    tkind_ctest_logger_given(Tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger));
+    tkind_ctest_logger_given(Tkind_ctest_init(&tkind_ctest_obj,
+                             &tkind_test_logger));
+}
+
+TEST(TkindSm1State2, enqueue_dequeue_full)
+{
+    for(int k = 0; k<10; ++k)
+    {
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_I_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_i(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_i(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_O_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_o(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_o(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_A_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_a(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_a(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_B_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_b(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_b(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_C_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_c(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_c(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_F_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_f(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_f(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_E_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_e(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_e(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_D_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_d(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_d(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_N_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_n(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_n(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_H_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_h(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_h(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_G_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_g(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_g(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_J_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_j(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_j(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_M_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_m(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_m(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_K_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_k(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_k(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j < TKIND_CTEST_L_CNT; ++j)
+        {
+            TEST_ASSERT_TRUE(Tkind_ctest_l(&tkind_ctest_obj));
+        }
+        TEST_ASSERT_FALSE(Tkind_ctest_l(&tkind_ctest_obj));
+
+        for(fifo_size_t j = 0u; j<TKIND_CTEST_EVENT_COUNT_SUM; ++j)
+        {
+            tkind_test_init_logger_buffer();
+            TEST_ASSERT_TRUE(Tkind_ctest_fetch_event(&tkind_ctest_obj)
+                            && Tkind_ctest_dispatch_event(&tkind_ctest_obj)
+                            && Tkind_ctest_release_event(&tkind_ctest_obj));
+        }
+
+        TEST_ASSERT_FALSE(Tkind_ctest_fetch_event(&tkind_ctest_obj));
+    }
 }
 
 TEST(TkindSm1State2, AReturnsTrue)
@@ -49,6 +171,14 @@ TEST(TkindSm1State2, FetchAReturnsTrue)
 {
     tkind_ctest_logger_expect(true, NULL);
     tkind_ctest_logger_given(Tkind_ctest_a(&tkind_ctest_obj)
+                       && Tkind_ctest_fetch_event(&tkind_ctest_obj));
+}
+
+TEST(TkindSm1State2, DoubleFetchReturnsTrue)
+{
+    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_given(Tkind_ctest_a(&tkind_ctest_obj)
+                       && Tkind_ctest_fetch_event(&tkind_ctest_obj)
                        && Tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
@@ -540,6 +670,7 @@ TEST(TkindSm1State2, DispatchOWithTrueChoice1ReturnsTrue)
                               "Enter State1\n"
                               "Choice1 to State8\n"
                               "Enter State8\n"
+                              "Initial4 to State9\n"
                               "Enter State9\n"
                               "Initial3 to State2\n"
                               "Enter State2\n");
@@ -557,6 +688,7 @@ TEST(TkindSm1State2, ReleaseOWithTrueChoice1ReturnsTrue)
                               "Enter State1\n"
                               "Choice1 to State8\n"
                               "Enter State8\n"
+                              "Initial4 to State9\n"
                               "Enter State9\n"
                               "Initial3 to State2\n"
                               "Enter State2\n");
@@ -590,8 +722,11 @@ TEST_GROUP_RUNNER(TkindSm1State2)
 {
     RUN_TEST_CASE(TkindSm1State2, InitResultsInInitialTransition);
 
+    RUN_TEST_CASE(TkindSm1State2, enqueue_dequeue_full);
+
     RUN_TEST_CASE(TkindSm1State2, AReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, FetchAReturnsTrue);
+    RUN_TEST_CASE(TkindSm1State2, DoubleFetchReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, DispatchAReturnsTrue);
     RUN_TEST_CASE(TkindSm1State2, ReleaseAReturnsTrue);
 

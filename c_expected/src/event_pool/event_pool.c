@@ -78,10 +78,11 @@ event_pool_initialize(event_pool_t* const p_obj,
 
         for(event_pool_size_t i = 0u; i< fifo_count; ++i)
         {
-            b_are_sizes_ok &= ((NULL != p_queues[i].p_next_events)
+            b_are_sizes_ok = b_are_sizes_ok
+                              && (NULL != p_queues[i].p_next_events)
                               && (!fifo_is_not_empty(&p_queues[i].fifo))
                               && fifo_check_with_size((&p_queues[i].fifo),
-                                                   p_sizes[i]));
+                                                   p_sizes[i]);
         }
 
         if(b_are_sizes_ok)
