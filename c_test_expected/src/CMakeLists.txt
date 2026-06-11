@@ -19,6 +19,7 @@ target_sources(test_expected
         Tkind/TkindSm1State6_test.c
         Tkind/TkindSm1State7_test.c
         Tkind/TkindSm1State9_test.c
+        TJunction/TJunction_test.c
 )
 
 target_link_libraries(test_expected
@@ -27,6 +28,7 @@ target_link_libraries(test_expected
         fifo
         event_pool
         Tkind
+        TJunction
 )
 
 target_link_libraries(test_expected
