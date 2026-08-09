@@ -204,9 +204,11 @@
 [**
  * @brief The template for doxygen documentation of a source file. 
  */]
-[template public doxygen_source_doc(aBrief: String)
+[template public doxygen_source_doc(aBrief: String, line_width : Integer)
                              post(doxygen_block())]
 [doxygen_file('').doxygen_line_prefix()/]
 [doxygen_line_prefix('')/]
-[aBrief.doxygen_brief().doxygen_line_prefix()/]
+[aBrief.doxygen_brief().doxygen_line_prefix().doxygen_newlines('')
+           .doxygen_split_long_lines(line_width,'')/]
+
 [/template]

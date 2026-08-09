@@ -249,6 +249,9 @@ endif/]
  * and replaces their names with names of appropriate c language types.
  */]
 [query private uml_c_get_type_name(aType: Type) : String = 
+if aType.oclIsUndefined() or aType.name.oclIsUndefined() then
+    '#error'
+else
  let n : String = aType.name.toLower() in
  let predefined : Set(String) = uml_c_get_predefined_base_types() in
  if predefined->includes(n) then
@@ -264,7 +267,8 @@ endif/]
         uml_c_get_element_full_name(aType) + uml_c_get_type_suffix(aType)
         endif
     endif
- endif 
+ endif
+endif 
  /]
 
 [query public uml_c_is_stdint_required(cList:OrderedSet(Classifier)) : Boolean
@@ -414,6 +418,10 @@ endif/]
     request_visible_dependencies(aPackage, uml_c_source_visibility())
     ->removeAll(Set{aPackage})/]
 
+[query public uml_c_get_standard_libraries(traceabilityContext:OclAny):
+ Set(String) = Set{'stdio', 'stdlib', 'string', 'stddef', 'stdint', 'stdbool' 
+}/]
+
 [query public uml_c_header_visibility(traceabilityContext : OclAny) : 
       Set(VisibilityKind) = 
       Set{VisibilityKind::public, VisibilityKind::protected, 
@@ -518,8 +526,8 @@ endif/]
 
 [query public uml_c_is_main_operation(anOperation : Operation) : Boolean  = 
     anOperation.name.toLower() = 'main' 
-     and anOperation.featuringClassifier.getAppliedStereotypes()
-         .name->includes('Focus')/]
+     and anOperation.owner.getAppliedStereotypes()
+         .name->includes('Executable')/]
 
 [query public uml_c_operations_need_declaration(
           aClassifier : Classifier, vis : Set(VisibilityKind)) : 
@@ -622,6 +630,11 @@ endif/]
   aClassifier.request_needs_vtable() and 
                           not aClassifier.oclIsKindOf(Interface)/]
 
+[query public uml_c_get_package_h_qualified_path(aPackage : Package) : String = 
+     if uml_c_get_standard_libraries()->includes(aPackage.name) 
+     then '' else get_package_qualified_folder(aPackage) endif 
+     + get_package_h_filename(aPackage)/]
+
 [template public uml_c_get_literal_string(ls:LiteralSpecification)] 
 [let lun : LiteralUnlimitedNatural = ls]
 [lun.value/]u[elselet lr:LiteralReal = ls]
@@ -667,19 +680,17 @@ endif/]
 #[utils_indent(indentation)/]include <[aFile/]>
 [/template]
 
-[template public uml_c_include_dependencies(external_packages:Set(Package),
-                                            sub_packages:Set(Package),
-                                            indentation : Integer)]
-[if (external_packages.name->includes('AnsiCLibrary'))]
-[uml_c_include_global_file('stdint.h', indentation)/]
-[/if]
-[for (s : String | external_packages->reject(
-   p:Package|p.name = 'AnsiCLibrary'
-                )->removeAll(sub_packages).get_package_h_qualified_path())]
-[uml_c_include_global_file(s, indentation)/]
-[/for]
+[template public uml_c_include_dependencies(
+                                          external_packages:OrderedSet(Package),
+                                          sub_packages:OrderedSet(Package),
+                                          indentation : Integer)]
 [for (s : String | sub_packages.get_package_h_path())]
 [uml_c_include_local_file(s, indentation)/]
+[/for]
+[for (s : String | external_packages
+                  ->removeAll(sub_packages)
+                    .uml_c_get_package_h_qualified_path())]
+[uml_c_include_global_file(s, indentation)/]
 [/for]
 [/template]
 
@@ -974,7 +985,7 @@ post(toUpper())][aVertex.eContainer(Package).name + '_'
 [template public uml_c_get_operation_full_name(anOperation : Operation)
 ][(if anOperation.uml_c_is_main_operation() then
   '' else anOperation.eContainer(Package).name + '_' 
-  + anOperation.featuringClassifier.name 
+  + anOperation.owner.oclAsType(NamedElement).name 
   + '_' endif + anOperation.name)/][/template]
 
 [query public uml_c_classifiers_need_declare(anOSet:OrderedSet(Classifier))
@@ -1144,7 +1155,8 @@ static const [uml_c_get_vtable_type_name(aClassifier)
          + if (anOperation.ownedParameter->request_return_value()->notEmpty()) 
            then request_return_value(anOperation.ownedParameter)->first().name
                 + ' = ' else '' endif;}]
-[documentationElement(anOperation,indentation)/]
+[debug_marker('uml_c_operation_definition step 1')
+/][documentationElement(anOperation,indentation)/]
 [anOperation.visibility.uml_c_function_visibility(false) 
  + uml_c_operation_return_type(anOperation)/]
 [uml_c_format_param_list(anOperation.uml_c_get_operation_full_name(),
@@ -1182,8 +1194,7 @@ static const [uml_c_get_vtable_type_name(aClassifier)
     [else]
     [let b:Behavior = 
                 anOperation.method->any(b:Behavior|not b.oclIsUndefined())]
-    [if ( 1 = anOperation.method->size() and anOperation.featuringClassifier
-      ->includes(b._context.oclAsType(Classifier)) )]
+    [if ( 1 = anOperation.method->size() )]
 [utils_get_indent_string()
                      /][uml_c_implement_behavior(b,'C',indentation 
                                            + utils_get_indent_string().size())/]
@@ -2110,12 +2121,28 @@ static [uml_c_get_event_status_type()/]
 [template public uml_c_declare_event_status(indentation : Integer)
     {spaces : String = utils_get_indent_string();}]
 typedef enum {
-[spaces/][request_transition_ignored_state()/],      /**< Event ignored.*/
-[spaces/][request_transition_deferred_state()/],     /**< Event deferred.*/
+[spaces/][request_transition_initial_state()
+    .utils_align_left(utils_get_max_name_length())/] = 0u, /**< Initial value.*/
+[spaces/][request_transition_pending_state()
+    .utils_align_left(utils_get_max_name_length())
+                                   /] = 1u, /**< Event waiting for 
+                                               processing.*/
+[spaces/][request_transition_ignored_state()
+    .utils_align_left(utils_get_max_name_length())/] = 2u, /**< Event ignored.*/
+[spaces/][request_transition_deferred_state()
+   .utils_align_left(utils_get_max_name_length())/] = 3u, /**< Event deferred.*/
 [spaces/][request_transition_same_state()
-                                  /],    /**< Event handled, no state change.*/
+   .utils_align_left(utils_get_max_name_length())
+                                 /] = 4u, /**< Event handled, no state 
+                                               change.*/
 [spaces/][request_transition_changed_state()
-                                      /]  /**< Event handled, state changed.*/
+   .utils_align_left(utils_get_max_name_length())
+                                   /] = 5u, /**< Event handled, state 
+                                               changed.*/
+[spaces/][request_transition_dispatched_state()
+   .utils_align_left(utils_get_max_name_length())
+                                  /] = 6u  /**< Event processed and removed
+                                               from the event pool.*/
 }[uml_c_get_event_status_type()/];
 [/template]
 
@@ -2166,17 +2193,20 @@ typedef enum {
                       /] [result_name/] = [request_transition_ignored_state()/];
 
 [spaces/]if([request_transition_changed_state()
-                  /]==status1 || [request_transition_changed_state()/]==status2)
+                  /]==status1
+[spaces/]    || [request_transition_changed_state()/]==status2)
 [spaces/]{
 [spaces/][spaces/][result_name/] = [request_transition_changed_state()/];
 [spaces/]}
 [spaces/]else if([request_transition_same_state()
-                 /]==status1 || [request_transition_same_state()/]==status2)
+                 /]==status1
+[spaces/]         || [request_transition_same_state()/]==status2)
 [spaces/]{
 [spaces/][spaces/][result_name/] = [request_transition_same_state()/];
 [spaces/]}
-[spaces/]else if ([request_transition_deferred_state()
-                 /]==status1 || [request_transition_deferred_state()/]==status2)
+[spaces/]else if([request_transition_deferred_state()
+                 /]==status1
+[spaces/]         || [request_transition_deferred_state()/]==status2)
 [spaces/]{
 [spaces/][spaces/][result_name/] = [request_transition_deferred_state()/];
 [spaces/]}

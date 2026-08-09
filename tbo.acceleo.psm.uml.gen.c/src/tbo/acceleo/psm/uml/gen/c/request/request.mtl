@@ -21,8 +21,10 @@
 [**
  * Get a set of packages on which the given element depends. 
  */]
-[query private request_dependency_packages(aNamedElement : NamedElement)
-: Set(Package) = aNamedElement.clientDependency.supplier->collect(
+[query public request_dependency_packages(aNamedElement : NamedElement, 
+                                           Visibilities : Set(VisibilityKind))
+: Set(Package) = aNamedElement.clientDependency->select(d: Dependency | 
+      Visibilities->includes(d.visibility)).supplier->collect(
        n:NamedElement | if n.oclIsKindOf(Package) then n.oclAsType(Package) 
        else n.eContainer(Package)endif)->asSet()/]
 
@@ -49,13 +51,13 @@
  */]
 [query public request_visible_dependencies(aPackage : Package,
                           Visibilities : Set(VisibilityKind)) : Set(Package) = 
-   aPackage.request_dependency_packages()->union(
+   aPackage.request_dependency_packages(Visibilities)->union(
    request_visible_children(aPackage, Visibilities
-   ).request_dependency_packages()
+   ).request_dependency_packages(Visibilities)
    )->union(request_visible_children(aPackage, Visibilities)
        ->reject(p:PackageableElement | p.oclIsKindOf(Package)
        ).eAllContents(NamedElement
-       ).request_dependency_packages())->asSet()/]
+       ).request_dependency_packages(Visibilities))->asSet()/]
 
 [query public request_has_attributes(aClassifier:Classifier):Boolean = 
    not aClassifier.attribute->select(p : Property | not p.isStatic)->isEmpty()/]
@@ -646,7 +648,8 @@ OrderedSet(Region)
 
 [query public request_elements_sorted(aSet:Set(Element))
   :OrderedSet(Element) = aSet->sortedBy(e:Element|
-          e.eContainer(Model).eAllContents()->indexOf(e))/]
+          if e.eContainer(Model).oclIsUndefined() then 0 
+          else e.eContainer(Model).eAllContents()->indexOf(e) endif)/]
 
 [query public request_has_standalone_behaviors(aClassifier:Classifier, 
                                           vis : Set(VisibilityKind)):Boolean =
@@ -721,17 +724,26 @@ let exitState : State = request_transition_exit_state(aTransition) in
                  request_transition_same_state()
           else request_transition_changed_state() endif/]
 
+[query public request_transition_initial_state(traceabilityContext : OclAny)
+ : String = 'SM_EVENT_STATUS_INITIAL'/]
+
+[query public request_transition_pending_state(traceabilityContext : OclAny)
+ : String = 'SM_EVENT_STATUS_PENDING'/]
+
 [query public request_transition_ignored_state(traceabilityContext : OclAny)
- : String = 'IGNORED'/]
+ : String = 'SM_EVENT_STATUS_IGNORED'/]
 
 [query public request_transition_deferred_state(traceabilityContext : OclAny)
- : String = 'DEFERRED'/]
+ : String = 'SM_EVENT_STATUS_DEFERRED'/]
 
 [query public request_transition_changed_state(traceabilityContext : OclAny)
- : String = 'CHANGEDSTATE'/]
+ : String = 'SM_EVENT_STATUS_CHANGEDSTATE'/]
 
 [query public request_transition_same_state(traceabilityContext : OclAny)
- : String = 'SAMESTATE'/]
+ : String = 'SM_EVENT_STATUS_SAMESTATE'/]
+
+[query public request_transition_dispatched_state(traceabilityContext : OclAny)
+ : String = 'SM_EVENT_STATUS_DISPATCHED'/]
 
 [query public request_sort_regions(anOSet : OrderedSet(Region)) : 
   OrderedSet(Region)
@@ -786,3 +798,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
                                  not t.target.request_is_static_junction())
                              and (guardTransitions->size() = 0
                                   or elseTransitions->size() = 1)/]
+
+[**
+ * @brief Checks if the given state needs a separate test group.
+*/]
+[query public request_state_needs_tests(aState:State) : Boolean = 
+    aState.isSimple/]

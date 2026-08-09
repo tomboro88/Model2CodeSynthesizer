@@ -1,0 +1,251 @@
+[comment encoding = UTF-8 /]
+[module gen_tests('http://www.eclipse.org/uml2/5.0.0/UML')/]
+
+[import tbo::acceleo::psm::uml::gen::c::common::utils /]
+[import tbo::acceleo::psm::uml::gen::c::common::documentation /]
+[import tbo::acceleo::psm::uml::gen::c::request::request /]
+
+[query public gen_test_reorder_state_config(state_config : OrderedSet(OclAny), 
+                      reordered_config: OrderedSet(OclAny)):OrderedSet(OclAny)=
+    if state_config->isEmpty() 
+    then reordered_config else 
+    if state_config->first().oclIsKindOf(Region) 
+    then let aRegion:Region = state_config->first().oclAsType(Region) in
+    let reg_ortogonals:OrderedSet(OclAny) = 
+                 reordered_config->select(o:OclAny|(o.oclIsKindOf(State) 
+    and (let oState:State=o.oclAsType(State) in 
+      oState.request_vertex_regions()->exists(r:Region|r.state = aRegion.state 
+                                 and r.stateMachine = aRegion.stateMachine)))
+    or (o.oclIsKindOf(Region) and (let oRegion:Region = o.oclAsType(Region) in
+        oRegion.request_parent_regions()
+                           ->exists(r:Region|r.state = aRegion.state 
+                                    and r.stateMachine = aRegion.stateMachine)))
+    ) in
+    if reg_ortogonals->notEmpty()
+    then let new_ordered_config_prefix:OrderedSet(OclAny) = 
+                                  reordered_config->removeAll(reg_ortogonals) in
+         let new_reordered_config:OrderedSet(OclAny) = 
+                 new_ordered_config_prefix->append(state_config->first())
+                                                     ->addAll(reg_ortogonals) in
+    gen_test_reorder_state_config(state_config->drop(1), new_reordered_config)
+    else gen_test_reorder_state_config(state_config->drop(1), 
+                  reordered_config->append(state_config->first())) endif
+    else gen_test_reorder_state_config(state_config->drop(1), 
+                  reordered_config->append(state_config->first())) endif endif/]
+[query public gen_test_get_readable_state_config(
+                    state_config : OrderedSet(OclAny)) : OrderedSet(OclAny) 
+    = let filtered_state_config : OrderedSet(OclAny) = state_config
+        ->removeAll(let state_cfg_only_regions : OrderedSet(OclAny) = 
+                         state_config->select(o:OclAny|o.oclIsKindOf(Region)) in
+          state_cfg_only_regions->select(o:OclAny| not state_cfg_only_regions
+                         ->subOrderedSet(1, state_cfg_only_regions->indexOf(o))
+                         ->one(r:OclAny|let reg2:Region = r.oclAsType(Region) in 
+                               let reg1:Region = o.oclAsType(Region)in 
+             reg1.state=reg2.state and reg1.stateMachine=reg2.stateMachine))) in
+    gen_test_reorder_state_config(filtered_state_config, OrderedSet{})/]
+
+[query public gen_test_get_state_config_group_name(
+                                    state_config : OrderedSet(OclAny)): String 
+= let aPackage:Package=state_config->first().eContainer(Package) in
+  let readable_state_config : OrderedSet(OclAny) = 
+                            gen_test_get_readable_state_config(state_config) in
+    aPackage.name 
+     + '_' + state_config->first().eContainer(StateMachine).name
+     + '_'+ readable_state_config->collect(o:OclAny|
+            if o.oclIsKindOf(State) then o.oclAsType(State).name 
+            else if o.oclIsKindOf(Region) then 
+            if o.oclAsType(Region).state.oclIsUndefined() 
+            then '' else o.oclAsType(Region).state.name endif 
+            else o.oclAsType(NamedElement).name endif endif
+            )->sep('_')/]
+
+[template private gen_test_group(state_config : OrderedSet(OclAny))
+ {
+    aPackage : Package = state_config->first().eContainer(Package);
+    group_name : String = gen_test_get_state_config_group_name(state_config);
+ }]
+[file (get_statemachine_c_test_qualified_path(aPackage, group_name), false, 
+                                                                       'UTF-8')]
+[documentationCFile('The ' + group_name + ' test group source file. '
+             + 'File is generated automatically. ' 
+             + 'Manual editing allowed only inside dedicated comment blocks.')/]
+#include <unity_fixture.h>
+
+TEST_GROUP([group_name/]);
+
+/*[protected(group_name + '_group_helpers')]
+ */
+/*[/protected]*/
+
+TEST_SETUP([group_name/])
+{
+    /*[protected(group_name + '_group_setup')]
+     */
+    /*[/protected]*/
+}
+
+TEST_TEAR_DOWN([group_name/])
+{
+    /*[protected(group_name + '_group_teardown')]
+     */
+    /*[/protected]*/
+}
+
+/*[protected(group_name + '_group_test_cases')]
+ */
+/*[/protected]*/
+
+TEST_GROUP_RUNNER([group_name/])
+{
+    /*[protected(group_name + '_group_runner')]
+     */
+    /*[/protected]*/
+}
+
+/*** end of file ***/
+[/file]
+[/template]
+
+[template public gen_test_run_group(state_config : OrderedSet(OclAny))]
+RUN_TEST_GROUP([gen_test_get_state_config_group_name(state_config)
+/]);[/template]
+
+[template public gen_test_state_machine_runner(sm : StateMachine)]
+[file (get_statemachine_c_test_runner_path(sm), false, 'UTF-8')]
+[documentationCFile('The ' + sm.name + ' state machine test runner source file.'
+             + ' File is generated automatically. ' 
+             + 'Manual editing allowed only inside dedicated comment blocks.')/]
+#include <unity_fixture.h>
+
+void
+[sm.eContainer(Package).name + '_' + sm.name + '_runner'/](void)
+{
+    [gen_tests_for_regions(OrderedSet{}, 
+                       sm.region->request_regions_sorted()->first(), 
+                       sm.request_all_regions(), 2)/]
+
+    /*[protected(sm.eContainer(Package).name + '_' + sm.name + 
+                                                          '_user_test_runners')]
+     */
+    /*[/protected]*/
+}
+
+/*** end of file ***/
+[/file]
+[/template]
+
+[**
+ * @brief Generates test groups for all possible state configurations of a 
+ * StateMachine owning the given regions.
+ * @param state_config The unique state configuration reached by thew algorithm
+ *                     so far.
+ * @param nestedRegion The region for which all state configurations should be
+ *                                                                      created.
+ * @param regions The Regions Ordered Set for whihh the tests are to be 
+ *                                                                    generated.
+ * @param mode Selects what should be generated: 1 - test greoup files, 
+ *                              2- RUN_TEST_GROUP callers for TEST_GROUP_RUNNER.
+*/]
+[template private gen_tests_for_regions(state_config : OrderedSet(OclAny),
+                                        nestedRegion : Region,
+                                        regions: OrderedSet(Region),
+                                        mode : Integer)
+                  ?(regions->notEmpty())
+ {regionsWithSimpleStates : OrderedSet(Region) = 
+         regions->select(aRegion:Region | 
+                         aRegion.subvertex->selectByKind(State)
+                       ->exists(aState:State|aState.request_state_needs_tests())
+                                          );
+  excludedParentRegions : OrderedSet(Region) = 
+         regionsWithSimpleStates->select(r:Region | 
+               state_config->exists(o:OclAny| if o.oclIsKindOf(Region) 
+               then o.oclAsType(Region).request_parent_regions()->includes(r) 
+                    or o.oclAsType(Region) = r 
+               else if o.oclIsKindOf(State)
+               then
+               o.oclAsType(State).request_vertex_regions()->includes(r) 
+               else false endif endif));
+  excludedChildRegions : OrderedSet(Region) = 
+         regionsWithSimpleStates->select(r:Region | 
+              state_config->exists(o:OclAny| if o.oclIsKindOf(State) then 
+              r.request_parent_regions()->includes(o.oclAsType(State).container)
+              else if o.oclIsKindOf(Region) then
+              r.request_parent_regions()->includes(o.oclAsType(Region)) 
+              else false endif endif));
+  excludedRegions : OrderedSet(Region) = excludedParentRegions
+                        ->union(excludedChildRegions)->request_regions_sorted();
+  excludedOrthogonalRegions : OrderedSet(Region) = excludedParentRegions
+                  ->select(r:Region| 
+                      if not r.state.oclIsUndefined() then r.state.isOrthogonal
+                      else if not r.stateMachine.oclIsUndefined() 
+                              then r.stateMachine.region->size() > 1 
+                           else false endif 
+                      endif);
+  allowedRegions : OrderedSet(Region) = regionsWithSimpleStates->
+                                           removeAll(excludedRegions);
+  complementaryOrthogonalRegions : OrderedSet(Region) = allowedRegions->
+     select(r:Region| excludedOrthogonalRegions
+            ->exists(o:Region | if (not o.state.oclIsUndefined()) 
+                                    and (not r.state.oclIsUndefined())
+                     then o.state = r.state 
+                     else if (not o.stateMachine.oclIsUndefined()) 
+                                    and (not r.stateMachine.oclIsUndefined()) 
+                          then o.stateMachine = r.stateMachine 
+                          else false endif 
+                     endif));
+  topComplementaryRegions : OrderedSet(Region) = 
+      complementaryOrthogonalRegions->select(r:Region|r.request_parent_regions()
+                     ->intersection(complementaryOrthogonalRegions)->isEmpty());
+}]
+[if (not nestedRegion.oclIsUndefined())]
+[if (not nestedRegion.request_region_has_initial_pseudostate())]
+[gen_tests_for_regions(state_config->append(nestedRegion), null, regions, 
+                                                                         mode)/]    
+[/if]
+[for (aState:State|request_region_states(nestedRegion)) 
+     separator(utils_newline())]
+[if (aState.isSimple)]
+[gen_tests_for_regions(state_config->append(aState), null, regions, mode)
+/][else]
+[gen_tests_for_regions(state_config, 
+                aState.region->request_regions_sorted()->first(), regions, mode)
+/][/if]
+[/for][comment (aState:State|request_region_states(nestedRegion))/]
+[else][comment (not nestedRegion.oclIsUndefined())/]
+[if (topComplementaryRegions->isEmpty())]
+[if (state_config->notEmpty())]
+[if mode = 1]
+[gen_test_group(state_config)/]
+[elseif mode = 2]
+[gen_test_run_group(state_config)
+/][/if]
+[/if]
+[else]
+[gen_tests_for_regions(state_config, topComplementaryRegions->first(), 
+                                                                  regions, mode)
+/][/if][comment (topComplementaryRegions->isEmpty())/]
+[/if][comment (not nestedRegion.oclIsUndefined())/]
+[/template]
+
+[template private package_test_file(aPackage : Package)
+{
+    allStateMachines : OrderedSet(StateMachine) = 
+      request_elements_sorted(aPackage.request_non_packaged_children()
+             ->selectByKind(StateMachine)->asSet())->selectByKind(StateMachine);
+}]
+[for (sm : StateMachine | allStateMachines) separator(utils_newline())]
+[gen_tests_for_regions(OrderedSet{}, 
+                       sm.region->request_regions_sorted()->first(), 
+                       sm.request_all_regions(), 1)/]
+[gen_test_state_machine_runner(sm)/]
+[/for]
+[/template]
+
+[template public gen_tests(aModel : Model)
+ ?(aModel.nestingPackage.oclIsUndefined())]	
+	[comment @main /]
+[package_test_file(aModel)/]
+[for (aPackage : Package|aModel.eAllContents(Package))]
+    [package_test_file(aPackage)/]
+[/for]
+[/template]

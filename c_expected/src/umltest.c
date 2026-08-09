@@ -2,6 +2,7 @@
  * @file 
  * 
  * @brief The umltest package source file.
+ * 
  */
 
 /*******************************************************************************
@@ -12,9 +13,9 @@
 //Start of user code includes top
 //End of user code
 #include "umltest.h"
+#include <stdio.h>
 #include <stdlib.h>
 //Start of user code includes bottom
-#include <stdio.h>
 //End of user code
 /*******************************************************************************
  *
@@ -31,7 +32,9 @@
  * Private function prototypes.
  *
  ******************************************************************************/
-static void main_record(Tkind_logger_t* const p_obj, const char* const p_str);
+static void umltest_umltest_record(Tkind_logger_t* const p_obj,\
+                                   const char* const p_str);
+
 /*******************************************************************************
  *
  * Static data declarations.
@@ -47,11 +50,14 @@ static void main_record(Tkind_logger_t* const p_obj, const char* const p_str);
  * Public function bodies.
  *
  ******************************************************************************/
+/**
+ * @return 
+ */
 int
 main(void)
 {
     printf("Initialize my_ctest:\n");
-    const Tkind_logger_vt_t logger_funcs = {.p_record = main_record};
+    const Tkind_logger_vt_t logger_funcs = {.p_record = umltest_umltest_record};
     Tkind_logger_t local_logger = {.p_vtable = &logger_funcs};
     Tkind_ctest_t my_ctest = {0};
     Tkind_ctest_init(&my_ctest, &local_logger);
@@ -67,7 +73,7 @@ main(void)
     Tkind_ctest_fetch_event(&my_ctest);
     Tkind_ctest_dispatch_event(&my_ctest);
     Tkind_ctest_release_event(&my_ctest);
-
+    
     printf("\n\nInitialize my_jtest:\n");
     TJunction_Jtest_t my_jtest = {0};
     TJunction_Jtest_init(&my_jtest);
@@ -76,18 +82,24 @@ main(void)
     TJunction_Jtest_fetch_event(&my_jtest);
     TJunction_Jtest_dispatch_event(&my_jtest);
     TJunction_Jtest_release_event(&my_jtest);
-
+    
     return EXIT_SUCCESS;
 }
+
 /*******************************************************************************
  *
  * Non-public function bodies.
  *
  ******************************************************************************/
+/**
+ * @param [in,out] p_obj 
+ * @param [in] p_str 
+ */
 static void
-main_record(Tkind_logger_t* const p_obj, const char* const p_str)
+umltest_umltest_record(Tkind_logger_t* const p_obj, const char* const p_str)
 {
     (void) p_obj;
     (void) puts(p_str);
 }
+
 /*** end of file ***/

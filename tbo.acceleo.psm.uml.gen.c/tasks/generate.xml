@@ -39,6 +39,8 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.38.0.v20240314-1003.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.23.0.v20230211-1150.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_33.2.0.jre.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.uml2.uml.resources_5.5.0.v20221116-1811.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.uml2.uml.profile.standard_1.5.0.v20221116-1811.jar"/>
     </path>
 
     <path id="tbo.acceleo.psm.uml.gen.c.classpath">

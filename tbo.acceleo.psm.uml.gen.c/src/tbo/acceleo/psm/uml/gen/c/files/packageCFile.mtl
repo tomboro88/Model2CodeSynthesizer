@@ -10,9 +10,11 @@
 [template public generatePackageC(aPackage : Package)
   {header_packages : Set(Package) = uml_c_header_subpackages(aPackage)->union(
    uml_c_header_dependencies(aPackage))->asSet();
-   source_subpackages : Set(Package) = uml_c_source_subpackages(aPackage);
-   source_dependencies  : Set(Package) = uml_c_source_dependencies(aPackage)
-      ->removeAll(header_packages);
+   source_subpackages : OrderedSet(Package) = request_elements_sorted(
+       uml_c_source_subpackages(aPackage))->filter(Package);
+   source_dependencies  : OrderedSet(Package) = request_elements_sorted(
+       uml_c_source_dependencies(aPackage)->removeAll(header_packages))
+       ->filter(Package);
    sourceLiteralSpecifications : Sequence(LiteralSpecification) = 
     uml_c_source_literal_specifications(aPackage);
    allClassifiers : OrderedSet(Classifier) = 

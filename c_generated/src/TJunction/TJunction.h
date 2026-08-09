@@ -321,15 +321,15 @@ extern "C" {
     }tjunction_sm1_region1_t;
     
     /**
-     * @brief The enumeration of all substates of Region36 Region of sm1
+     * @brief The enumeration of all substates of Region361 Region of sm1
      * StateMachine.
      */
     typedef enum{
         /**
-         * @brief The default substate of the Region36 Region of sm1
+         * @brief The default substate of the Region361 Region of sm1
          * StateMachine.
          */
-        TJUNCTION_SM1_REGION36_INL,
+        TJUNCTION_SM1_REGION361_INL,
         /**
          */
         TJUNCTION_SM1_STATE36_1,
@@ -337,11 +337,34 @@ extern "C" {
          */
         TJUNCTION_SM1_STATE36_2,
         /**
-         * @brief The number of all substates of Region36 Region of sm1
+         * @brief The number of all substates of Region361 Region of sm1
          * StateMachine.
          */
-        TJUNCTION_SM1_REGION36_SIZE
-    }tjunction_sm1_region36_t;
+        TJUNCTION_SM1_REGION361_SIZE
+    }tjunction_sm1_region361_t;
+    
+    /**
+     * @brief The enumeration of all substates of Region362 Region of sm1
+     * StateMachine.
+     */
+    typedef enum{
+        /**
+         * @brief The default substate of the Region362 Region of sm1
+         * StateMachine.
+         */
+        TJUNCTION_SM1_REGION362_INL,
+        /**
+         */
+        TJUNCTION_SM1_STATE36_3,
+        /**
+         */
+        TJUNCTION_SM1_STATE36_4,
+        /**
+         * @brief The number of all substates of Region362 Region of sm1
+         * StateMachine.
+         */
+        TJUNCTION_SM1_REGION362_SIZE
+    }tjunction_sm1_region362_t;
     
     /**
      * @brief The enumeration of all substates of Region431 Region of sm1
@@ -421,7 +444,12 @@ extern "C" {
         tjunction_sm1_region1_t         region1;
         /**
          */
-        tjunction_sm1_region36_t        region36;
+        tjunction_sm1_region361_t       region361;
+        /**
+         * This region was added for test generator to verify how it deals with
+         * concurrent regions that have no initial transition.
+         */
+        tjunction_sm1_region362_t       region362;
         /**
          */
         tjunction_sm1_region431_t       region431;

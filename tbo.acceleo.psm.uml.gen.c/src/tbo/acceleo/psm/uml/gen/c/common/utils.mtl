@@ -30,17 +30,38 @@
    else get_package_qualified_folder(aPackage.eContainer(Package)) 
    + get_package_folder(aPackage) endif/]
 
-[query public get_package_h_qualified_path(aPackage : Package) : String = 
-     get_package_qualified_folder(aPackage) + get_package_h_filename(aPackage)/]
+[query public get_package_cml_qualified_path(aPackage : Package) : String = 
+     get_package_qualified_folder(aPackage) + 'CMakeLists.txt'/]
+
+[query public get_package_library_name(aPackage : Package) : String = 
+                                       aPackage.name/]
 
 [query public get_package_c_filename(aPackage : Package) : String = 
                                        aPackage.name + '.c'/]
+
+[query public get_package_c_test_filename(aPackage : Package) : String = 
+                                       'test_' + aPackage.name + '.c'/]
 
 [query public get_package_c_path(aPackage : Package) : String = 
                get_package_folder(aPackage) + get_package_c_filename(aPackage)/]
 
 [query public get_package_c_qualified_path(aPackage : Package) : String = 
      get_package_qualified_folder(aPackage) + get_package_c_filename(aPackage)/]
+
+[query public get_package_c_test_qualified_path(aPackage : Package) : String = 
+     get_package_qualified_folder(aPackage) 
+                                       + get_package_c_test_filename(aPackage)/]
+
+[query public get_statemachine_c_test_qualified_path(aPackage : Package, 
+                                            state_config_name:String) : String = 
+     get_package_qualified_folder(aPackage) 
+                                       + 'test_'+state_config_name+'.c'/]
+
+[query public get_statemachine_c_test_runner_path(aStateMachine:StateMachine) 
+                                                                     : String = 
+     get_package_qualified_folder(aStateMachine.eContainer(Package)) 
+                +aStateMachine.eContainer(Package).name + '_'
+                + aStateMachine.name + '_test_runner.c'/]
 
 [**
  * Produces a string of spaces of specified length. 
@@ -97,6 +118,10 @@ utils_files_newline().characters()
 
 [query public utils_dispatch_result_name(traceabilityContext: OclAny)
  : String = 'result'/]
+
+[query public utils_align_left(aString : String, howMuch: Integer)
+ : String = aString + if aString.size() < howMuch 
+                     then utils_indent(howMuch - aString.size()) else '' endif/]
 
 [**
  * @brief Joins the strings in the aSeq Sequence so that whey will fit into a 

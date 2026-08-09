@@ -2,6 +2,7 @@
  * @file 
  * 
  * @brief The Tkind package source file.
+ * 
  */
 
 /*******************************************************************************
@@ -812,6 +813,7 @@ Tkind_ctest_get_flt_from_uint(Tkind_cbase2_t* const p_obj)
 static void
 Tkind_sm1_rec_log(Tkind_sm1_t* const p_obj, const char* const p_str)
 {
+    Tkind_logger_record(p_obj->p_context->p_logger, p_str);
 }
 
 /**
@@ -951,7 +953,7 @@ sm1_exit_region6(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_a(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -973,7 +975,7 @@ sm1_dispatch_a(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_b(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -995,7 +997,7 @@ sm1_dispatch_b(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_c(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1017,7 +1019,7 @@ sm1_dispatch_c(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1039,7 +1041,7 @@ sm1_dispatch_d(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1061,7 +1063,7 @@ sm1_dispatch_e(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_f(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1083,7 +1085,7 @@ sm1_dispatch_f(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1105,7 +1107,7 @@ sm1_dispatch_g(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1127,7 +1129,7 @@ sm1_dispatch_h(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_i(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1149,7 +1151,7 @@ sm1_dispatch_i(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_j(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1171,7 +1173,7 @@ sm1_dispatch_j(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1193,7 +1195,7 @@ sm1_dispatch_k(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1215,7 +1217,7 @@ sm1_dispatch_l(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_m(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1237,7 +1239,7 @@ sm1_dispatch_m(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1259,7 +1261,7 @@ sm1_dispatch_n(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_o(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region1)
     {
@@ -1282,7 +1284,7 @@ sm1_dispatch_o(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_a_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1305,7 +1307,7 @@ sm1_dispatch_a_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_b_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1328,7 +1330,7 @@ sm1_dispatch_b_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_c_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1351,7 +1353,7 @@ sm1_dispatch_c_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1374,7 +1376,7 @@ sm1_dispatch_d_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1397,7 +1399,7 @@ sm1_dispatch_e_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_f_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1420,7 +1422,7 @@ sm1_dispatch_f_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1443,7 +1445,7 @@ sm1_dispatch_g_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1466,7 +1468,7 @@ sm1_dispatch_h_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n_region2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region2)
     {
@@ -1489,7 +1491,7 @@ sm1_dispatch_n_region2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d_region3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region3)
     {
@@ -1512,7 +1514,7 @@ sm1_dispatch_d_region3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e_region3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region3)
     {
@@ -1535,7 +1537,7 @@ sm1_dispatch_e_region3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n_region3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region3)
     {
@@ -1558,7 +1560,7 @@ sm1_dispatch_n_region3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g_region4(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region4)
     {
@@ -1581,7 +1583,7 @@ sm1_dispatch_g_region4(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h_region4(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region4)
     {
@@ -1604,7 +1606,7 @@ sm1_dispatch_h_region4(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_j_region5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region5)
     {
@@ -1627,7 +1629,7 @@ sm1_dispatch_j_region5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k_region5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region5)
     {
@@ -1650,7 +1652,7 @@ sm1_dispatch_k_region5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l_region5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region5)
     {
@@ -1673,7 +1675,7 @@ sm1_dispatch_l_region5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_m_region5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region5)
     {
@@ -1696,7 +1698,7 @@ sm1_dispatch_m_region5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k_region6(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region6)
     {
@@ -1719,7 +1721,7 @@ sm1_dispatch_k_region6(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l_region6(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     switch(p_obj->region6)
     {
@@ -1742,7 +1744,7 @@ sm1_dispatch_l_region6(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_a_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_a_region2(p_obj);
 
@@ -1758,7 +1760,7 @@ sm1_dispatch_a_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_b_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_b_region2(p_obj);
 
@@ -1774,7 +1776,7 @@ sm1_dispatch_b_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_c_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_c_region2(p_obj);
 
@@ -1790,7 +1792,7 @@ sm1_dispatch_c_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_d_region2(p_obj);
 
@@ -1806,7 +1808,7 @@ sm1_dispatch_d_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_e_region2(p_obj);
 
@@ -1822,7 +1824,7 @@ sm1_dispatch_e_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_f_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_f_region2(p_obj);
 
@@ -1838,7 +1840,7 @@ sm1_dispatch_f_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_g_region2(p_obj);
 
@@ -1854,7 +1856,7 @@ sm1_dispatch_g_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_h_region2(p_obj);
 
@@ -1870,7 +1872,7 @@ sm1_dispatch_h_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_i_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
     Tkind_sm1_rec_log(p_obj, "State1 to State7\n");
@@ -1890,7 +1892,7 @@ sm1_dispatch_i_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_j_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_j_region5(p_obj);
 
@@ -1906,7 +1908,7 @@ sm1_dispatch_j_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_k_region5(p_obj);
 
@@ -1922,7 +1924,7 @@ sm1_dispatch_k_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_l_region5(p_obj);
 
@@ -1938,7 +1940,7 @@ sm1_dispatch_l_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_m_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_m_region5(p_obj);
 
@@ -1954,7 +1956,7 @@ sm1_dispatch_m_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_n_region2(p_obj);
 
@@ -1970,7 +1972,7 @@ sm1_dispatch_n_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_o_state1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
     Tkind_sm1_rec_log(p_obj, "State1 to Choice1\n");
@@ -1990,7 +1992,7 @@ sm1_dispatch_o_state1(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_a_state2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state2(p_obj);
     Tkind_sm1_rec_log(p_obj, "State2 to State3\n");
@@ -2009,7 +2011,7 @@ sm1_dispatch_a_state2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_b_state2(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state2(p_obj);
     Tkind_sm1_rec_log(p_obj, "State2 to State4\n");
@@ -2028,7 +2030,7 @@ sm1_dispatch_b_state2(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_c_state3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state3(p_obj);
     Tkind_sm1_rec_log(p_obj, "State3 to State5\n");
@@ -2047,7 +2049,7 @@ sm1_dispatch_c_state3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d_state3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_d_region3(p_obj);
 
@@ -2063,7 +2065,7 @@ sm1_dispatch_d_state3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e_state3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_e_region3(p_obj);
 
@@ -2079,7 +2081,7 @@ sm1_dispatch_e_state3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_f_state4(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state4(p_obj);
     Tkind_sm1_rec_log(p_obj, "State4 to State6\n");
@@ -2098,7 +2100,7 @@ sm1_dispatch_f_state4(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g_state4(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_g_region4(p_obj);
 
@@ -2114,7 +2116,7 @@ sm1_dispatch_g_state4(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h_state4(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_h_region4(p_obj);
 
@@ -2130,7 +2132,7 @@ sm1_dispatch_h_state4(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n_state3(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_n_region3(p_obj);
 
@@ -2146,7 +2148,7 @@ sm1_dispatch_n_state3(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_d_state5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_region3(p_obj);
     Tkind_sm1_rec_log(p_obj, "State5 to State3\n");
@@ -2164,7 +2166,7 @@ sm1_dispatch_d_state5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_e_state5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_region2(p_obj);
     Tkind_sm1_rec_log(p_obj, "State5 to State1\n");
@@ -2182,7 +2184,7 @@ sm1_dispatch_e_state5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_n_state5(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state3(p_obj);
     Tkind_sm1_rec_log(p_obj, "State5 to State6\n");
@@ -2201,7 +2203,7 @@ sm1_dispatch_n_state5(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_g_state6(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state4(p_obj);
     Tkind_sm1_rec_log(p_obj, "State6 to State4\n");
@@ -2220,7 +2222,7 @@ sm1_dispatch_g_state6(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_h_state6(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
     Tkind_sm1_rec_log(p_obj, "State6 to State1\n");
@@ -2240,7 +2242,7 @@ sm1_dispatch_h_state6(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_j_state7(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state7(p_obj);
     Tkind_sm1_rec_log(p_obj, "State7 to State8\n");
@@ -2259,7 +2261,7 @@ sm1_dispatch_j_state7(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k_state8(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_k_region6(p_obj);
 
@@ -2275,7 +2277,7 @@ sm1_dispatch_k_state8(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l_state8(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = IGNORED;
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
     result = sm1_dispatch_l_region6(p_obj);
 
@@ -2291,7 +2293,7 @@ sm1_dispatch_l_state8(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_m_state8(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
     Tkind_sm1_rec_log(p_obj, "State8 to State1\n");
@@ -2311,7 +2313,7 @@ sm1_dispatch_m_state8(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_k_state9(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state8(p_obj);
     Tkind_sm1_rec_log(p_obj, "State9 to State8\n");
@@ -2330,7 +2332,7 @@ sm1_dispatch_k_state9(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_dispatch_l_state9(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     sm1_exit_state1(p_obj);
     Tkind_sm1_rec_log(p_obj, "State9 to State1\n");
@@ -2350,7 +2352,7 @@ sm1_dispatch_l_state9(Tkind_sm1_t* const p_obj)
 static sm_event_status_t
 sm1_enter_choice1(Tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     if(p_obj->b_test_condition)
     {

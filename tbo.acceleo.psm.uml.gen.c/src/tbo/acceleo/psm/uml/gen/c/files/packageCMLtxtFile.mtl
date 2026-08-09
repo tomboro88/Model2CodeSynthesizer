@@ -1,0 +1,194 @@
+[comment encoding = UTF-8 /]
+[**
+ * The module for generation of CMakeLists.txt files.
+ */]
+[module packageCMLtxtFile('http://www.eclipse.org/uml2/5.0.0/UML')]
+
+[import tbo::acceleo::psm::uml::gen::c::common::utils /]
+[import tbo::acceleo::psm::uml::gen::c::request::request/]
+
+[**
+ * The template for a package's CMakeLists file.
+ * @param aPackage
+ */]
+[template public generate_package_CMLtxtFile(aPackage : Package)
+{
+    linkedPackages : OrderedSet(Package) = request_elements_sorted(
+                    aPackage.packagedElement->filter(Package))->filter(Package);
+    spaces : String = utils_get_indent_string();
+    executables : OrderedSet(Artifact) = request_elements_sorted(
+                  aPackage.packagedElement
+                  ->filter(Artifact)
+                  ->select(a:Artifact| 
+                  a.getAppliedStereotypes().name->includes('Executable')))
+                  ->filter(Artifact);
+    b_is_executable : Boolean = executables->exists(a:Artifact|a.ownedOperation
+                                         ->exists(o:Operation|o.name = 'main'));
+}]
+
+[file (get_package_cml_qualified_path(aPackage), false, 'UTF-8')]
+[for (p:Package|linkedPackages) after(utils_newline())]
+add_subdirectory([p.get_package_library_name()/])
+[/for]
+[if (b_is_executable)]
+[if (aPackage.eAllContents(StateMachine)->notEmpty())]
+add_subdirectory(fifo)
+add_subdirectory(event_pool)
+add_subdirectory(sm)
+
+[/if]
+[for (a:Artifact | executables)]
+add_executable([a.fileName/])
+
+target_sources([a.fileName/]
+    PRIVATE
+        [get_package_c_filename(aPackage)/]
+    PRIVATE
+        FILE_SET [get_package_library_name(aPackage).toLower()/]_headers
+    TYPE HEADERS
+    FILES
+        [get_package_h_filename(aPackage)/]
+)
+[if (aPackage.request_non_packaged_children()->selectByKind(StateMachine)
+                                                                  ->notEmpty())]
+
+target_link_libraries([get_package_library_name(aPackage)/]
+    PUBLIC
+        event_pool
+        sm
+)
+[/if]
+[if (linkedPackages->notEmpty())]
+
+target_link_libraries([get_package_library_name(aPackage)/]
+[spaces/]PRIVATE
+[for (p:Package|linkedPackages)]
+[spaces/][spaces/][p.get_package_library_name()/]
+[/for]
+)
+[/if]
+
+target_link_libraries([a.fileName/]
+    PRIVATE
+        coverage_compile
+)
+[/for]
+[else]
+add_library([get_package_library_name(aPackage)/])
+
+target_sources([get_package_library_name(aPackage)/]
+    PRIVATE
+        [get_package_c_filename(aPackage)/]
+    PUBLIC
+        FILE_SET [get_package_library_name(aPackage).toLower()/]_headers
+    TYPE HEADERS
+    FILES
+        [get_package_h_filename(aPackage)/]
+)
+[if (aPackage.request_non_packaged_children()->selectByKind(StateMachine)
+                                                                  ->notEmpty())]
+
+target_link_libraries([get_package_library_name(aPackage)/]
+    PUBLIC
+        event_pool
+        sm
+)
+[/if]
+[if (linkedPackages->notEmpty())]
+
+target_link_libraries([get_package_library_name(aPackage)/]
+[spaces/]PUBLIC
+[for (p:Package|linkedPackages)]
+[spaces/][spaces/][p.get_package_library_name()/]
+[/for]
+)
+[/if]
+
+target_link_libraries([get_package_library_name(aPackage)/]
+    PRIVATE
+        coverage_compile
+)
+[/if]
+[/file]
+[/template]
+
+[**
+ * The template for sm package CMakeLists file.
+ */]
+[template public generate_sm_package_CMLtxtFile(traceabilityContext : OclAny)]
+
+[file ('/sm/CMakeLists.txt', false, 'UTF-8')]
+add_library(sm)
+
+target_sources(sm
+    PRIVATE
+        sm.c
+    PUBLIC
+        FILE_SET sm_headers
+    TYPE HEADERS
+    FILES
+        sm.h
+)
+
+target_link_libraries(sm
+    PRIVATE
+        coverage_compile
+)
+[/file]
+[/template]
+
+[**
+ * The template for event_pool package CMakeLists file.
+ */]
+[template public generate_event_pool_package_CMLtxtFile(
+                                                  traceabilityContext : OclAny)]
+
+[file ('/event_pool/CMakeLists.txt', false, 'UTF-8')]
+add_library(event_pool)
+
+target_sources(event_pool
+    PRIVATE
+        event_pool.c
+    PUBLIC
+        FILE_SET event_pool_headers
+    TYPE HEADERS
+    FILES
+        event_pool.h
+)
+
+target_link_libraries(event_pool
+    PUBLIC
+        fifo
+)
+
+target_link_libraries(event_pool
+    PRIVATE
+        coverage_compile
+)
+[/file]
+[/template]
+
+[**
+ * The template for CMakeLists file for the fifo module.
+ */]
+[template public generate_fifo_package_CMLtxtFile(
+                                                  traceabilityContext : OclAny)]
+[file ('/fifo/CMakeLists.txt', false, 'UTF-8')]
+add_library(fifo)
+
+target_sources(fifo
+    PRIVATE
+        fifo.c
+    PUBLIC
+        FILE_SET fifo_headers
+    TYPE HEADERS
+    FILES
+        fifo.h
+)
+
+target_link_libraries(fifo
+    PRIVATE
+        coverage_compile
+)
+[/file]
+[/template]

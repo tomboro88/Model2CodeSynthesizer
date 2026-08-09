@@ -7,8 +7,12 @@
 [import tbo::acceleo::psm::uml::gen::c::request::request/]
 
 [template public generatePackageH(aPackage : Package)
- {visible_subpackages : Set(Package) = uml_c_header_subpackages(aPackage);
-  visible_dependencies : Set(Package) = uml_c_header_dependencies(aPackage);
+ {visible_subpackages : OrderedSet(Package) = 
+      request_elements_sorted(uml_c_header_subpackages(aPackage))
+                                                             ->filter(Package);
+  visible_dependencies : OrderedSet(Package) = 
+      request_elements_sorted(uml_c_header_dependencies(aPackage))
+                                                             ->filter(Package);
   headerLiteralSpecifications : Sequence(LiteralSpecification) = 
     uml_c_header_literal_specifications(aPackage);
   headerClassifiers : OrderedSet(Classifier) = 
@@ -16,7 +20,7 @@
     .oclAsType(Classifier)->asOrderedSet();
   indentation : Integer = getProperty('indent_width').toInteger();}]
 
-[file (get_package_h_qualified_path(aPackage), false, 'UTF-8')]
+[file (uml_c_get_package_h_qualified_path(aPackage), false, 'UTF-8')]
 [documentationHFile(aPackage,getProperty('line_width').toInteger())/]
 
 #ifndef [aPackage.name.header_guard()/]
@@ -32,11 +36,14 @@ extern "C" {
                             indentation)
 /][if (not headerClassifiers->selectByKind(StateMachine)->isEmpty())]
 #[utils_indent(indentation)/]include <sm.h>
-[/if][if (headerClassifiers->uml_c_is_stddef_required())]
+[/if][if (headerClassifiers->uml_c_is_stddef_required() 
+               and not visible_dependencies->exists(p:Package|p.name='stddef'))]
 #[utils_indent(indentation)/]include <stddef.h>
-[/if][if (headerClassifiers->uml_c_is_stdbool_required())]
+[/if][if (headerClassifiers->uml_c_is_stdbool_required()
+              and not visible_dependencies->exists(p:Package|p.name='stdbool'))]
 #[utils_indent(indentation)/]include <stdbool.h>
-[/if][if (headerClassifiers->uml_c_is_stdint_required())]
+[/if][if (headerClassifiers->uml_c_is_stdint_required()
+              and not visible_dependencies->exists(p:Package|p.name='stdint'))]
 #[utils_indent(indentation)/]include <stdint.h>
 [/if]
 //[protected('includes bottom')]

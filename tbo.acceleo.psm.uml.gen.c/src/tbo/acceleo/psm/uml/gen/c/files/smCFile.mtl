@@ -8,7 +8,7 @@
  {indentation : Integer = getProperty('indent_width').toInteger();
   spaces : String = utils_get_indent_string();}]
 
-[file ('sm.c', false, 'UTF-8')]
+[file ('sm/sm.c', false, 'UTF-8')]
 
 #include "sm.h"
 

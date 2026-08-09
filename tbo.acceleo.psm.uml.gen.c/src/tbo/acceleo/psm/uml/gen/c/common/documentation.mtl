@@ -4,7 +4,7 @@
 [import tbo::acceleo::psm::uml::gen::c::common::doxygen/]
 
 [template public documentationCFile(aBrief : String)]
-[doxygen_source_doc(aBrief)/]
+[doxygen_source_doc(aBrief, getProperty('line_width').toInteger())/]
 [/template]
 
 [template public documentationHFile(anElement: Element, line_width: Integer)]
