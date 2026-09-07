@@ -4,9 +4,9 @@
  * @brief Source code of the Tkind package test cases.
  * @author tomboro88
  * @date   4 mar 2026
- * @copyright (c) 2026 tomboro88. All rights reserved.
- * @license MIT – see LICENSE file in project root
- * @project github.com/tomboro88/M2T4Embedded
+ * @copyright (c) 2026 tomboro88.
+ * @license SPDX-License-Identifier: EPL-2.0
+ * @project github.com/tomboro88/Model2CodeSynthesizer
  */
 
 /*******************************************************************************
@@ -34,9 +34,9 @@
  * Private function prototypes.
  *
  ******************************************************************************/
-static void test_capture_logger(Tkind_logger_t* const p_obj,
+static void test_capture_logger(plogger_logger_t* const p_obj,
                                                        const char* const p_str);
-static void test_assert_logger(void);
+static void test_assert_logger(const char* p_str);
 /*******************************************************************************
  *
  * Static data declarations.
@@ -66,19 +66,19 @@ static bool b_expected_result = false;
 /**
  * @brief The virtual table for our test logger object.
  */
-static const Tkind_logger_vt_t tkind_test_logger_funcs =
+static const plogger_logger_vt_t tkind_test_logger_funcs =
                                               {.p_record = test_capture_logger};
 
 /**
  * @brief The logger object that will capture the logs from the tested state
  * machines.
  */
-Tkind_logger_t tkind_test_logger = {.p_vtable = &tkind_test_logger_funcs};
+plogger_logger_t tkind_test_logger = {.p_vtable = &tkind_test_logger_funcs};
 
 /**
  * @brief The ctest object that is tested.
  */
-Tkind_ctest_t tkind_ctest_obj = {0};
+tkind_ctest_t tkind_ctest_obj = {0};
 
 /*******************************************************************************
  *
@@ -116,6 +116,33 @@ tkind_ctest_logger_expect(bool const b_is_result_ok, const char* const p_str)
 }
 
 void
+tkind_ctest_logger_dispatch_given(bool const b_is_result_ok)
+{
+    if(b_expected_result)
+    {
+        TEST_ASSERT_TRUE(b_is_result_ok);
+    }
+    else
+    {
+        TEST_ASSERT_FALSE(b_is_result_ok);
+    }
+
+    test_assert_logger(NULL);
+    TEST_ASSERT_TRUE(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    test_assert_logger(NULL);
+    TEST_ASSERT_TRUE(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    test_assert_logger(NULL);
+    TEST_ASSERT_TRUE(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    test_assert_logger(p_expected_logger);
+    TEST_ASSERT_FALSE(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    test_assert_logger(p_expected_logger);
+    TEST_ASSERT_TRUE(tkind_ctest_release_event(&tkind_ctest_obj));
+    test_assert_logger(p_expected_logger);
+    TEST_ASSERT_FALSE(tkind_ctest_release_event(&tkind_ctest_obj));
+    test_assert_logger(p_expected_logger);
+}
+
+void
 tkind_ctest_logger_given(bool const b_is_result_ok)
 {
     if(b_expected_result)
@@ -127,7 +154,7 @@ tkind_ctest_logger_given(bool const b_is_result_ok)
         TEST_ASSERT_FALSE(b_is_result_ok);
     }
 
-    test_assert_logger();
+    test_assert_logger(p_expected_logger);
 }
 /*******************************************************************************
  *
@@ -150,25 +177,23 @@ TEST_TEAR_DOWN(TkindLogger)
 /*================================TEST_CASES==================================*/
 TEST(TkindLogger, record_empty_string)
 {
-    tkind_ctest_logger_expect(true, "");
-    Tkind_logger_record(&tkind_test_logger, "");
-    tkind_ctest_logger_given(true);
+    plogger_logger_record(&tkind_test_logger, "");
+    test_assert_logger("");
 }
 
 TEST(TkindLogger, record_nonempty_string)
 {
-    tkind_ctest_logger_expect(true, "abc");
-    Tkind_logger_record(&tkind_test_logger, "abc");
-    tkind_ctest_logger_given(true);
+    plogger_logger_record(&tkind_test_logger, "abc");
+    test_assert_logger("abc");
 }
 
 TEST(TkindLogger, record_multiple_strings)
 {
     tkind_ctest_logger_expect(true, "abcdefghi");
-    Tkind_logger_record(&tkind_test_logger, "abc");
-    Tkind_logger_record(&tkind_test_logger, "def");
-    Tkind_logger_record(&tkind_test_logger, "ghi");
-    tkind_ctest_logger_given(true);
+    plogger_logger_record(&tkind_test_logger, "abc");
+    plogger_logger_record(&tkind_test_logger, "def");
+    plogger_logger_record(&tkind_test_logger, "ghi");
+    test_assert_logger("abcdefghi");
 }
 
 TEST_GROUP_RUNNER(TkindLogger)
@@ -188,7 +213,7 @@ TEST_GROUP_RUNNER(TkindLogger)
  * @param p_str The pointer to the captured string
  */
 static void
-test_capture_logger(Tkind_logger_t* const p_obj, const char* const p_str)
+test_capture_logger(plogger_logger_t* const p_obj, const char* const p_str)
 {
     TEST_ASSERT_NOT_NULL(p_obj);
     TEST_ASSERT_NOT_NULL(p_str);
@@ -209,13 +234,13 @@ test_capture_logger(Tkind_logger_t* const p_obj, const char* const p_str)
 }
 
 static void
-test_assert_logger(void)
+test_assert_logger(const char* const p_str)
 {
     TEST_ASSERT_EQUAL_MEMORY(forbidden_pattern, logger_buffer,
                                                      sizeof(forbidden_pattern));
-    if(NULL != p_expected_logger)
+    if(NULL != p_str)
     {
-        TEST_ASSERT_EQUAL_STRING(p_expected_logger,
+        TEST_ASSERT_EQUAL_STRING(p_str,
                                    &logger_buffer[TEST_LOGGER_BUFFER_DATA_POS]);
 
         if((TEST_LOGGER_BUFFER_GUARD2_POS-logger_index-1) > 0)

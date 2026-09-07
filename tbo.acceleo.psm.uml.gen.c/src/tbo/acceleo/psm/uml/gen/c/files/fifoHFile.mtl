@@ -4,6 +4,7 @@
  */]
 [module fifoHFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
+[import tbo::acceleo::psm::uml::gen::c::common::documentation /]
 
 [**
  * The template for header file of the fifo package.
@@ -25,11 +26,7 @@
  *     fifo_t fifo_obj;
  * };
  *
- * @author tomboro88
- * @date   2 Dec 2025
- * @copyright (c) 2025 tomboro88. All rights reserved.
- * @license MIT – see LICENSE file in project root
- * @project github.com/tomboro88/M2T4Embedded
+[documentation_generated_note(0)/]
  */
 
 #ifndef FIFO_H

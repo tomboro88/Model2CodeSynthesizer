@@ -63,6 +63,7 @@
  {
     aPackage : Package = state_config->first().eContainer(Package);
     group_name : String = gen_test_get_state_config_group_name(state_config);
+    spaces : String = utils_get_indent_string();
  }]
 [file (get_statemachine_c_test_qualified_path(aPackage, group_name), false, 
                                                                        'UTF-8')]
@@ -73,33 +74,48 @@
 
 TEST_GROUP([group_name/]);
 
-/*[protected(group_name + '_group_helpers')]
+/*
+ *[protected(group_name + '_group_helpers')]
  */
-/*[/protected]*/
+/*
+ *[/protected]
+ */
 
 TEST_SETUP([group_name/])
 {
-    /*[protected(group_name + '_group_setup')]
-     */
-    /*[/protected]*/
+[spaces/]/*
+[spaces/] *[protected(group_name + '_group_setup')]
+[spaces/] */
+[spaces/]/*
+[spaces/] *[/protected]
+[spaces/]*/
 }
 
 TEST_TEAR_DOWN([group_name/])
 {
-    /*[protected(group_name + '_group_teardown')]
-     */
-    /*[/protected]*/
+[spaces/]/*
+[spaces/] *[protected(group_name + '_group_teardown')]
+[spaces/] */
+[spaces/]/*
+[spaces/] *[/protected]
+[spaces/] */
 }
 
-/*[protected(group_name + '_group_test_cases')]
+/*
+ *[protected(group_name + '_group_test_cases')]
  */
-/*[/protected]*/
+/*
+ *[/protected]
+ */
 
 TEST_GROUP_RUNNER([group_name/])
 {
-    /*[protected(group_name + '_group_runner')]
-     */
-    /*[/protected]*/
+[spaces/]/*
+[spaces/] *[protected(group_name + '_group_runner')]
+[spaces/] */
+[spaces/]/*
+[spaces/] *[/protected]
+[spaces/] */
 }
 
 /*** end of file ***/
@@ -110,7 +126,8 @@ TEST_GROUP_RUNNER([group_name/])
 RUN_TEST_GROUP([gen_test_get_state_config_group_name(state_config)
 /]);[/template]
 
-[template public gen_test_state_machine_runner(sm : StateMachine)]
+[template public gen_test_state_machine_runner(sm : StateMachine)
+ {spaces : String = utils_get_indent_string();}]
 [file (get_statemachine_c_test_runner_path(sm), false, 'UTF-8')]
 [documentationCFile('The ' + sm.name + ' state machine test runner source file.'
              + ' File is generated automatically. ' 
@@ -124,10 +141,13 @@ void
                        sm.region->request_regions_sorted()->first(), 
                        sm.request_all_regions(), 2)/]
 
-    /*[protected(sm.eContainer(Package).name + '_' + sm.name + 
+[spaces/]/*
+[spaces/] *[protected(sm.eContainer(Package).name + '_' + sm.name + 
                                                           '_user_test_runners')]
-     */
-    /*[/protected]*/
+[spaces/]*/
+[spaces/]/*
+[spaces/] *[/protected]
+[spaces/] */
 }
 
 /*** end of file ***/

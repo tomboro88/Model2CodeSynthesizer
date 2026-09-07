@@ -3,7 +3,6 @@
  * 
  * @brief The sm1 state machine test runner source file. File is generated
  * automatically. Manual editing allowed only inside dedicated comment blocks.
- * 
  */
 #include <unity_fixture.h>
 
@@ -26,9 +25,12 @@ Tkind_sm1_runner(void)
     RUN_TEST_GROUP(Tkind_sm1_State6_State7);
     RUN_TEST_GROUP(Tkind_sm1_State6_State9);
 
-    /*Start of user code Tkind_sm1_user_test_runners
+    /*
+     *Start of user code Tkind_sm1_user_test_runners
+    */
+    /*
+     *End of user code
      */
-    /*End of user code*/
 }
 
 /*** end of file ***/

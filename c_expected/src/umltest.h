@@ -3,6 +3,9 @@
  * 
  * @brief Top level module of the model.
  * @details Contains two example subpackages: Tkind and TJunction.
+ * 
+ * @note Automatically generated code by Model2CodeSynthesizer
+ * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef UMLTEST_H
@@ -14,8 +17,8 @@ extern "C" {
 
 //Start of user code includes top
 //End of user code
-#    include "Tkind/Tkind.h"
-#    include "TJunction/TJunction.h"
+#    include <stdio.h>
+#    include <stdlib.h>
 //Start of user code includes bottom
 //End of user code
 

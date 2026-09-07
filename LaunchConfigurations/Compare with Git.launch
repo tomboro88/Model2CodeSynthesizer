@@ -6,6 +6,6 @@
     </listAttribute>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/bin/bash"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c &quot;git diff --no-index --stat --color=always c_expected/src c_generated/src | tee diff_report.txt&quot;"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${git_work_tree}"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-c &quot;git diff --no-index --color=always c_expected/src c_generated/src | tee diff_report.txt&quot;"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${git_work_tree:/c_expected}"/>
 </launchConfiguration>

@@ -3,7 +3,6 @@
  * 
  * @brief The sm1 state machine test runner source file. File is generated
  * automatically. Manual editing allowed only inside dedicated comment blocks.
- * 
  */
 #include <unity_fixture.h>
 
@@ -34,9 +33,12 @@ TJunction_sm1_runner(void)
     RUN_TEST_GROUP(TJunction_sm1_State4322_State433);
     RUN_TEST_GROUP(TJunction_sm1_State4322_State434);
 
-    /*Start of user code TJunction_sm1_user_test_runners
+    /*
+     *Start of user code TJunction_sm1_user_test_runners
+    */
+    /*
+     *End of user code
      */
-    /*End of user code*/
 }
 
 /*** end of file ***/

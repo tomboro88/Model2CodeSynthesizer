@@ -30,7 +30,7 @@
          then 'in,out' else aDirection endif + ']' /]
 
 [query private doxygen_brief (aString : String) : String = 
-'@brief ' + aString + utils_newline()/]
+'@brief ' + aString/]
 
 [query private doxygen_file (aString : String) : String = 
 '@file ' + aString/]
@@ -146,6 +146,17 @@
  .doxygen_split_long_lines(line_width, '')/]
 
 [/template]
+
+[**
+ * Inserts a string inside doxygen documentation block.
+ * @param aString The string to be inserted in the documentation block.
+ * @param line_width The line width of the documentation block.
+*/]
+[template public doxygen_doc_string(aString:String, line_width : Integer)]
+[aString.doxygen_line_prefix().doxygen_newlines('')
+ .doxygen_split_long_lines(line_width, '')/]
+[/template]
+
 [**
  * @brief The template that generates doxygen documentation 
  * for the given object.
@@ -153,7 +164,7 @@
 [template public doxygen_documentation(anElement: Element, line_width : Integer) 
                                                     post(doxygen_block())]
 [doxygen_comments(anElement,'',line_width)
-/][let anOp : Operation = if anElement.oclIsKindOf(Behavior) then 
+/][let anOp : Operation = if anElement.oclIsKindOf(OpaqueBehavior) then 
                anElement.oclAsType(Behavior).specification else anElement endif]
 [if (not anOp.isStatic)]
 [doxygen_param(ParameterDirectionKind::_in, 
@@ -182,10 +193,15 @@
  * @brief The template for doxygen documentation of a header file. 
  */]
 [template public doxygen_header_doc(anElement: Element, line_width : Integer)
-                             post(doxygen_block())]
+                             post(doxygen_block())
+ { elementComments : String = doxygen_comments(anElement,'',line_width);}]
 [doxygen_file('').doxygen_line_prefix()/]
 [doxygen_line_prefix('')/]
-[doxygen_comments(anElement,'',line_width)/]
+[if (elementComments.size()>0)]
+[elementComments/][doxygen_line_prefix('')/]
+[/if]
+[doxygen_doc_string(request_generated_note(), line_width)/]
+
 [/template]
 
 [**

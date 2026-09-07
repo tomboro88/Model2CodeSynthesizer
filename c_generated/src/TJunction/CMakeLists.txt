@@ -17,6 +17,11 @@ target_link_libraries(TJunction
 )
 
 target_link_libraries(TJunction
+    PUBLIC
+        plogger
+)
+
+target_link_libraries(TJunction
     PRIVATE
         coverage_compile
 )

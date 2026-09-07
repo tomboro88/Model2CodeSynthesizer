@@ -17,6 +17,11 @@ target_link_libraries(Tkind
 )
 
 target_link_libraries(Tkind
+    PUBLIC
+        plogger
+)
+
+target_link_libraries(Tkind
     PRIVATE
         coverage_compile
 )

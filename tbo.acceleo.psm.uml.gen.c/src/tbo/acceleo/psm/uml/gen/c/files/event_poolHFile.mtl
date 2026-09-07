@@ -4,6 +4,7 @@
  */]
 [module event_poolHFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
+[import tbo::acceleo::psm::uml::gen::c::common::documentation /]
 
 [**
  * The template for generation of the event_pool library header.
@@ -17,11 +18,8 @@
  *
  * @brief Header a generic module used to manage multiple event
  * queues holding data of different types, as if they were in one queue.
- * @author tomboro88
- * @date   15 Dec 2025
- * @copyright (c) 2025 tomboro88. All rights reserved.
- * @license MIT – see LICENSE file in project root
- * @project github.com/tomboro88/M2T4Embedded
+ *
+[documentation_generated_note(0)/]
  */
 
 #ifndef EVENT_POOL_H_

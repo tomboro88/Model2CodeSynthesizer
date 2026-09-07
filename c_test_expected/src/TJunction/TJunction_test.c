@@ -4,9 +4,9 @@
  * @brief Source code of the TJunction package test cases.
  * @author tomboro88
  * @date   11 cze 2026
- * @copyright (c) 2026 tomboro88. All rights reserved.
- * @license MIT – see LICENSE file in project root
- * @project github.com/tomboro88/M2T4Embedded
+ * @copyright (c) 2026 tomboro88. 
+ * @license SPDX-License-Identifier: EPL-2.0
+ * @project github.com/tomboro88/Model2CodeSynthesizer
  */
 
 /*******************************************************************************

@@ -5,6 +5,7 @@
 [module packageCMLtxtFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
 [import tbo::acceleo::psm::uml::gen::c::common::utils /]
+[import tbo::acceleo::psm::uml::gen::c::common::uml_c/]
 [import tbo::acceleo::psm::uml::gen::c::request::request/]
 
 [**
@@ -13,8 +14,14 @@
  */]
 [template public generate_package_CMLtxtFile(aPackage : Package)
 {
-    linkedPackages : OrderedSet(Package) = request_elements_sorted(
+    subPackages : OrderedSet(Package) = request_elements_sorted(
                     aPackage.packagedElement->filter(Package))->filter(Package);
+    externalPackages : OrderedSet(Package) = request_elements_sorted(
+        request_visible_dependencies(aPackage, request_all_visibilities()))
+        ->filter(Package);
+    linkedPackages : OrderedSet(Package) = 
+           subPackages->addAll(externalPackages)
+           ->reject(p:Package|uml_c_get_standard_libraries()->includes(p.name));
     spaces : String = utils_get_indent_string();
     executables : OrderedSet(Artifact) = request_elements_sorted(
                   aPackage.packagedElement
@@ -27,10 +34,11 @@
 }]
 
 [file (get_package_cml_qualified_path(aPackage), false, 'UTF-8')]
-[for (p:Package|linkedPackages) after(utils_newline())]
+[for (p:Package|subPackages) after(utils_newline())]
 add_subdirectory([p.get_package_library_name()/])
 [/for]
 [if (b_is_executable)]
+[comment Variant for an executable package./]
 [if (aPackage.eAllContents(StateMachine)->notEmpty())]
 add_subdirectory(fifo)
 add_subdirectory(event_pool)
@@ -74,6 +82,7 @@ target_link_libraries([a.fileName/]
 )
 [/for]
 [else]
+[comment Variant for a library package./]
 add_library([get_package_library_name(aPackage)/])
 
 target_sources([get_package_library_name(aPackage)/]

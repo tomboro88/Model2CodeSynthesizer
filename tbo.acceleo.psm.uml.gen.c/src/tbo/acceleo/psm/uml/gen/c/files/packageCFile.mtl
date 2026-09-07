@@ -8,10 +8,7 @@
 [import tbo::acceleo::psm::uml::gen::c::request::request/]
 
 [template public generatePackageC(aPackage : Package)
-  {header_packages : Set(Package) = uml_c_header_subpackages(aPackage)->union(
-   uml_c_header_dependencies(aPackage))->asSet();
-   source_subpackages : OrderedSet(Package) = request_elements_sorted(
-       uml_c_source_subpackages(aPackage))->filter(Package);
+  {header_packages : Set(Package) = uml_c_header_dependencies(aPackage);
    source_dependencies  : OrderedSet(Package) = request_elements_sorted(
        uml_c_source_dependencies(aPackage)->removeAll(header_packages))
        ->filter(Package);
@@ -36,7 +33,9 @@
                                             VisibilityKind::protected};}]
 
 [file (get_package_c_qualified_path(aPackage), false, 'UTF-8')]
-[documentationCFile('The ' + aPackage.name + ' package source file.')/]
+[documentationCFile('The ' + aPackage.name + ' package source file.' 
+ + utils_newline() + utils_newline() 
+ + request_generated_note())/]
 
 /*******************************************************************************
  *
@@ -46,7 +45,7 @@
 //[protected('includes top')]
 //[/protected]
 #include "[get_package_h_filename(aPackage)/]"
-[uml_c_include_dependencies(source_dependencies, source_subpackages, 0)
+[uml_c_include_dependencies(source_dependencies, 0)
 /][if (needs_get_specific)]
 #include <stddef.h>
 [/if][if (needs_get_specific)]
@@ -70,23 +69,6 @@
 [uml_c_literal_list(sourceLiteralSpecifications, 0)/]
 
 [/if]
-[if (not allClassifiers->select(
- aClassifier : Classifier | aClassifier.request_needs_storage() 
- and not aClassifier.general->isEmpty())->isEmpty())]
-[documentation_string('@brief The macro used to initialize a pointer to the '
-  + 'child class from a pointer to the base class.\n' 
-  + documentation_param(ParameterDirectionKind::_in, 
-               'child_type', 'The name of the child class type.') + '\n'
-  + documentation_param(ParameterDirectionKind::_in, 
-               'base_field', 'The name of the field of the base class.') + '\n'
-  + documentation_param(ParameterDirectionKind::_in, 
-               'child_ptr', 'The name of the child class target pointer.'), 0)/]
-#define [aPackage.name.toUpper()
-         /]_CHILD_FROM_BASE(child_type,base_field,child_ptr)\
-        [aPackage.name/]_set_specific((char*)p_obj, \
-                             offsetof(child_type,base_field), (char**)child_ptr)
-
-[/if]
 [if (sourceClassifiers->uml_c_classifiers_need_declare() )]
 [uml_c_declare_structs(sourceClassifiers, 0)/]
 [/if]
@@ -96,12 +78,12 @@
  *
  ******************************************************************************/
 [debug_marker('general_extern_classifiers.')
-/][for (aClassifier:Classifier|general_extern_classifiers)
-     ?(aClassifier.uml_c_operations_need_declaration(
+/][for (aClassifier:Classifier|general_extern_classifiers
+                 ->select(c:Classifier|c.uml_c_operations_need_declaration(
                           Set{VisibilityKind::protected})->notEmpty()
-       or (aClassifier.request_has_standalone_behaviors(
+       or (c.request_has_standalone_behaviors(
                          Set{VisibilityKind::protected, 
-                             VisibilityKind::public})))]
+                             VisibilityKind::public}))))]
 [debug_marker(aClassifier.name + ' protected operations.')
 /][uml_c_declare_operations(aClassifier, Set{VisibilityKind::protected}, 
                           true, 0)/]
@@ -113,9 +95,9 @@
 [/let]
 [/for]
 [debug_marker('sourceClassifiers')
-/][for (aClassifier:Classifier|sourceClassifiers)
-     ?(aClassifier.uml_c_operations_need_declaration(
-                          Set{VisibilityKind::public})->notEmpty())]
+/][for (aClassifier:Classifier|sourceClassifiers->select(c:Classifier|
+          c.uml_c_operations_need_declaration(
+                          Set{VisibilityKind::public})->notEmpty()))]
 [uml_c_declare_operations(aClassifier, Set{VisibilityKind::public}, 
                           false, 0)/]
 [/for]
@@ -124,24 +106,33 @@
 [for (aClassifier:Classifier|allClassifiers)]
 /*[aClassifier.name/]*/
 [/for]
-[/if][for (aClassifier:Classifier|allClassifiers)
-     ?(aClassifier.uml_c_operations_need_declaration(
+[/if][for (aClassifier:Classifier|allClassifiers->select(c:Classifier|
+       c.uml_c_operations_need_declaration(
                           Set{VisibilityKind::protected, 
                               VisibilityKind::_package})->notEmpty()
-       or (aClassifier.request_has_standalone_behaviors(
+       or (c.request_has_standalone_behaviors(
                                      Set{VisibilityKind::protected,
                                          VisibilityKind::_package,
-                                         VisibilityKind::public})))]
+                                         VisibilityKind::public}))))]
 [debug_marker(aClassifier.name + ' operations')
-/][uml_c_declare_operations(aClassifier, Set{VisibilityKind::protected,
+/][if ( aClassifier.uml_c_operations_need_declaration(
+                          Set{VisibilityKind::protected, 
+                              VisibilityKind::_package})->notEmpty())]
+[uml_c_declare_operations(aClassifier, Set{VisibilityKind::protected,
                                          VisibilityKind::_package}, 
                           false, 0)/]
+[/if]
 [debug_marker(aClassifier.name + ' behaviors')
-/][let bc:BehavioredClassifier=aClassifier]
+/][if (aClassifier.request_has_standalone_behaviors(
+                                     Set{VisibilityKind::protected,
+                                         VisibilityKind::_package,
+                                         VisibilityKind::public}))]
+[let bc:BehavioredClassifier=aClassifier]
 [uml_c_declare_behaviors(bc, Set{VisibilityKind::protected,
                                          VisibilityKind::_package,
                                          VisibilityKind::public}, false, 0)/]
 [/let]
+[/if]
 [/for]
 /*******************************************************************************
  *
@@ -166,7 +157,8 @@
 [uml_c_declare_operations(aClassifier, vis, false, 0)/]
 [/if]
 [if (aClassifier.request_has_standalone_behaviors(vis))]
-[uml_c_declare_behaviors(aClassifier.oclAsType(BehavioredClassifier), vis, false, 0)/]
+[uml_c_declare_behaviors(aClassifier.oclAsType(BehavioredClassifier), vis, 
+                                                                     false, 0)/]
 [/if]
 [if (aClassifier.uml_c_needs_init_defaults() )]
 [uml_c_declare_defaults(aClassifier, 0)/]
@@ -194,46 +186,29 @@
 [if (allClassifiers
        ->select(c:Classifier|c.uml_c_needs_vtable_inst())->notEmpty())]
 [uml_c_init_vtables(allClassifiers, 0)/][/if]
+[if(allClassifiers->exists(c:Classifier|
+                                     c.request_classifier_needs_event_queue()))]
+[for (aClassifier:Classifier|allClassifiers->select(c:Classifier|
+                                     c.request_classifier_needs_event_queue()))]
+[uml_c_define_event_pool_sizes(aClassifier.oclAsType(BehavioredClassifier), 0)/]
+[/for]
+[/if]
 /*******************************************************************************
  *
  * Inline functions.
  *
  ******************************************************************************/
-[if (not allClassifiers->select(
- aClassifier : Classifier | aClassifier.request_needs_storage() 
- and not aClassifier.general->isEmpty())->isEmpty())]
-/**
- * @brief Obtains the pointer to the specialized class from the pointer to
- * the base class.
- * @param ['['/]in[']'/] p_base The pointer to the base class object.
- * @param ['['/]in[']'/] base_offset The amount by which the p_base is offset 
- *     from the specific class pointer. Should be obtained using the 
- *     offsetof(specific_type, base_field_name) macro.
- * @param ['['/]out[']'/] pp_specific The pointer to the location where the 
- *     seeked pointer should be stored.
- * @return true if the searched pointer was found.
- */
-static inline bool 
-[aPackage.name/]_set_specific(char* const p_base, size_t const base_offset,
-[utils_indent(aPackage.name.size())/]              char** const pp_specific)
-{
-    bool b_is_copied = false;
-
-    if((NULL != pp_specific) && (NULL != p_base) 
-            && (base_offset <= PTRDIFF_MAX))
-    {
-        *pp_specific = (p_base-((ptrdiff_t)base_offset));
-
-        if(NULL != *pp_specific)
-        {
-            b_is_copied = true;
-        }
-    }
-
-    return b_is_copied;
-}
-
-[/if]
+[for (aClassifier:Classifier|allClassifiers->select(c:Classifier|
+    c.ownedMember->selectByKind(Operation)
+        ->exists(o:Operation|o.request_is_conversion_operation())))
+     after(utils_newline())]
+[for (aBase:Classifier|aClassifier.general
+        ->select(c:Classifier|aClassifier.ownedMember->selectByKind(Operation)
+                 ->exists(o:Operation|
+           o.name = c.request_get_base_to_child_conversion_name(aClassifier))))]
+[uml_c_define_child_conversion_function(aBase,aClassifier, 0)/]
+[/for]
+[/for]
 [for (sm : StateMachine | allClassifiers->selectByKind(StateMachine))]
 [uml_c_define_state_entry(sm,0)/]
 [uml_c_implement_initial_transitions(sm, 0)/]
@@ -250,15 +225,16 @@ static inline bool
  ******************************************************************************/
 [for (aClassifier:Classifier|allClassifiers->select(c:Classifier | 
       c.uml_c_get_operations(Set{VisibilityKind::public})->notEmpty()
-       or c.request_has_standalone_behaviors(Set{VisibilityKind::public})))
-     separator(utils_newline())
-     after( utils_newline() ) ]
-[uml_c_define_operations(aClassifier, Set{VisibilityKind::public}, 0)
-/][if (aClassifier.request_has_standalone_behaviors(Set{VisibilityKind::public}))]
+       or c.request_has_standalone_behaviors(Set{VisibilityKind::public}))) ]
 [if(aClassifier.uml_c_get_operations(Set{VisibilityKind::public})
        ->notEmpty())]
-
-[/if]
+[uml_c_define_operations(aClassifier, Set{VisibilityKind::public}, 0)
+/]
+[/if][if (aClassifier.request_classifier_needs_event_queue())]
+[uml_c_implement_event_pool_functions(
+       aClassifier.oclAsType(BehavioredClassifier), VisibilityKind::public, 0)/]
+[/if][if (aClassifier
+          .request_has_standalone_behaviors(Set{VisibilityKind::public}))]
 [uml_c_define_behaviors(aClassifier.oclAsType(BehavioredClassifier),
                                                  Set{VisibilityKind::public}, 0)
 /][/if]

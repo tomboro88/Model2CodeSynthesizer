@@ -39,6 +39,9 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 			<storageModule buildDir="_build/${ConfigName}" moduleId="de.marw.cmake4eclipse.mbs.settings">
 				<options/>
+				<defs>
+					<def name="CMAKE_BUILD_TYPE" type="STRING" val="${ConfigName}"/>
+				</defs>
 			</storageModule>
 		</cconfiguration>
 		<cconfiguration id="cmake4eclipse.mbs.config.cmake.301168869">

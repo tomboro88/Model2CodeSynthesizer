@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
-  <uml:Model xmi:id="_ye_tMOqeEe2Yz7yVfkC93Q" name="umltest" visibility="public">
+  <uml:Model xmi:id="_ye_tMOqeEe2Yz7yVfkC93Q" name="umltest">
     <ownedComment xmi:type="uml:Comment" xmi:id="_AlcTwKU7EfCJwtlh12_YdQ" annotatedElement="_ye_tMOqeEe2Yz7yVfkC93Q">
       <body>@brief Top level module of the model.
 @details Contains two example subpackages: Tkind and TJunction.</body>
@@ -16,7 +16,7 @@
         <body>@brief This is an example logging functionality modelled as an Interface, providing dynamic dependency injection.
 @details It can easily be replaced with different functionalities just by replacing proper virtual table with function pointers. For example this example project will use puts function, but unit tests will use some custom function used for verifying the correct operation of the code.</body>
       </ownedComment>
-      <packagedElement xmi:type="uml:Class" xmi:id="_F3pgMNw4Ee-clukbqF5Mtw" name="ctest">
+      <packagedElement xmi:type="uml:Class" xmi:id="_F3pgMNw4Ee-clukbqF5Mtw" name="ctest" visibility="public">
         <generalization xmi:type="uml:Generalization" xmi:id="_IThkwKTCEfCF5Mxlt2zVCg" general="_6-nZIKTBEfCF5Mxlt2zVCg"/>
         <generalization xmi:type="uml:Generalization" xmi:id="_JIL74KTCEfCF5Mxlt2zVCg" general="_-LTXkKTBEfCF5Mxlt2zVCg"/>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_pWTlkKU4EfCJwtlh12_YdQ" name="my_name" visibility="private" type="_aw4KEKU0EfCJFuHNEOD_Ew">
@@ -31,14 +31,22 @@ It is automatically detected by the generator and included as a literal constant
         <ownedAttribute xmi:type="uml:Property" xmi:id="_-ZDxMKU5EfCJwtlh12_YdQ" name="pi" type="_5MrL4KU5EfCJwtlh12_YdQ">
           <defaultValue xmi:type="uml:LiteralReal" xmi:id="_PIx20KU6EfCJwtlh12_YdQ" name="PI_LITERAL_CONSTANT" value="3.14"/>
         </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_MgmxcBaKEfG70Ybw1j3UxQ" name="logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" aggregation="shared" association="_CA9DMBdwEfGmVulf-GfgLw">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_MgmxcBaKEfG70Ybw1j3UxQ" name="p_logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" aggregation="shared" association="_CA9DMBdwEfGmVulf-GfgLw">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_gXJ48JXdEfGb7YJ-zxg_XA" annotatedElement="_MgmxcBaKEfG70Ybw1j3UxQ">
+            <body>The pointer to an object used to record the executed statemachine transition comments.</body>
+          </ownedComment>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ckz8YBdwEfGmVulf-GfgLw"/>
         </ownedAttribute>
-        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_nbBJMNw4Ee-clukbqF5Mtw" name="sm1">
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_qkc70L4zEfCF3MoXlXpSFw" name="b_test_condition" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
+        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_nbBJMNw4Ee-clukbqF5Mtw" name="sm1" specification="_J9R48KDKEfGbF6dKjl1Mow">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_Ms4DoKfZEfGd4LbFpB-J5g" annotatedElement="_nbBJMNw4Ee-clukbqF5Mtw">
+            <body>@brief An example StateMachine implementing different kinds of transitions.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_qkc70L4zEfCF3MoXlXpSFw" name="b_test_condition" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_Wt4rcKdeEfGZjrjFsAKmRw"/>
+          </ownedAttribute>
           <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_8OVngBdzEfGmVulf-GfgLw" visibility="private" specification="_kvleEBdzEfGmVulf-GfgLw">
             <language>C</language>
-            <body>Tkind_logger_record(p_obj->p_context->p_logger, p_str);</body>
+            <body>plogger_logger_record(p_obj->p_context->p_logger, p_str);</body>
           </ownedBehavior>
           <ownedOperation xmi:type="uml:Operation" xmi:id="_kvleEBdzEfGmVulf-GfgLw" name="rec_log" visibility="private" method="_8OVngBdzEfGmVulf-GfgLw">
             <ownedParameter xmi:type="uml:Parameter" xmi:id="_vtL0EBdzEfGmVulf-GfgLw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
@@ -50,37 +58,37 @@ It is automatically detected by the generator and included as a literal constant
             <transition xmi:type="uml:Transition" xmi:id="_kVUYANxCEe-clukbqF5Mtw" source="_xRPncNw4Ee-clukbqF5Mtw" target="_MQR5Ydw8Ee-clukbqF5Mtw">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_P_TicEG3EfGP59nR7Np73Q">
                 <language>C</language>
-                <body>Tkind_sm1_rec_log(p_obj, &quot;State1 to State7\n&quot;);</body>
+                <body>tkind_sm1_rec_log(p_obj, &quot;State1 to State7\n&quot;);</body>
               </effect>
               <trigger xmi:type="uml:Trigger" xmi:id="_31jbIN27Ee-8CKMu-ENa-A" event="_3iswkN27Ee-8CKMu-ENa-A"/>
             </transition>
             <transition xmi:type="uml:Transition" xmi:id="_iqpLUN21Ee-8CKMu-ENa-A" source="_gwLpwN21Ee-8CKMu-ENa-A" target="_xRPncNw4Ee-clukbqF5Mtw">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_f4n9EDnLEfGpzs3AXu5PVg">
                 <language>C</language>
-                <body>Tkind_sm1_rec_log(p_obj, &quot;Initial1 to State1\n&quot;);</body>
+                <body>tkind_sm1_rec_log(p_obj, &quot;Initial1 to State1\n&quot;);</body>
               </effect>
             </transition>
             <transition xmi:type="uml:Transition" xmi:id="_2YuTwPh1Ee-9W4mcsGdJGQ" source="_xRPncNw4Ee-clukbqF5Mtw" target="_vz5U0Ph1Ee-9W4mcsGdJGQ">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_psPcsEQSEfGGcuW7Di30VA">
                 <language>C</language>
-                <body>Tkind_sm1_rec_log(p_obj, &quot;State1 to Choice1\n&quot;);</body>
+                <body>tkind_sm1_rec_log(p_obj, &quot;State1 to Choice1\n&quot;);</body>
               </effect>
               <trigger xmi:type="uml:Trigger" xmi:id="_SdvdsPh2Ee-9W4mcsGdJGQ" event="_SJivUPh2Ee-9W4mcsGdJGQ"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="_xRPncNw4Ee-clukbqF5Mtw" name="State1">
               <entry xmi:type="uml:OpaqueBehavior" xmi:id="_L--osN3WEe-K46f0PJjDaQ">
                 <language>C</language>
-                <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State1\n&quot;);</body>
+                <body>tkind_sm1_rec_log(p_obj, &quot;Enter State1\n&quot;);</body>
               </entry>
               <exit xmi:type="uml:OpaqueBehavior" xmi:id="_RAjsMN3WEe-K46f0PJjDaQ">
                 <language>C</language>
-                <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State1\n&quot;);</body>
+                <body>tkind_sm1_rec_log(p_obj, &quot;Exit State1\n&quot;);</body>
               </exit>
               <region xmi:type="uml:Region" xmi:id="_y0mQkNw4Ee-clukbqF5Mtw" name="Region2">
                 <ownedComment xmi:type="uml:Comment" xmi:id="_175kIN22Ee-8CKMu-ENa-A" annotatedElement="_y0qiANw4Ee-clukbqF5Mtw">
                   <body>Only local transitions are linked with this state</body>
                 </ownedComment>
-                <ownedComment xmi:type="uml:Comment" xmi:id="_mGkNsN23Ee-8CKMu-ENa-A" annotatedElement="_y0mQkNw4Ee-clukbqF5Mtw">
+                <ownedComment xmi:type="uml:Comment" xmi:id="_mGkNsN23Ee-8CKMu-ENa-A" annotatedElement="_F56XwNw9Ee-clukbqF5Mtw">
                   <body>Only external transitions are linked to this state</body>
                 </ownedComment>
                 <ownedComment xmi:type="uml:Comment" xmi:id="_x1Ai4OJ6Ee-YJfJPhIaSCQ" annotatedElement="_3KcSoNw8Ee-clukbqF5Mtw">
@@ -89,45 +97,45 @@ It is automatically detected by the generator and included as a literal constant
                 <transition xmi:type="uml:Transition" xmi:id="_Vr7UcNw8Ee-clukbqF5Mtw" source="_HZtMANw8Ee-clukbqF5Mtw" target="_9oHWINw7Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_weHvsDnLEfGpzs3AXu5PVg">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Initial3 to State2\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Initial3 to State2\n&quot;);</body>
                   </effect>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_TsIKcNw9Ee-clukbqF5Mtw" kind="local" source="_9oHWINw7Ee-clukbqF5Mtw" target="_y0qiANw4Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_rmyb0DzVEfG-8_6xv8-naA">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State2 to State3\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State2 to State3\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_C5N5sN24Ee-8CKMu-ENa-A" event="_CqC1QN24Ee-8CKMu-ENa-A"/>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_VRmTcNw9Ee-clukbqF5Mtw" source="_9oHWINw7Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_SG3owEDvEfGss4HVwiSwQw">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State2 to State4\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State2 to State4\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_PJJaQN24Ee-8CKMu-ENa-A" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
                 </transition>
-                <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
+                <transition xmi:type="uml:Transition" xmi:id="_Jr4YENw-Ee-clukbqF5Mtw" kind="local" source="_y0qiANw4Ee-clukbqF5Mtw" target="_9VifwNw4Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_S4rFEOQQEe-pVI6Tkq5fmw" name="c_effect">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State3 to State5\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State3 to State5\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_THN84N25Ee-8CKMu-ENa-A" event="_S0RywN25Ee-8CKMu-ENa-A"/>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_Mgz90Nw-Ee-clukbqF5Mtw" source="_F56XwNw9Ee-clukbqF5Mtw" target="_HMPiVNw9Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_M235wEVYEfGoVqB-YFMMLw">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State4 to State6\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State4 to State6\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_w6fi8N26Ee-8CKMu-ENa-A" event="_wrZXAN26Ee-8CKMu-ENa-A"/>
                 </transition>
                 <subvertex xmi:type="uml:State" xmi:id="_y0qiANw4Ee-clukbqF5Mtw" name="State3">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_khO3gN3LEe-T8tGVws-ENQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State3\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Enter State3\n&quot;);</body>
                   </entry>
                   <exit xmi:type="uml:OpaqueBehavior" xmi:id="_JnoQcN3OEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State3\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Exit State3\n&quot;);</body>
                   </exit>
                   <region xmi:type="uml:Region" xmi:id="_9VgDgNw4Ee-clukbqF5Mtw" name="Region3">
                     <ownedComment xmi:type="uml:Comment" xmi:id="_9fL68OAdEe-Dn89-xPPa6w" annotatedElement="_Jr4YENw-Ee-clukbqF5Mtw">
@@ -136,32 +144,32 @@ It is automatically detected by the generator and included as a literal constant
                     <transition xmi:type="uml:Transition" xmi:id="_3KcSoNw8Ee-clukbqF5Mtw" kind="local" source="_9VifwNw4Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_4zAfoEo1EfGaK54aq4VJyA">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State1\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State5 to State1\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_2clvAN25Ee-8CKMu-ENa-A" event="_2COHMN25Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="_CE_fMNw-Ee-clukbqF5Mtw" kind="local" source="_9VifwNw4Ee-clukbqF5Mtw" target="_y0qiANw4Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_DNrkMEo1EfGaK54aq4VJyA">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State3\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State5 to State3\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_sNCx0N25Ee-8CKMu-ENa-A" event="_r_GccN25Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="_8nepIOAYEe-Dn89-xPPa6w" source="_9VifwNw4Ee-clukbqF5Mtw" target="_HMPiVNw9Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_K2vf8Eo4EfGaK54aq4VJyA">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State5 to State6\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State5 to State6\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_C0dIwOAZEe-Dn89-xPPa6w" event="_Cf5OAOAZEe-Dn89-xPPa6w"/>
                     </transition>
                     <subvertex xmi:type="uml:State" xmi:id="_9VifwNw4Ee-clukbqF5Mtw" name="State5">
                       <entry xmi:type="uml:OpaqueBehavior" xmi:id="_4MdkoN3OEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State5\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Enter State5\n&quot;);</body>
                       </entry>
                       <exit xmi:type="uml:OpaqueBehavior" xmi:id="_-tvuEN3TEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State5\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Exit State5\n&quot;);</body>
                       </exit>
                     </subvertex>
                   </region>
@@ -169,46 +177,46 @@ It is automatically detected by the generator and included as a literal constant
                 <subvertex xmi:type="uml:State" xmi:id="_9oHWINw7Ee-clukbqF5Mtw" name="State2">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_Dn9WYN21Ee-8CKMu-ENa-A">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State2\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Enter State2\n&quot;);</body>
                   </entry>
                   <exit xmi:type="uml:OpaqueBehavior" xmi:id="_OjLlcN3DEe-8CKMu-ENa-A">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State2\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Exit State2\n&quot;);</body>
                   </exit>
                 </subvertex>
                 <subvertex xmi:type="uml:Pseudostate" xmi:id="_HZtMANw8Ee-clukbqF5Mtw" name="Initial3"/>
                 <subvertex xmi:type="uml:State" xmi:id="_F56XwNw9Ee-clukbqF5Mtw" name="State4">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_HeMQAN3UEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State4\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Enter State4\n&quot;);</body>
                   </entry>
                   <exit xmi:type="uml:OpaqueBehavior" xmi:id="_SBDx0N3UEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State4\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Exit State4\n&quot;);</body>
                   </exit>
                   <region xmi:type="uml:Region" xmi:id="_HMO7QNw9Ee-clukbqF5Mtw" name="Region4">
                     <transition xmi:type="uml:Transition" xmi:id="_LWi_kNw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_mqb9kEsuEfGsnfpIT_qm-w">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State6 to State1\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State6 to State1\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_X1szUN27Ee-8CKMu-ENa-A" event="_XcYUYN27Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="__P2eENw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_R9-ngEssEfGsnfpIT_qm-w">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State6 to State4\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State6 to State4\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_P4_bcN27Ee-8CKMu-ENa-A" event="_PTHuQN27Ee-8CKMu-ENa-A"/>
                     </transition>
                     <subvertex xmi:type="uml:State" xmi:id="_HMPiVNw9Ee-clukbqF5Mtw" name="State6">
                       <entry xmi:type="uml:OpaqueBehavior" xmi:id="_laqq0N3UEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State6\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Enter State6\n&quot;);</body>
                       </entry>
                       <exit xmi:type="uml:OpaqueBehavior" xmi:id="_1HM1IN3UEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State6\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Exit State6\n&quot;);</body>
                       </exit>
                     </subvertex>
                   </region>
@@ -221,14 +229,14 @@ It is automatically detected by the generator and included as a literal constant
                 <transition xmi:type="uml:Transition" xmi:id="_XqPzkNxCEe-clukbqF5Mtw" source="_MQR5Ydw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_YMlYcE2VEfGdEYrLSN6WNw">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State7 to State8\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State7 to State8\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_HID74N28Ee-8CKMu-ENa-A" name="j" event="_ETBBYN28Ee-8CKMu-ENa-A"/>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_amWYUNxCEe-clukbqF5Mtw" source="_N0T38Nw8Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_8Ynw4E8WEfGpr7uMeamuig">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;State8 to State1\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;State8 to State1\n&quot;);</body>
                   </effect>
                   <trigger xmi:type="uml:Trigger" xmi:id="_iuIgAN28Ee-8CKMu-ENa-A" event="_iePp4N28Ee-8CKMu-ENa-A"/>
                 </transition>
@@ -241,7 +249,7 @@ It is automatically detected by the generator and included as a literal constant
                   </ownedRule>
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_b7rBEEQYEfGGcuW7Di30VA">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Choice1 to State8\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Choice1 to State8\n&quot;);</body>
                   </effect>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_6bp9sPh1Ee-9W4mcsGdJGQ" guard="_SqoNsPh3Ee-9W4mcsGdJGQ" kind="local" source="_vz5U0Ph1Ee-9W4mcsGdJGQ" target="_xRPncNw4Ee-clukbqF5Mtw">
@@ -250,57 +258,64 @@ It is automatically detected by the generator and included as a literal constant
                   </ownedRule>
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_yufgUEQSEfGGcuW7Di30VA">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Choice1 to State1\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Choice1 to State1\n&quot;);</body>
                   </effect>
                 </transition>
                 <subvertex xmi:type="uml:State" xmi:id="_MQR5Ydw8Ee-clukbqF5Mtw" name="State7">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_jRjMwN3VEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State7\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Enter State7\n&quot;);</body>
                   </entry>
                   <exit xmi:type="uml:OpaqueBehavior" xmi:id="_n_CPkN3VEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State7\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Exit State7\n&quot;);</body>
                   </exit>
                 </subvertex>
                 <subvertex xmi:type="uml:State" xmi:id="_N0T38Nw8Ee-clukbqF5Mtw" name="State8">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_xToAYN3VEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State8\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Enter State8\n&quot;);</body>
                   </entry>
                   <exit xmi:type="uml:OpaqueBehavior" xmi:id="_0ePiQN3VEe-K46f0PJjDaQ">
                     <language>C</language>
-                    <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State8\n&quot;);</body>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Exit State8\n&quot;);</body>
                   </exit>
                   <region xmi:type="uml:Region" xmi:id="_PLqscNw8Ee-clukbqF5Mtw" name="Region6">
                     <transition xmi:type="uml:Transition" xmi:id="_cqmvENxCEe-clukbqF5Mtw" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_uBUUIE8WEfGpr7uMeamuig">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State9 to State8\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State9 to State8\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_RHL3cN28Ee-8CKMu-ENa-A" event="_P8nhwN28Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="_gWUL0NxCEe-clukbqF5Mtw" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_1JOyAE8WEfGpr7uMeamuig">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;State9 to State1\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;State9 to State1\n&quot;);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_YNiPEN28Ee-8CKMu-ENa-A" event="_X-bcEN28Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="__noSoNxCEe-clukbqF5Mtw" source="_-JSFUNxCEe-clukbqF5Mtw" target="_PLtIsNw8Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_K8o5cEsxEfGsnfpIT_qm-w">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Initial4 to State9\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Initial4 to State9\n&quot;);</body>
                       </effect>
+                    </transition>
+                    <transition xmi:type="uml:Transition" xmi:id="_sYkZUKfZEfGd4LbFpB-J5g" kind="internal" source="_PLtIsNw8Ee-clukbqF5Mtw" target="_PLtIsNw8Ee-clukbqF5Mtw">
+                      <effect xmi:type="uml:OpaqueBehavior" xmi:id="_GHAGYKfaEfGd4LbFpB-J5g">
+                        <language>C</language>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State9 on event i\n&quot;);</body>
+                      </effect>
+                      <trigger xmi:type="uml:Trigger" xmi:id="_zr0kgKfZEfGd4LbFpB-J5g" event="_3iswkN27Ee-8CKMu-ENa-A"/>
                     </transition>
                     <subvertex xmi:type="uml:State" xmi:id="_PLtIsNw8Ee-clukbqF5Mtw" name="State9">
                       <entry xmi:type="uml:OpaqueBehavior" xmi:id="_5USEIN3VEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Enter State9\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Enter State9\n&quot;);</body>
                       </entry>
                       <exit xmi:type="uml:OpaqueBehavior" xmi:id="_Cqu2IN3WEe-K46f0PJjDaQ">
                         <language>C</language>
-                        <body>Tkind_sm1_rec_log(p_obj, &quot;Exit State9\n&quot;);</body>
+                        <body>tkind_sm1_rec_log(p_obj, &quot;Exit State9\n&quot;);</body>
                       </exit>
                     </subvertex>
                     <subvertex xmi:type="uml:Pseudostate" xmi:id="_-JSFUNxCEe-clukbqF5Mtw" name="Initial4"/>
@@ -312,7 +327,7 @@ It is automatically detected by the generator and included as a literal constant
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_gwLpwN21Ee-8CKMu-ENa-A" name="Initial1"/>
           </region>
         </ownedBehavior>
-        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Tar_EKTFEfCF5Mxlt2zVCg" name="set_uint_incr" visibility="public" specification="_gs_NgKTDEfCF5Mxlt2zVCg">
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Tar_EKTFEfCF5Mxlt2zVCg" name="set_uint_incr" visibility="protected" specification="_gs_NgKTDEfCF5Mxlt2zVCg">
           <language>C</language>
           <body>p_obj->Property1 = param1 + 1u;</body>
         </ownedBehavior>
@@ -324,20 +339,35 @@ After the pointer conversion, it returns the Property1 value of the another base
           </ownedComment>
           <language>C</language>
           <body>float result = 0.0f;
-Tkind_ctest_t* p_ctest = NULL;
-/* Check if this is really ctest class object by checking the specialized 
-    virtual function table which was assigned by ctest class constructor.*/
-if((&amp;Tkind_ctest_vtable.cbase2== p_obj->p_vtable)
-    &amp;&amp; TKIND_CHILD_FROM_BASE(Tkind_ctest_t, cbase2, &amp;p_ctest))
+tkind_ctest_t* p_ctest = NULL;
+
+if(tkind_ctest_cast_from_cbase2(p_obj, &amp;p_ctest))
 {
     /*Here the p_ctest pointer has the correct value.*/
     /*Intentionally get the value of Property1 from the other base class
-       (cbase1).*/
+      (cbase1).*/
     result = (float)p_ctest->cbase1.Property1;
 }
 
 return result;</body>
         </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_956y0Js5EfGO1ZnaCGuunQ" name="init_behavior" specification="_eZhukJahEfGyIYl3O46cLA">
+          <language>C</language>
+          <body>p_obj->p_logger = p_logger;
+/* Initialize the state machine. */
+tkind_ctest_start_sm1(p_obj);</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_eZhukJahEfGyIYl3O46cLA" name="init" method="_956y0Js5EfGO1ZnaCGuunQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_moZCwJqZEfGql7rLR4AR_w" annotatedElement="_eZhukJahEfGyIYl3O46cLA">
+            <body>@brief The initialization function of the ctest class.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_mw3M8JahEfGyIYl3O46cLA" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_tbVpMJdXEfGMWJ15xPpZWQ" name="p_logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" direction="inout">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_2fv9AJqZEfGql7rLR4AR_w" annotatedElement="_tbVpMJdXEfGMWJ15xPpZWQ">
+              <body>The pointer to the logger object.</body>
+            </ownedComment>
+          </ownedParameter>
+        </ownedOperation>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_CMSiQN24Ee-8CKMu-ENa-A" name="a"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_Ot7d4N24Ee-8CKMu-ENa-A" name="b"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_SjgL0N25Ee-8CKMu-ENa-A" name="c"/>
@@ -353,17 +383,17 @@ return result;</body>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_gM9jwN28Ee-8CKMu-ENa-A" name="m"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_CMnssOAZEe-Dn89-xPPa6w" name="n"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_RWp50Ph2Ee-9W4mcsGdJGQ" name="o"/>
-        <nestedClassifier xmi:type="uml:Interface" xmi:id="_Ij1hQBaHEfG70Ybw1j3UxQ" name="logger">
-          <ownedOperation xmi:type="uml:Operation" xmi:id="_YZyGQBaHEfG70Ybw1j3UxQ" name="record">
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="_wvklYBaHEfG70Ybw1j3UxQ" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
-              <ownedComment xmi:type="uml:Comment" xmi:id="_wvklYRaHEfG70Ybw1j3UxQ" annotatedElement="_wvklYBaHEfG70Ybw1j3UxQ">
-                <body>A pointer to the string that will be logged.</body>
-              </ownedComment>
-              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eYfD4BaIEfG70Ybw1j3UxQ"/>
-              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eI-oQBaIEfG70Ybw1j3UxQ" value="*"/>
-            </ownedParameter>
-          </ownedOperation>
-        </nestedClassifier>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_pe6n0JmEEfGqXMQRiBIcDw" name="cast_from_cbase2" visibility="private" isStatic="true">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_wGicEJmEEfGqXMQRiBIcDw" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_IaLPAJmZEfGqXMQRiBIcDw" name="p_obj" type="_-LTXkKTBEfCF5Mxlt2zVCg" direction="inout"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_QgjQUJmFEfGqXMQRiBIcDw" name="pp_ctest" type="_F3pgMNw4Ee-clukbqF5Mtw" direction="out"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_J9R48KDKEfGbF6dKjl1Mow" name="start_sm1" visibility="private" method="_nbBJMNw4Ee-clukbqF5Mtw">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_ylbIEKDREfGbF6dKjl1Mow" annotatedElement="_J9R48KDKEfGbF6dKjl1Mow">
+            <body>@brief Initializes the sm1 state machine.
+@details According to UML, the state machine must be invoked first, which will lead to its initialization and execution of the initial transition.</body>
+          </ownedComment>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_CqC1QN24Ee-8CKMu-ENa-A" name="a" operation="_CMSiQN24Ee-8CKMu-ENa-A"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_O8xyMN24Ee-8CKMu-ENa-A" name="b" operation="_Ot7d4N24Ee-8CKMu-ENa-A"/>
@@ -386,8 +416,8 @@ return result;</body>
 @details This (and other) constant must be included by the creator inside of the model. This way it provides an elastic way to specify the queue size for each event.
 A missing (unspecified explicitly in the model) constant will result in the C-compiler error, since the queue buffers use these names as the internal array sizes.
 The specified size of 2 is not a random number. This is the minimum recommended size of the created event queue. Although it may seem obvious for a queue, the number of two
-events in the queue means, that when one ovent is being processed by the state machine, there will still be place for at least one new event in the queue.
-This is important for critical events, that are sent only ocassionally, and cannot be missed just because the event queue was filled with other more frequent event types.</body>
+events in the queue means, that when one event is being processed by the state machine, there will still be place for at least one new event in the queue.
+This is important for critical events, that are sent only occasionally, and cannot be missed just because the event queue was filled with other more frequent event types.</body>
         </ownedComment>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_6-nZIKTBEfCF5Mxlt2zVCg" name="cbase1">
@@ -403,6 +433,16 @@ This is important for critical events, that are sent only ocassionally, and cann
           <language>C</language>
           <body>return p_obj->Property1;</body>
         </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_VvtjQJs6EfGO1ZnaCGuunQ" name="init_behavior" specification="_ctV6kJaWEfGyIYl3O46cLA">
+          <language>C</language>
+          <body>b_is_created = true;</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_ctV6kJaWEfGyIYl3O46cLA" name="init" method="_VvtjQJs6EfGO1ZnaCGuunQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_Sc46QJadEfGyIYl3O46cLA" annotatedElement="_ctV6kJaWEfGyIYl3O46cLA">
+            <body>@brief The initialization function of the cbase1 class.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="__DA7gJacEfGyIYl3O46cLA" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+        </ownedOperation>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_gs_NgKTDEfCF5Mxlt2zVCg" name="SetUintProp" method="_z8RQYKTEEfCF5Mxlt2zVCg _Tar_EKTFEfCF5Mxlt2zVCg">
           <ownedParameter xmi:type="uml:Parameter" xmi:id="_vmEhoKTDEfCF5Mxlt2zVCg" name="param1" type="_TqTI8KU0EfCJFuHNEOD_Ew"/>
         </ownedOperation>
@@ -423,6 +463,16 @@ This is important for critical events, that are sent only ocassionally, and cann
           <language>C</language>
           <body>return p_obj->Property1;</body>
         </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ZDC8QJs6EfGO1ZnaCGuunQ" name="init_behavior" specification="_Ak95oJahEfGyIYl3O46cLA">
+          <language>C</language>
+          <body>b_is_created = true;</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_Ak95oJahEfGyIYl3O46cLA" name="init" method="_ZDC8QJs6EfGO1ZnaCGuunQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_Yz0qEJmxEfGUuvWIcPcTQQ" annotatedElement="_Ak95oJahEfGyIYl3O46cLA">
+            <body>@brief The initialization function of the cbase2 class.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_OpSwAJahEfGyIYl3O46cLA" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+        </ownedOperation>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_1iJegKTDEfCF5Mxlt2zVCg" name="SetFloatProp" method="_uroAsKTFEfCF5Mxlt2zVCg">
           <ownedParameter xmi:type="uml:Parameter" xmi:id="_7aACsKTDEfCF5Mxlt2zVCg" name="param1" type="_XDi8sKU0EfCJFuHNEOD_Ew"/>
         </ownedOperation>
@@ -452,25 +502,62 @@ This is important for critical events, that are sent only ocassionally, and cann
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CBGNIBdwEfGmVulf-GfgLw" value="1"/>
         </ownedEnd>
       </packagedElement>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_Cstk8JqhEfGql7rLR4AR_w" client="_eZhukJahEfGyIYl3O46cLA" supplier="_ctV6kJaWEfGyIYl3O46cLA"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_nEyxQJqhEfGql7rLR4AR_w" client="_eZhukJahEfGyIYl3O46cLA" supplier="_Ak95oJahEfGyIYl3O46cLA"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_tzRuEAHPEfCgXv5ODs4Seg" name="TJunction">
       <ownedComment xmi:type="uml:Comment" xmi:id="_krpNQKU4EfCJwtlh12_YdQ" annotatedElement="_tzRuEAHPEfCgXv5ODs4Seg">
         <body>@brief A package with state machine diagrams utilizing the Junction Pseudostate.
-@details The state diagrams included in this package are used to validate the code
-generated for Junction Pseudostates, which are advanced choice vertices used 
-for static evaluation of a sequence of guard conditions before any transition is started.</body>
+@details The state diagrams included in this package are used to validate the code generated for Junction Pseudostates, which are advanced choice vertices used for static evaluation of a sequence of guard conditions before any transition is started.</body>
       </ownedComment>
       <packagedElement xmi:type="uml:Class" xmi:id="_0eQ_YAHPEfCgXv5ODs4Seg" name="Jtest">
-        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_5YXh4AHPEfCgXv5ODs4Seg" name="sm1">
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_kmX50L3xEfCuufnsP13LzQ" name="b_guard1" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_s_-pEL3xEfCuufnsP13LzQ" name="b_guard2" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_xbt0kL3xEfCuufnsP13LzQ" name="b_guard3" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_z06gkL3xEfCuufnsP13LzQ" name="b_guard4" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_3NbUgL3xEfCuufnsP13LzQ" name="b_guard5" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_6lbLEL3xEfCuufnsP13LzQ" name="b_guard6" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_9j4gQL3xEfCuufnsP13LzQ" name="b_guard7" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_pPlGwMdLEfCwEooWuRT-Gw" name="b_guard8" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="__ZNqML3xEfCuufnsP13LzQ" name="b_guard9" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_oC0qYKiEEfGE44h4OLtglA" name="p_logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" aggregation="shared">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_oC0qYaiEEfGE44h4OLtglA" annotatedElement="_oC0qYKiEEfGE44h4OLtglA">
+            <body>The pointer to an object used to record the executed statemachine transition comments.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oC0qYqiEEfGE44h4OLtglA"/>
+        </ownedAttribute>
+        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_5YXh4AHPEfCgXv5ODs4Seg" name="sm1" specification="_AVOFAKiKEfGE44h4OLtglA">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_kmX50L3xEfCuufnsP13LzQ" name="b_guard1" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_ttm0MKiKEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_s_-pEL3xEfCuufnsP13LzQ" name="b_guard2" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_wTX8kKiKEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_xbt0kL3xEfCuufnsP13LzQ" name="b_guard3" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_UhiX4KiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_z06gkL3xEfCuufnsP13LzQ" name="b_guard4" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_V2D60KiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_3NbUgL3xEfCuufnsP13LzQ" name="b_guard5" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_W2A78KiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_6lbLEL3xEfCuufnsP13LzQ" name="b_guard6" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_YIKgUKiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_9j4gQL3xEfCuufnsP13LzQ" name="b_guard7" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_ZMVTEKiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_pPlGwMdLEfCwEooWuRT-Gw" name="b_guard8" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_abspMKiLEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="__ZNqML3xEfCuufnsP13LzQ" name="b_guard9" visibility="private" type="_ZIVe8KU0EfCJFuHNEOD_Ew">
+            <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_KAUFwKiUEfGE44h4OLtglA"/>
+          </ownedAttribute>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_b1ULsKiEEfGE44h4OLtglA" specification="_KJm-8KiEEfGE44h4OLtglA">
+            <language>C</language>
+            <body>plogger_logger_record(p_obj->p_context->p_logger, p_str);</body>
+          </ownedBehavior>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_KJm-8KiEEfGE44h4OLtglA" name="rec_log" visibility="private" method="_b1ULsKiEEfGE44h4OLtglA">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_SfzakKiUEfGE44h4OLtglA" annotatedElement="_KJm-8KiEEfGE44h4OLtglA">
+              <body>@brief sm1 StateMachine logging function.</body>
+            </ownedComment>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_KJm-8aiEEfGE44h4OLtglA" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KJm-8qiEEfGE44h4OLtglA"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KJm-86iEEfGE44h4OLtglA" value="*"/>
+            </ownedParameter>
+          </ownedOperation>
           <region xmi:type="uml:Region" xmi:id="_9FNnEAHPEfCgXv5ODs4Seg" name="Region1">
             <ownedComment xmi:type="uml:Comment" xmi:id="_LRaNUI3REfGg24OdeV7pEw" annotatedElement="_msoeQI3PEfGg24OdeV7pEw">
               <body>This region was added for test generator to verify how it deals with concurrent regions that have no initial transition.</body>
@@ -478,7 +565,7 @@ for static evaluation of a sequence of guard conditions before any transition is
             <transition xmi:type="uml:Transition" xmi:id="_EME8EAHQEfCgXv5ODs4Seg" source="_-JOBwAHPEfCgXv5ODs4Seg" target="__1fWUAHPEfCgXv5ODs4Seg">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_-WOGoLnUEfC0UfKG-fUG3g">
                 <language>C</language>
-                <body>printf(&quot;Enter junction2&quot;);</body>
+                <body>tjunction_sm1_rec_log(p_obj, &quot;Enter junction2&quot;);</body>
               </effect>
             </transition>
             <transition xmi:type="uml:Transition" xmi:id="_FbXZsAHQEfCgXv5ODs4Seg" source="__1fWUAHPEfCgXv5ODs4Seg" target="_BzEdUAHQEfCgXv5ODs4Seg">
@@ -666,15 +753,19 @@ for static evaluation of a sequence of guard conditions before any transition is
                 <specification xmi:type="uml:Expression" xmi:id="_K4n-sb3wEfCuufnsP13LzQ" symbol="else"/>
               </ownedRule>
             </transition>
-            <transition xmi:type="uml:Transition" xmi:id="_5Bc2cAU4EfGX1pGT08VRbQ" source="_3lDw8AU4EfGX1pGT08VRbQ" target="_-JOBwAHPEfCgXv5ODs4Seg"/>
+            <transition xmi:type="uml:Transition" xmi:id="_5Bc2cAU4EfGX1pGT08VRbQ" source="_3lDw8AU4EfGX1pGT08VRbQ" target="_-JOBwAHPEfCgXv5ODs4Seg">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_ot-qwKiFEfGE44h4OLtglA">
+                <language>C</language>
+                <body>tjunction_sm1_rec_log(p_obj, &quot;Run Initial49&quot;);</body>
+              </effect>
+            </transition>
             <transition xmi:type="uml:Transition" xmi:id="_-cTYkI3PEfGg24OdeV7pEw" source="_povXwLkgEfC-keoHQ33Mgw" target="_rKPSAI3PEfGg24OdeV7pEw">
               <trigger xmi:type="uml:Trigger" xmi:id="_CJvToI3QEfGg24OdeV7pEw" event="_hL0o4AHQEfCgXv5ODs4Seg"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="_-JOBwAHPEfCgXv5ODs4Seg" name="State1">
               <exit xmi:type="uml:OpaqueBehavior" xmi:id="_uHz5MLkiEfC-keoHQ33Mgw">
                 <language>C</language>
-                <body>(void) p_obj;
-printf(&quot;Exit State1&quot;);</body>
+                <body>tjunction_sm1_rec_log(p_obj,&quot;Exit State1&quot;);</body>
               </exit>
             </subvertex>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="__1fWUAHPEfCgXv5ODs4Seg" name="Junction2" kind="junction"/>
@@ -850,10 +941,31 @@ printf(&quot;State434 entry behavior.\n&quot;);</body>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_3lDw8AU4EfGX1pGT08VRbQ" name="Initial49"/>
           </region>
         </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_znSzIKiEEfGE44h4OLtglA" name="init_behavior" specification="_2zKEsKfgEfGd4LbFpB-J5g">
+          <language>C</language>
+          <body>p_obj->p_logger = p_logger;
+tjunction_jtest_invoke_sm1(p_obj);</body>
+        </ownedBehavior>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_WFQkIAHQEfCgXv5ODs4Seg" name="a"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_g9YkQAHQEfCgXv5ODs4Seg" name="b"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_IKL68AHREfCgXv5ODs4Seg" name="c"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_y1_D4AHYEfCkTbNMLPdxiA" name="d"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_2zKEsKfgEfGd4LbFpB-J5g" name="init" method="_znSzIKiEEfGE44h4OLtglA">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_8zw30KiGEfGE44h4OLtglA" annotatedElement="_2zKEsKfgEfGd4LbFpB-J5g">
+            <body>@brief The constructor of the Jtest class.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_U8HcUKfhEfGd4LbFpB-J5g" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_sQgBMKiDEfGE44h4OLtglA" name="p_logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" direction="inout">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_sQgBMaiDEfGE44h4OLtglA" annotatedElement="_sQgBMKiDEfGE44h4OLtglA">
+              <body>The pointer to the logger object.</body>
+            </ownedComment>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_AVOFAKiKEfGE44h4OLtglA" name="invoke_sm1" visibility="private" method="_5YXh4AHPEfCgXv5ODs4Seg">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_Fdke4KiKEfGE44h4OLtglA" annotatedElement="_AVOFAKiKEfGE44h4OLtglA">
+            <body>@brief Brings the sm1 state machine to the initial state.</body>
+          </ownedComment>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_WdHqgAHQEfCgXv5ODs4Seg" name="a" operation="_WFQkIAHQEfCgXv5ODs4Seg"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_hL0o4AHQEfCgXv5ODs4Seg" name="b" operation="_g9YkQAHQEfCgXv5ODs4Seg"/>
@@ -888,38 +1000,38 @@ printf(&quot;State434 entry behavior.\n&quot;);</body>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fZ0EEKU0EfCJFuHNEOD_Ew" name="uint8_t"/>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_0AIOgKU5EfCJwtlh12_YdQ" name="int32_t"/>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5MrL4KU5EfCJwtlh12_YdQ" name="double"/>
-    <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_k464wJMQEfG7kMZh4wQhfg" name="main_behavior" specification="_lq_18JMQEfG7kMZh4wQhfg">
+    <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_k464wJMQEfG7kMZh4wQhfg" name="main_behavior" visibility="private" specification="_lq_18JMQEfG7kMZh4wQhfg">
       <language>C</language>
       <body>printf(&quot;Initialize my_ctest:\n&quot;);
-const Tkind_logger_vt_t logger_funcs = {.p_record = umltest_umltest_record};
-Tkind_logger_t local_logger = {.p_vtable = &amp;logger_funcs};
-Tkind_ctest_t my_ctest = {0};
-Tkind_ctest_init(&amp;my_ctest, &amp;local_logger);
-Tkind_cbase1_SetUintProp(&amp;my_ctest.cbase1, 123);
-Tkind_cbase2_SetFloatProp(&amp;my_ctest.cbase2, 13.0f);
+const plogger_logger_vt_t logger_funcs = {.p_record = umltest_umltest_record};
+plogger_logger_t local_logger = {.p_vtable = &amp;logger_funcs};
+tkind_ctest_t my_ctest = {0};
+tkind_ctest_init(&amp;my_ctest, &amp;local_logger);
+tkind_cbase1_setuintprop(&amp;my_ctest.cbase1, 123);
+tkind_cbase2_setfloatprop(&amp;my_ctest.cbase2, 13.0f);
 printf(&quot;\nPolymorphism example:\n&quot;
-       &quot;The result of GetUintProp: %d\n&quot;
-       &quot;The result of GetFloatProp: %f\n&quot;,
-       Tkind_cbase1_GetUintProp(&amp;my_ctest.cbase1),
-       Tkind_cbase2_GetFloatProp(&amp;my_ctest.cbase2));
+       &quot;The result of getuintprop: %d\n&quot;
+       &quot;The result of getfloatprop: %f\n&quot;,
+       tkind_cbase1_getuintprop(&amp;my_ctest.cbase1),
+       tkind_cbase2_getfloatprop(&amp;my_ctest.cbase2));
 printf(&quot;Send and process the a event in my_ctest:\n&quot;);
-Tkind_ctest_a(&amp;my_ctest);
-Tkind_ctest_fetch_event(&amp;my_ctest);
-Tkind_ctest_dispatch_event(&amp;my_ctest);
-Tkind_ctest_release_event(&amp;my_ctest);
+tkind_ctest_a(&amp;my_ctest);
+tkind_ctest_fetch_event(&amp;my_ctest);
+tkind_ctest_dispatch_event(&amp;my_ctest);
+tkind_ctest_release_event(&amp;my_ctest);
 
 printf(&quot;\n\nInitialize my_jtest:\n&quot;);
-TJunction_Jtest_t my_jtest = {0};
-TJunction_Jtest_init(&amp;my_jtest);
+tjunction_jtest_t my_jtest = {0};
+tjunction_jtest_init(&amp;my_jtest, &amp;local_logger);
 printf(&quot;Send and process the a event in my_jtest:\n&quot;);
-TJunction_Jtest_a(&amp;my_jtest);
-TJunction_Jtest_fetch_event(&amp;my_jtest);
-TJunction_Jtest_dispatch_event(&amp;my_jtest);
-TJunction_Jtest_release_event(&amp;my_jtest);
+tjunction_jtest_a(&amp;my_jtest);
+tjunction_jtest_fetch_event(&amp;my_jtest);
+tjunction_jtest_dispatch_event(&amp;my_jtest);
+tjunction_jtest_release_event(&amp;my_jtest);
 
 return EXIT_SUCCESS;</body>
     </packagedElement>
-    <packagedElement xmi:type="uml:Artifact" xmi:id="_Te_f4JMNEfG7kMZh4wQhfg" name="umltest" visibility="public" fileName="umltest">
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_Te_f4JMNEfG7kMZh4wQhfg" name="umltest" visibility="private" fileName="umltest">
       <ownedOperation xmi:type="uml:Operation" xmi:id="_lq_18JMQEfG7kMZh4wQhfg" name="main" isStatic="true" method="_k464wJMQEfG7kMZh4wQhfg">
         <ownedParameter xmi:type="uml:Parameter" xmi:id="_HzunEJMXEfG7kMZh4wQhfg" type="_HUwMEJMXEfG7kMZh4wQhfg" direction="return"/>
       </ownedOperation>
@@ -937,12 +1049,28 @@ return EXIT_SUCCESS;</body>
       <body>(void) p_obj;
 (void) puts(p_str);</body>
     </packagedElement>
-    <packagedElement xmi:type="uml:Dependency" xmi:id="_uMEtcJOEEfGfKMMLcaAJmg" visibility="private" client="_ye_tMOqeEe2Yz7yVfkC93Q">
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_uMEtcJOEEfGfKMMLcaAJmg" visibility="public" client="_ye_tMOqeEe2Yz7yVfkC93Q">
       <supplier xmi:type="uml:Package" href="CStandardLibrary.uml#_yKC0UJODEfGan9oICxlaTw"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Dependency" xmi:id="_uvBCcJOEEfGfKMMLcaAJmg" visibility="private" client="_ye_tMOqeEe2Yz7yVfkC93Q">
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_uvBCcJOEEfGfKMMLcaAJmg" visibility="public" client="_ye_tMOqeEe2Yz7yVfkC93Q">
       <supplier xmi:type="uml:Package" href="CStandardLibrary.uml#_zYyfYJODEfGan9oICxlaTw"/>
     </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_uNK1UKibEfGE44h4OLtglA" name="plogger">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_Ij1hQBaHEfG70Ybw1j3UxQ" name="logger">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_YZyGQBaHEfG70Ybw1j3UxQ" name="record">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_wvklYBaHEfG70Ybw1j3UxQ" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_wvklYRaHEfG70Ybw1j3UxQ" annotatedElement="_wvklYBaHEfG70Ybw1j3UxQ">
+              <body>A pointer to the string that will be logged.</body>
+            </ownedComment>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eYfD4BaIEfG70Ybw1j3UxQ"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eI-oQBaIEfG70Ybw1j3UxQ" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_PLu2wKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_-IUdANw3Ee-clukbqF5Mtw"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_TxXlIKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_tzRuEAHPEfCgXv5ODs4Seg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_XDxxEKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_uNK1UKibEfGE44h4OLtglA"/>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_svVXgOqlEe2Yz7yVfkC93Q">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_svYa0OqlEe2Yz7yVfkC93Q" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
@@ -951,4 +1079,8 @@ return EXIT_SUCCESS;</body>
     </profileApplication>
   </uml:Model>
   <standard:Executable xmi:id="_3OwvAJMNEfG7kMZh4wQhfg" base_Artifact="_Te_f4JMNEfG7kMZh4wQhfg"/>
+  <standard:Create xmi:id="_lq9V0JaWEfGyIYl3O46cLA" base_BehavioralFeature="_ctV6kJaWEfGyIYl3O46cLA"/>
+  <standard:Create xmi:id="_LsIbUJahEfGyIYl3O46cLA" base_BehavioralFeature="_Ak95oJahEfGyIYl3O46cLA"/>
+  <standard:Create xmi:id="_kJrIQJahEfGyIYl3O46cLA" base_BehavioralFeature="_eZhukJahEfGyIYl3O46cLA"/>
+  <standard:Create xmi:id="_9DcXAKfgEfGd4LbFpB-J5g" base_BehavioralFeature="_2zKEsKfgEfGd4LbFpB-J5g"/>
 </xmi:XMI>

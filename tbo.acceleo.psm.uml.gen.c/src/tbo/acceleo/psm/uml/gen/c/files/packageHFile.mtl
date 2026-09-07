@@ -7,10 +7,7 @@
 [import tbo::acceleo::psm::uml::gen::c::request::request/]
 
 [template public generatePackageH(aPackage : Package)
- {visible_subpackages : OrderedSet(Package) = 
-      request_elements_sorted(uml_c_header_subpackages(aPackage))
-                                                             ->filter(Package);
-  visible_dependencies : OrderedSet(Package) = 
+ {visible_dependencies : OrderedSet(Package) = 
       request_elements_sorted(uml_c_header_dependencies(aPackage))
                                                              ->filter(Package);
   headerLiteralSpecifications : Sequence(LiteralSpecification) = 
@@ -32,10 +29,14 @@ extern "C" {
 
 //[protected('includes top')]
 //[/protected]
-[uml_c_include_dependencies(visible_dependencies, visible_subpackages, 
-                            indentation)
+[if (not aPackage.nestingPackage.oclIsUndefined())]
+[uml_c_include_local_file('../'
+              + aPackage.nestingPackage.get_package_h_filename(), indentation)/]
+[/if]
+[uml_c_include_dependencies(visible_dependencies, indentation)
 /][if (not headerClassifiers->selectByKind(StateMachine)->isEmpty())]
 #[utils_indent(indentation)/]include <sm.h>
+#[utils_indent(indentation)/]include <event_pool.h>
 [/if][if (headerClassifiers->uml_c_is_stddef_required() 
                and not visible_dependencies->exists(p:Package|p.name='stddef'))]
 #[utils_indent(indentation)/]include <stddef.h>
@@ -58,11 +59,17 @@ extern "C" {
 [if (headerClassifiers->uml_c_classifiers_need_declare() )]
 [uml_c_declare_structs(headerClassifiers, indentation)/]
 [/if]
-[for (aClassifier:Classifier|headerClassifiers)
-     ?(aClassifier.uml_c_operations_need_declaration(
-                          uml_c_header_operation_visibility())->notEmpty())]
+[for (aClassifier:Classifier|headerClassifiers->select(c:Classifier|
+     c.uml_c_operations_need_declaration(
+           uml_c_header_operation_visibility())->notEmpty())) 
+     separator(utils_newline())
+     after(utils_newline())]
 [uml_c_declare_operations(aClassifier, uml_c_header_operation_visibility(), 
-                          false, indentation)/]
+                          false, indentation)
+/][if (aClassifier.request_classifier_needs_event_queue())]
+[uml_c_declare_event_pool_functions(aClassifier, VisibilityKind::public, 
+                                                                  indentation)/]
+[/if]
 [/for]
 #ifdef  __cplusplus
 }

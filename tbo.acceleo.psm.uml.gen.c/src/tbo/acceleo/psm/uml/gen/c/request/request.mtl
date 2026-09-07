@@ -18,6 +18,41 @@
  : OrderedSet(Parameter) 
  = osP->select(direction = ParameterDirectionKind::return)/]
 
+[query public request_is_builtin_type(aType:Type):Boolean
+ = let builtinTypes : Set(String) = Set{'char', 'signed char', 'unsigned char', 
+             'short', 'signed short', 'unsigned short', 
+             'short int', 'signed short int', 'unsigned short int', 
+             'int', 'signed int', 'unsigned int', 
+             'signed', 'unsigned', 
+             'long', 'signed long', 'unsigned long', 
+             'long int', 'signed long int', 'unsigned long int', 
+             'long long', 'signed long long', 'unsigned long long', 
+             'long long int', 'signed long long int', 'unsigned long long int',
+             'float', 'double', 'long double', 
+             'float _Complex', 'double _Complex', 'long double _Complex', 
+             'float _Imaginary', 'double _Imaginary', 'long double _Imaginary',
+             'void', '_Bool', 'bool', 
+             'wchar_t', 'char16_t', 'char32_t', 
+             'int8_t', 'uint8_t', 'int16_t', 'uint16_t', 'int32_t', 'uint32_t',
+             'int64_t', 'uint64_t', 'int_least8_t', 'uint_least8_t', 
+             'int_least16_t', 'uint_least16_t', 
+             'int_least32_t', 'uint_least32_t', 
+             'int_least64_t', 'uint_least64_t', 'int_fast8_t', 'uint_fast8_t', 
+             'int_fast16_t', 'uint_fast16_t', 'int_fast32_t', 'uint_fast32_t', 
+             'int_fast64_t', 'uint_fast64_t', 
+             'intptr_t', 'uintptr_t', 
+             'intmax_t', 'uintmax_t', 
+             'size_t', 'ssize_t', 
+             'ptrdiff_t', 'max_align_t', 'nullptr_t', 'wint_t', 
+             'mbstate_t', 'clock_t', 'time_t', 
+             'struct timespec', 'struct timeval', 
+             'FILE', 'fpos_t', 'jmp_buf', 'sig_atomic_t', 'va_list', 
+             'atomic_bool', 'atomic_char', 'atomic_schar', 'atomic_uchar', 
+             'atomic_short', 'atomic_ushort', 'atomic_int', 'atomic_uint', 
+             'atomic_long', 'atomic_ulong', 'atomic_llong', 'atomic_ullong', 
+             'atomic_intptr_t', 'atomic_uintptr_t', 'atomic_size_t', 
+             'atomic_ptrdiff_t', 'atomic_intmax_t', 'atomic_uintmax_t'} in
+    builtinTypes->includes(aType.name)/]
 [**
  * Get a set of packages on which the given element depends. 
  */]
@@ -26,7 +61,12 @@
 : Set(Package) = aNamedElement.clientDependency->select(d: Dependency | 
       Visibilities->includes(d.visibility)).supplier->collect(
        n:NamedElement | if n.oclIsKindOf(Package) then n.oclAsType(Package) 
-       else n.eContainer(Package)endif)->asSet()/]
+       else n.eContainer(Package)endif)->asSet()
+       ->addAll((if aNamedElement.oclIsKindOf(Classifier) 
+       then aNamedElement.oclAsType(Classifier).attribute.type->reject(t:Type|t.request_is_builtin_type())
+            ->selectByKind(Classifier)
+            ->collect(c:Classifier|c.eContainer(Package))->asSet()
+       else Set{} endif))/]
 
 [**
  * @brief Get all subpackages of a package with a specified visibility. 
@@ -45,19 +85,29 @@
      = aPackage.packagedElement->select(p : PackageableElement | 
       Visibilities->includes(p.visibility))/]
 
+
+[query public request_dependency_visibilities
+        (Visibilities : Set(VisibilityKind)) : Set(VisibilityKind)
+ = if Visibilities->includes(VisibilityKind::public) 
+   then Visibilities 
+   else Visibilities->union(Set{VisibilityKind::public}) endif/]
 [**
  * @brief Get a set of packages on which all non-Package children of the package
  * depend. 
  */]
 [query public request_visible_dependencies(aPackage : Package,
                           Visibilities : Set(VisibilityKind)) : Set(Package) = 
-   aPackage.request_dependency_packages(Visibilities)->union(
-   request_visible_children(aPackage, Visibilities
-   ).request_dependency_packages(Visibilities)
+   aPackage.request_dependency_packages(Visibilities)
+   ->union(request_visible_children(aPackage, Visibilities
+   )->reject(pe:PackageableElement|pe.oclIsKindOf(Package))
+     .request_dependency_packages(request_dependency_visibilities(Visibilities))
    )->union(request_visible_children(aPackage, Visibilities)
        ->reject(p:PackageableElement | p.oclIsKindOf(Package)
        ).eAllContents(NamedElement
-       ).request_dependency_packages(Visibilities))->asSet()/]
+       ).request_dependency_packages(
+                             request_dependency_visibilities(Visibilities)))
+         ->excluding(aPackage)
+         ->asSet()/]
 
 [query public request_has_attributes(aClassifier:Classifier):Boolean = 
    not aClassifier.attribute->select(p : Property | not p.isStatic)->isEmpty()/]
@@ -122,6 +172,23 @@
                tb.signature.template.oclAsType(Classifier)
                .request_has_fields())/] 
 
+[query public request_operation_calls_event_queue(anOperation:Operation):
+ Boolean =
+    anOperation.eContainer(Package).packagedElement->selectByKind(CallEvent)
+                                   ->exists(e:CallEvent|e.operation=anOperation)
+     and anOperation.method->isEmpty() /]
+
+[query public request_classifier_needs_event_queue(aClassifier
+ : Classifier): Boolean = aClassifier.oclIsKindOf(BehavioredClassifier)
+  and aClassifier.oclAsType(BehavioredClassifier).ownedMember->filter(Operation)
+                ->exists(o:Operation| o.request_operation_calls_event_queue())
+ and (aClassifier.oclAsType(BehavioredClassifier)
+                        .ownedBehavior->selectByKind(StateMachine)->notEmpty()
+      or aClassifier.oclIsKindOf(StateMachine))
+ and ((aClassifier.oclIsKindOf(Behavior) 
+        and aClassifier.oclAsType(Behavior)._context.oclIsUndefined())
+      or (not aClassifier.oclIsKindOf(Behavior)))/]
+
 [query public request_needs_storage(aClassifier : Classifier) 
 : Boolean = not aClassifier.isTemplate() 
             and aClassifier.request_has_fields()/]
@@ -161,7 +228,15 @@
         t.oclAsType(Classifier).request_classifier_depends(bClassifier))
         or aClassifier.generalization.general->includes(bClassifier)
         or aClassifier.generalization.general
-           ->exists(c:Classifier|c.request_classifier_depends(bClassifier))/]
+           ->exists(c:Classifier|c.request_classifier_depends(bClassifier))
+        or (aClassifier.oclIsKindOf(BehavioredClassifier) 
+            and bClassifier.oclIsKindOf(Behavior)
+            and (aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
+                                 ->includes(bClassifier.oclAsType(Behavior))
+                 or aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
+                  ->exists(b:Behavior|b.request_classifier_depends(bClassifier))
+                 )
+            )/]
 
 [query public request_has_virtual_operations(aClassifier : Classifier) : Boolean 
  = not aClassifier.request_virtual_operations()->isEmpty()/]
@@ -339,18 +414,8 @@
 [query public request_vertex_regions(v : Vertex) : OrderedSet(Region) = 
   v.container.request_parent_regions()->append(v.container)/]
 
-[query public request_needs_event_loop(aClassifier : Classifier): Boolean  = 
-    if aClassifier.oclIsKindOf(StateMachine) then
-        aClassifier.oclAsType(Behavior)._context.oclIsUndefined()
-    else
-        aClassifier.oclIsKindOf(BehavioredClassifier) 
-        and not aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
-            ->filter(StateMachine)->isEmpty()
-    endif
-/]
-
-[query public request_class_events(aClass : Class): OrderedSet(Event)
- = aClass.eAllContents(Trigger)
+[query public request_classifier_events(bc : BehavioredClassifier): OrderedSet(Event)
+ = bc.eAllContents(Trigger)
                           ->select(t : Trigger | (not t.event.oclIsUndefined()))
                           .event->asOrderedSet()/]
 
@@ -376,7 +441,10 @@
 
 [query public request_region_needs_exit(aRegion : Region): Boolean
  = aRegion.subvertex->selectByKind(State)
-    ->select(st : State | st.request_state_needs_exit())->notEmpty()/]
+    ->select(st : State | st.request_state_needs_exit())->notEmpty()
+   and (aRegion.stateMachine.oclIsUndefined() 
+   or aRegion.stateMachine.connectionPoint
+                ->exists(p:Pseudostate|p.kind=PseudostateKind::exitPoint))/]
 
 [**
  * @brief Returns an OrderedSet of states that need to handle an event
@@ -804,3 +872,26 @@ let exitState : State = request_transition_exit_state(aTransition) in
 */]
 [query public request_state_needs_tests(aState:State) : Boolean = 
     aState.isSimple/]
+
+[query public request_get_base_to_child_conversion_name(aBase:Classifier, 
+   aChild:Classifier):String = 
+                             ('cast_from_' + aBase.name).toLower()/]
+
+[query public request_is_conversion_operation(o:Operation):Boolean = 
+    if o.featuringClassifier->size()=1 then
+    let aChild:Classifier = o.featuringClassifier->any(true) in
+    let base_classifiers:Set(Classifier) = aChild.general in
+    base_classifiers->exists(c:Classifier|
+         o.name.toLower() = c.request_get_base_to_child_conversion_name(aChild))
+    else
+    false
+    endif/]
+
+[query public request_has_dependency(aClient:NamedElement, 
+                                                         aSupplier:NamedElement)
+: Boolean = aClient.clientDependency->exists(d:Dependency|
+                             d.supplier->includes(aSupplier))/]
+
+[query public request_generated_note(traceabilityContext:OclAny):String = 
+ '@note Automatically generated code by Model2CodeSynthesizer' 
+ + ' (github.com/tomboro88/Model2CodeSynthesizer).'/]

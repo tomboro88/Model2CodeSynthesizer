@@ -1,8 +1,0 @@
- .../src/TJunction/TJunction.c                      | 1204 [32m+++++++++[m[31m----------[m
- .../src/TJunction/TJunction.h                      |  287 [32m+++[m[31m--[m
- {c_expected => c_generated}/src/Tkind/Tkind.c      | 1255 [32m+++++++[m[31m-------------[m
- {c_expected => c_generated}/src/Tkind/Tkind.h      |  837 [32m++++++++++[m[31m---[m
- {c_expected => c_generated}/src/fifo/fifo.c        |    0
- {c_expected => c_generated}/src/fifo/fifo.h        |    0
- {c_expected => c_generated}/src/umltest.c          |    4 [32m+[m[31m-[m
- 7 files changed, 1836 insertions(+), 1751 deletions(-)

@@ -101,6 +101,9 @@ utils_files_newline().characters()
 [query public utils_get_event_head_name(traceabilityContext: OclAny) :
  String = 'event_head'/]
 
+[query public utils_get_event_pool_name(traceabilityContext: OclAny) :
+ String = 'event_pool'/]
+
 [query public utils_get_event_tail_name(traceabilityContext: OclAny) :
  String = 'event_tail'/]
 

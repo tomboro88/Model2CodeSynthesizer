@@ -6,7 +6,7 @@
 [import tbo::acceleo::psm::uml::gen::c::common::debug/]
 [import tbo::acceleo::psm::uml::gen::c::request::request/]
 
-[query private uml_c_function_visibility(vis:VisibilityKind, 
+[query public uml_c_function_visibility(vis:VisibilityKind, 
                                          b_is_extern : Boolean):String = 
 if b_is_extern then 'extern ' else
     if vis = VisibilityKind::private then 'static ' else '' endif 
@@ -16,10 +16,19 @@ endif/]
  * Provides the type of the operation return value. 
  */]
 [query private uml_c_operation_return_type(anOperation : Operation) : String = 
-  if anOperation.type.oclIsUndefined()
-  then 'void' 
-  else uml_c_parameter_type(request_return_value(anOperation.ownedParameter)
-                            ->first()) endif /]
+  if anOperation.request_operation_calls_event_queue()
+  then
+      'bool'
+  else
+      if anOperation.type.oclIsUndefined()
+      then 'void' 
+      else uml_c_parameter_type(request_return_value(anOperation.ownedParameter)
+                                ->first()) 
+      endif
+  endif /]
+
+[query public uml_c_event_pool_return_type(oclTraceabilityContext:OclAny) 
+  : String = 'bool' /]
 
 [**
  * Provides the type of the behavior return value. 
@@ -71,7 +80,7 @@ endif/]
 [**
  * This query provides the declaration of the classifier self parameter.
  */]
-[query private uml_c_classifier_self(c : Classifier, bIsQuery : Boolean) 
+[query public uml_c_classifier_self(c : Classifier, bIsQuery : Boolean) 
     : String = 
     uml_c_param_decl(if bIsQuery then 'const ' else '' endif 
     + c.uml_c_get_type_name()
@@ -103,6 +112,7 @@ endif/]
                                               ->any(c : Classifier 
                                                  | not c.oclIsUndefined())) /]
 
+
 [**
  * Returns a sequence of strings representing parameters from the Behavior 
  * parameter list. 
@@ -132,6 +142,22 @@ endif/]
   uml_c_param_strings(paramList, isStatic, isQuery,aClassifier) /]
 
 [**
+ * Returns a sequence of strings representing parameters from the Behavior 
+ * parameter list. 
+ */]
+[query private uml_c_behavior_arg_strings(aBehavior : Behavior) 
+ : Sequence(String) =
+  let paramList : OrderedSet(Parameter) = 
+    if aBehavior.specification.oclIsUndefined() then
+       aBehavior.ownedParameter
+    else aBehavior.specification.ownedParameter endif in
+  let isStatic : Boolean = 
+    if aBehavior.specification.oclIsUndefined() then
+       false
+    else aBehavior.specification.isStatic endif in
+  uml_c_arg_strings(paramList, isStatic)/]
+
+[**
  * Returns a sequence of strings representing parameters from the OrderedSet 
  * parameter list. 
  */]
@@ -158,7 +184,8 @@ endif/]
 [query private uml_c_fits_param_width(s : String, width : Integer) : 
  Boolean = 
  let index : Integer = s.lastIndex(' const ') in (
-   (index-1) <= width and (s.size()-index)<=width)/]
+   (index-1) <= width and (s.size() - 
+                             if index>0 then index-1 else 0 endif)<=width)/]
 
 [**
  * Concatenates the strings in the sequence so that each result string 
@@ -248,7 +275,7 @@ endif/]
  * Recognizes some of the common fixed size integer and floating point types
  * and replaces their names with names of appropriate c language types.
  */]
-[query private uml_c_get_type_name(aType: Type) : String = 
+[query public uml_c_get_type_name(aType: Type) : String = 
 if aType.oclIsUndefined() or aType.name.oclIsUndefined() then
     '#error'
 else
@@ -415,17 +442,20 @@ endif
  * @brief Get all Package dependencies visible in the Package source file. 
  */]
 [query public uml_c_source_dependencies(aPackage:Package):Set(Package) =
-    request_visible_dependencies(aPackage, uml_c_source_visibility())
-    ->removeAll(Set{aPackage})/]
+    request_visible_dependencies(aPackage, uml_c_source_visibility())/]
 
 [query public uml_c_get_standard_libraries(traceabilityContext:OclAny):
- Set(String) = Set{'stdio', 'stdlib', 'string', 'stddef', 'stdint', 'stdbool' 
+ Set(String) = Set{'assert', 'complex', 'ctype', 'errno', 'fenv', 'float', 
+                   'inttypes', 'iso646', 'limits', 'locale', 'math', 'setjmp', 
+                   'signal', 'stdalign', 'stdarg', 'stdatomic', 'stdbool', 
+                   'stddef', 'stdint', 'stdio', 'stdlib', 'stdnoreturn', 
+                   'string', 'tgmath', 'threads', 'time', 'uchar', 'wchar', 
+                   'wctype'
 }/]
 
 [query public uml_c_header_visibility(traceabilityContext : OclAny) : 
       Set(VisibilityKind) = 
-      Set{VisibilityKind::public, VisibilityKind::protected, 
-      VisibilityKind::_package}/]
+      Set{VisibilityKind::public}/]
 
 [query public uml_c_source_visibility(traceabilityContext : OclAny) : 
       Set(VisibilityKind) = 
@@ -447,7 +477,10 @@ endif
   if uml_c_header_visibility()->includes(aNamespace.visibility) 
   then aNamespace.eContents(Namespace).uml_c_header_namespaces()
   ->append(aNamespace)
-  else Sequence{} endif/]
+  else if aNamespace.visibility = VisibilityKind::public 
+      then aNamespace.eContents(Namespace).uml_c_header_namespaces()
+      else Sequence{} endif 
+  endif/]
 
 [**
  * @brief Returns a sequence of all namespaces that should be visible in 
@@ -514,12 +547,13 @@ endif
 = '_s'/]
 
 [query private uml_c_get_vtable_entry_name(anOperation : Operation) : String = 
- 'p_' + anOperation.name/]
+ 'p_' + anOperation.name.toLower()/]
 
 [query public uml_c_get_behavior_full_name(aBehavior : Behavior) : String = 
 (if aBehavior.oclIsUndefined() then 'NULL' 
-   else aBehavior.eContainer(Package).name + '_' + aBehavior._context.name 
-   + '_' + aBehavior.name endif)/]
+   else (aBehavior.eContainer(Package).name + '_' + aBehavior._context.name 
+   + if aBehavior.oclIsKindOf(StateMachine)then '_invoke_' else '_' endif
+   + aBehavior.name).toLower() endif)/]
 
 [query public uml_c_get_init_default_name(aClassifier : Classifier) : String 
   = uml_c_get_element_full_name(aClassifier) + '_init_df'/]
@@ -532,12 +566,14 @@ endif
 [query public uml_c_operations_need_declaration(
           aClassifier : Classifier, vis : Set(VisibilityKind)) : 
  Set(Operation) = aClassifier.uml_c_get_operations(vis)
-                ->select(o:Operation|not o.uml_c_is_main_operation()) /]
+                ->select(o:Operation|(not o.uml_c_is_main_operation()) 
+                               and (not o.request_is_conversion_operation())) /]
 
 [query public uml_c_get_operations(
           aClassifier : Classifier, vis : Set(VisibilityKind)) : 
  Set(Operation) = aClassifier.ownedMember->filter(Operation)
-                ->select(o:Operation|vis->includes(o.visibility)) /]
+                ->select(o:Operation|vis->includes(o.visibility))
+                ->reject(o:Operation|o.request_is_conversion_operation()) /]
 
 [query public uml_c_classifiers_operations_need_declaration(
            anOSet:OrderedSet(Classifier), vis : Set(VisibilityKind)) : Boolean
@@ -545,19 +581,22 @@ endif
     not c.uml_c_operations_need_declaration(vis)->isEmpty())->isEmpty()/]
 
 [query public uml_c_get_event_type_name(aClass : Class) : String
- = uml_c_get_string_typedef_name(aClass.uml_c_get_element_full_name() 
-                   + '_evtype')/]
+ = aClass.uml_c_get_element_full_name() + '_evtype'/]
 
-[query public uml_c_get_event_base_name(aClass : Class) : String
- = uml_c_get_string_typedef_name(aClass.uml_c_get_element_full_name() 
-                   + '_evbase')/]
+[query public uml_c_get_event_pool_type_name(aClass : Class) : String
+ = (aClass.uml_c_get_element_full_name() + '_event_pool')
+                                              .uml_c_get_string_typedef_name()/]
 
-[query public uml_c_get_event_base_property_name(
-     OclTraceabilityContext : OclAny) : String
- = 'evbase'/]
+[query public uml_c_get_event_pool_sizes_name(bc : BehavioredClassifier) 
+ : String =
+ (bc.uml_c_get_element_full_name() + '_fifo_sizes').toLower()/]
 
-[query public uml_c_get_event_enum(aClass : Class, ev : Event) : String = 
- (aClass.uml_c_get_element_full_name() + '_' + ev.name).toUpper()/]
+[query public uml_c_get_event_enum(bc : BehavioredClassifier, ev : Event) 
+: String = 
+ (bc.uml_c_get_element_full_name() + '_' + ev.name).toUpper()/]
+
+[query public uml_c_get_event_next_queue(ev : Event) : String = 
+ ev.name + '_next_events'/]
 
 [query public uml_c_get_event_typedef(bClass : BehavioredClassifier, ev : Event) 
   : String = 
@@ -569,13 +608,13 @@ endif
  (aClass.uml_c_get_element_full_name() + '_' + ev.name + '_queue')
   .uml_c_get_string_typedef_name()/]
 
-[query public uml_c_get_event_queue_size(aClass : Class, ev : Event) : 
+[query public uml_c_get_event_queue_size(bc : BehavioredClassifier, ev : Event) : 
  String = 
- (aClass.uml_c_get_element_full_name() + '_' + ev.name + '_cnt')
+ (bc.uml_c_get_element_full_name() + '_' + ev.name + '_cnt')
   .toUpper()/]
 
-[query public uml_c_get_event_count(aClass : Class) : String = 
- (aClass.uml_c_get_element_full_name() + '_' + 'EVENT_COUNT').toUpper()/]
+[query public uml_c_get_event_count(bc: BehavioredClassifier) : String = 
+ (bc.uml_c_get_element_full_name() + '_' + 'EVENT_COUNT').toUpper()/]
 
 [query public uml_c_get_region_size(aRegion : Region) : String = 
  (aRegion.uml_c_get_region_full_name() + '_size').toUpper()/]
@@ -588,7 +627,8 @@ endif
  .toUpper()/]
 
 [query public uml_c_get_entry_name(aVertex : Vertex) : String = 
- (aVertex.containingStateMachine().name + '_enter_' + aVertex.name).toLower()/]
+ (aVertex.eContainer(Package).name + '_' 
+  +aVertex.containingStateMachine().name + '_enter_' + aVertex.name).toLower()/]
 
 [query public uml_c_getjunction_entry_id(aSeq : Sequence(Transition)):String
  = if aSeq->notEmpty() and aSeq->last().target.request_is_static_junction() then 
@@ -600,7 +640,9 @@ endif
                                             anEvent : Event) 
  : String = if aSeq->notEmpty() 
             and aSeq->last().target.request_is_static_junction()then 
-               (aSeq->last().containingStateMachine().name + '_enter_' 
+               aSeq->last().containingStateMachine()
+                                      .eContainer(Package).name + '_'
+               + (aSeq->last().containingStateMachine().name + '_enter_' 
                + aSeq->last().target.name 
                + if anEvent.oclIsUndefined() then '' 
                     else '_' + anEvent.name endif
@@ -608,13 +650,16 @@ endif
             else ' #error Empty transition sequence' endif/]
 
 [query public uml_c_get_exit_name(aState : State) : String = 
- (aState.containingStateMachine().name + '_exit_' + aState.name).toLower()/]
+ (aState.containingStateMachine().uml_c_get_element_full_name()
+                                           + '_exit_' + aState.name).toLower()/]
 
 [query public uml_c_get_region_exit_name(aRegion : Region) : String = 
- (aRegion.containingStateMachine().name + '_exit_' + aRegion.name).toLower()/]
+ (aRegion.eContainer(Package).name + '_' 
+  + aRegion.containingStateMachine().name + '_exit_' + aRegion.name).toLower()/]
 
 [query public uml_c_get_region_entry_name(aRegion : Region) : String = 
- (aRegion.containingStateMachine().name + '_enter_' + aRegion.name).toLower()/]
+ (aRegion.containingStateMachine().uml_c_get_element_full_name()
+                                         + '_enter_' + aRegion.name).toLower()/]
 
 [query public uml_c_get_region_typedef(aRegion : Region) : String = 
  aRegion.uml_c_get_region_full_name().uml_c_get_string_typedef_name()/]
@@ -634,6 +679,48 @@ endif
      if uml_c_get_standard_libraries()->includes(aPackage.name) 
      then '' else get_package_qualified_folder(aPackage) endif 
      + get_package_h_filename(aPackage)/]
+
+[query public uml_c_get_base_to_child_conversion_full_name(aBase:Classifier, 
+   aChild:Classifier):String = (aChild.uml_c_get_element_full_name() + '_'
+   + request_get_base_to_child_conversion_name(aBase, aChild)).toLower()/]
+
+[query public uml_c_event_proc_status(traceabilityContext:OclAny):String = 
+  'event_proc_status'/]
+
+[query public uml_c_fetched_event(traceabilityContext:OclAny):String = 
+    'fetched_event'/]
+
+[query public uml_c_event_pool_mgr(traceabilityContext:OclAny):String = 
+    'manager'/]
+
+[query public uml_c_event_pool_locator(traceabilityContext:OclAny):String = 
+    'event_pool_locator_t'/]
+
+[query public uml_c_event_fifo_pool(traceabilityContext:OclAny):String = 
+    'fifo_pool'/]
+
+[query public uml_c_self_event_pool(traceabilityContext:OclAny):String = 
+  utils_get_self_name() + '->' + utils_get_event_pool_name()/]
+
+[query public uml_c_self_event_proc_status(traceabilityContext:OclAny):String = 
+  utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
+  + uml_c_event_proc_status()/]
+
+[query public uml_c_self_fetched_event(traceabilityContext:OclAny):String = 
+    utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
+    + uml_c_fetched_event() /]
+
+[query public uml_c_self_fetched_event_type(traceabilityContext:OclAny):String = 
+    utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
+    + uml_c_fetched_event() + '.event_type' /]
+
+[query public uml_c_self_ev_pool_mgr(traceabilityContext:OclAny):String = 
+    utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
+    + uml_c_event_pool_mgr() /]
+
+[query public uml_c_self_ev_fifo_pool(traceabilityContext:OclAny):String = 
+    utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
+    + uml_c_event_fifo_pool() /]
 
 [template public uml_c_get_literal_string(ls:LiteralSpecification)] 
 [let lun : LiteralUnlimitedNatural = ls]
@@ -682,14 +769,9 @@ endif
 
 [template public uml_c_include_dependencies(
                                           external_packages:OrderedSet(Package),
-                                          sub_packages:OrderedSet(Package),
                                           indentation : Integer)]
-[for (s : String | sub_packages.get_package_h_path())]
-[uml_c_include_local_file(s, indentation)/]
-[/for]
 [for (s : String | external_packages
-                  ->removeAll(sub_packages)
-                    .uml_c_get_package_h_qualified_path())]
+                   .get_package_h_filename())]
 [uml_c_include_global_file(s, indentation)/]
 [/for]
 [/template]
@@ -720,12 +802,12 @@ typedef struct [s_name/] \
 
 [template public uml_c_enumerate_events(aClass : Class,
                                         indentation : Integer)
- {events : OrderedSet(Event)=aClass.request_class_events();
+ {events : OrderedSet(Event)=aClass.request_classifier_events();
   spaces : String = utils_get_indent_string();
   total_indentation : Integer = indentation + spaces.size();}]
 [documentation_string('@brief The enumeration of all events handled by ' 
   + aClass.name + ' Class.', indentation)/]
-typedef enum
+enum [aClass.uml_c_get_event_type_name()/]
 {
 [for (ev : Event | events) separator(','+utils_newline()) 
        after(',' + utils_newline())]
@@ -734,63 +816,52 @@ typedef enum
 [spaces/][documentation_string('@brief The number of all events handled by ' 
   + aClass.name + ' Class.', indentation)/]
 [spaces/][uml_c_get_event_count(aClass)/]
-}[aClass.uml_c_get_event_type_name()/];
+};
 
-[documentation_string('@brief The base type of the event in the event'
- + ' pool of the ' + aClass.name + ' class.', total_indentation)/]
-typedef struct
-{
-[spaces/][documentation_string('@brief The type of the next event in the event'
- + ' pool of the ' + aClass.name + ' class.', total_indentation)/]
-[spaces/][uml_c_property_decl_string(aClass.uml_c_get_event_type_name(),
-                                     utils_get_event_next_name(),'',
-                                     total_indentation)/]
-}[aClass.uml_c_get_event_base_name()/];
-
-[for (ev : Event | events) separator(utils_newline()) ]
-[documentation_string('@brief The struct with data of the ' + ev.name + 
-' event in the event pool of the ' + aClass.name + ' class.', 
-total_indentation)/]
-typedef struct
-{
-[spaces/][documentation_string('@brief The base data of the event.', 
-total_indentation)/]
-[spaces/][uml_c_property_decl_string(aClass.uml_c_get_event_base_name(),
-                                     uml_c_get_event_base_property_name(),'',
-                                     total_indentation)/]
-}[uml_c_get_event_typedef(aClass, ev)/];
-
-[documentation_string('@brief The struct with ' + ev.name + 
-' event queue in the event pool of the ' + aClass.name + ' class.', 
-total_indentation)/]
-typedef struct
-{
-[spaces/][documentation_string('@brief The index of the first element in' + 
- ' the queue.', 
-total_indentation)/]
-[spaces/][uml_c_property_decl_string('size_t', 'head','', total_indentation)/]
-[spaces/][documentation_string('@brief The index of the last element in' + 
- ' the queue.', 
-total_indentation)/]
-[spaces/][uml_c_property_decl_string('size_t', 'tail','', total_indentation)/]
-[spaces/][documentation_string('@brief The number of elements in' + 
- ' the queue.', 
-total_indentation)/]
-[spaces/][uml_c_property_decl_string('size_t', 'count','', total_indentation)/]
-[if (aClass.request_event_needs_defer(ev))]
-[spaces/][documentation_string('@brief The number of deferred elements in' + 
- ' the queue.', total_indentation)/]
-[spaces/][uml_c_property_decl_string('size_t', 'deferred','', 
+[documentation_string('@brief The type used to store the event pool of all '
+ + 'events accepted by the ' + aClass.name + ' class.', indentation)/]
+typedef struct {
+[spaces/][documentation_string('@brief The main event pool manager object in '
+            + 'the '+ aClass.name + ' class.', total_indentation)/]
+[spaces/][uml_c_property_decl_string('event_pool_t', uml_c_event_pool_mgr(),
+                                                        '', total_indentation)/]
+[spaces/][documentation_string('@brief The array of fifo objects, one for each '
+          + 'accepted event type.' + utils_newline()
+          + '@details The objects are referenced and managed by the event_pool'
+          + ' object.', total_indentation)/]
+[spaces/][uml_c_property_decl_string('event_pool_fifo_t', 
+          uml_c_event_fifo_pool(),
+          '['+uml_c_get_event_count(aClass)+']', total_indentation)/]
+[for (ev : Event | events) ]
+[spaces/][documentation_string('@brief The array of the events that follow any '
++ ev.name + ' event in the event pool sequence.' + utils_newline()
++ '@details It is referenced by the ' + uml_c_event_fifo_pool() + '['
++ uml_c_get_event_enum(aClass, ev) + '] object.', total_indentation)/]
+[spaces/][uml_c_property_decl_string(uml_c_get_event_pool_type(), 
+          ev.uml_c_get_event_next_queue(),
+          '['+ uml_c_get_event_queue_size(aClass, ev) + ']', 
  total_indentation)/]
-[/if]
-[spaces/][documentation_string('@brief The array of events in' + 
- ' the queue.', total_indentation)/]
-[spaces/][uml_c_property_decl_string(uml_c_get_event_typedef(aClass, ev), 
-         'events','['+ uml_c_get_event_queue_size(aClass, ev) + ']', 
- total_indentation)/]
-}[uml_c_get_event_queue_typedef(aClass, ev)/];
 [/for]
+[spaces/][documentation_string('@brief The marker that stores the processing '
+          + 'status of the event at the \'first\' position.'  + utils_newline()
+          + '@details It is used to '
+          + 'prevent processing of the same event multiple times, and from '
+          + 'removing unprocessed events. Moreover it can be used to handle '
+          + 'event deferring.', total_indentation)/]
+[spaces/][uml_c_property_decl_string('sm_event_status_t', 
+                                     uml_c_event_proc_status(),
+                                                        '', total_indentation)/]
+[spaces/][documentation_string('@brief Stores the location of the event that '
+          + 'is currently being processed.', total_indentation)/]
+[spaces/][uml_c_property_decl_string(uml_c_event_pool_locator(), 
+                                     uml_c_fetched_event(),
+                                                        '', total_indentation)/]
+}[uml_c_get_event_pool_type_name(aClass)/];
 [/template]
+
+[query public uml_c_statemachine_behavior_name(sm:StateMachine) : String = 
+    sm.name.toLower()/]
+
 [**
  * Provides C declaration of a classifier.
  * @param aClassifier The classifier that should be declared.
@@ -802,7 +873,8 @@ total_indentation)/]
   ?(aClassifier.request_needs_storage())
   {spaces : String = utils_get_indent_string();
    total_indentation : Integer = indentation + spaces.size();}]
-[if (aClassifier.request_needs_intermediate_binding() )]
+[debug_marker('uml_c_struct_decl step 1')
+/][if (aClassifier.request_needs_intermediate_binding() )]
 [for (tB : TemplateBinding | aClassifier.templateBinding
              ->request_sorted_bindings())
      ?(tB.signature.template.oclIsKindOf(Classifier))]
@@ -815,15 +887,19 @@ struct [tC.uml_c_get_bound_struct_name(aClassifier)/]
 [/let]
 [/for]
 [/if]
-[let sm:StateMachine =  aClassifier]
+[debug_marker('uml_c_struct_decl step 2')
+/][let sm:StateMachine =  aClassifier]
 [uml_c_enumerate_states(sm,indentation)/]
 [/let]
-[let aClass : Class = aClassifier]
-[if (aClassifier.request_needs_event_loop() ) ]
+[debug_marker('uml_c_struct_decl step 3')
+/][let aClass : Class = aClassifier]
+[if (aClassifier.request_classifier_needs_event_queue() ) ]
 [uml_c_enumerate_events(aClass, indentation)/]
+
 [/if]
 [/let]
-[documentationElement(aClassifier,indentation)/]
+[debug_marker('uml_c_struct_decl step 4')
+/][documentationElement(aClassifier,indentation)/]
 struct [uml_c_get_struct_name(aClassifier)/]
 {
 [if (aClassifier.request_is_direct_binding())]
@@ -842,7 +918,12 @@ struct [uml_c_get_struct_name(aClassifier)/]
                                 total_indentation)/]
 [spaces/][uml_c_property_decl_string(bC.uml_c_get_type_name(),bC.name,'',
                                      total_indentation)/]
-[/for][let sm:StateMachine =  aClassifier]
+[/for][debug_marker('uml_c_struct_decl step 5')
+/][let sm:StateMachine =  aClassifier]
+[spaces/][documentation_string('@brief The pointer to the StateMachine\'s '
+          'context object.', total_indentation)/]
+[spaces/][uml_c_property_decl_string(sm._context.uml_c_get_type_name()+'*',
+        'p_context','', total_indentation)/]
 [for (r:Region| sm.request_all_regions())]
 [spaces/][documentationElement(r,indentation)/]
 [spaces/][uml_c_property_decl_string(
@@ -850,19 +931,28 @@ struct [uml_c_get_struct_name(aClassifier)/]
         r.uml_c_get_region_state_property_name(),
                                      '', total_indentation)/]
 [/for]
-[/let][let aClass : Class = aClassifier]
-[if (aClassifier.request_needs_event_loop() ) ]
-[spaces/][documentation_string('@brief The type of the first event in the event'
- + ' pool of the ' + aClass.name + ' class.', 
+[/let][debug_marker('uml_c_struct_decl step 6')
+/][let aClass : Class = aClassifier]
+[if (aClassifier.request_classifier_needs_event_queue() ) ]
+[spaces/][documentation_string('@brief The event pool object managing all '
+          + 'events corresponding to the ' + aClass.name + ' class.', 
                                 total_indentation)/]
-[spaces/][uml_c_property_decl_string(aClass.uml_c_get_event_type_name(),
-                                     utils_get_event_head_name(),'',
+[spaces/][uml_c_property_decl_string(aClass.uml_c_get_event_pool_type_name(),
+                                     utils_get_event_pool_name(),'',
                                      total_indentation)/]
-[spaces/][documentation_string('@brief The type of the last event in the event'
- + ' pool of the ' + aClass.name + ' class.', total_indentation)/]
-[spaces/][uml_c_property_decl_string(aClass.uml_c_get_event_type_name(),
-                                     utils_get_event_tail_name(),'',
+[for (sm:StateMachine | request_elements_sorted(aClass.ownedBehavior)
+                                                  ->selectByKind(StateMachine))]
+[spaces/][documentation_string('@brief The instance of the ' 
+         + sm.uml_c_statemachine_behavior_name()
+         + ' state machine. '
+         + utils_newline() + '@details According to UML, ' + aClass.name
+         + ' class is the context of the ' 
+         + sm.uml_c_statemachine_behavior_name()+ ' state machine.'
+                                                          , total_indentation)/]
+[spaces/][uml_c_property_decl_string(sm.uml_c_get_type_name(),
+                                     sm.uml_c_statemachine_behavior_name(),'',
                                      total_indentation)/]
+[/for]
 [if (aClass.request_class_needs_event_defer() )]
 [spaces/][documentation_string('@brief The type of the first deferred event in'
  + ' the event pool of the ' + aClass.name + ' class.', 
@@ -876,19 +966,14 @@ struct [uml_c_get_struct_name(aClassifier)/]
                                      utils_get_defer_tail_name(),'',
                                      total_indentation)/]
 [/if]
-[for (ev : Event | aClass.request_class_events())]
-[spaces/][documentation_string('@brief The event queue holding ' + ev.name + 
-                                   ' events.', total_indentation)/]
-[spaces/][uml_c_property_decl_string(uml_c_get_event_queue_typedef(aClass, ev),
-                                     ev.name,'',
-                                     total_indentation)/]
-[/for]
 [/if]
 [/let]
-[for (p: Property | aClassifier.attribute)]
+[debug_marker('uml_c_struct_decl step 7')
+/][for (p: Property | aClassifier.attribute)]
 [spaces/][documentationElement(p,total_indentation)/]
 [spaces/][uml_c_property_decl(p,total_indentation)/]
-[/for][if (aClassifier.request_has_virtual_operations())]
+[/for][debug_marker('uml_c_struct_decl step 8')
+/][if (aClassifier.request_has_virtual_operations())]
 [spaces/][documentation_string('@brief The pointer to the virtual table of the ' 
                                + aClassifier.name + ' class.', 
                                 total_indentation)/]
@@ -957,7 +1042,8 @@ struct [uml_c_get_vtable_struct_name(aClassifier)/]
 [/template]
 
 [template public uml_c_get_element_full_name(aNamedElement : NamedElement)
-][aNamedElement.eContainer(Package).name + '_' + aNamedElement.name/][/template]
+][(aNamedElement.eContainer(Package).name + '_' + aNamedElement.name).toLower()
+/][/template]
 
 [template public uml_c_get_region_full_name(aRegion : Region)
 ][aRegion.eContainer(Package).name + '_' + aRegion.eContainer(StateMachine).name 
@@ -986,11 +1072,26 @@ post(toUpper())][aVertex.eContainer(Package).name + '_'
 ][(if anOperation.uml_c_is_main_operation() then
   '' else anOperation.eContainer(Package).name + '_' 
   + anOperation.owner.oclAsType(NamedElement).name 
-  + '_' endif + anOperation.name)/][/template]
+  + '_' endif + anOperation.name).toLower()/][/template]
+
+[query public uml_c_get_fetch_event_full_name(aClassifier: Classifier) : String
+ = (aClassifier.eContainer(Package).name + '_' + aClassifier.name 
+   + '_fetch_event').toLower()/]
+
+[query public uml_c_get_dispatch_event_full_name(aClassifier: Classifier) 
+ : String = (aClassifier.eContainer(Package).name + '_' + aClassifier.name 
+   + '_dispatch_event').toLower()/]
+
+[query public uml_c_get_release_event_full_name(aClassifier: Classifier) 
+ : String = (aClassifier.eContainer(Package).name + '_' + aClassifier.name 
+   + '_release_event').toLower()/]
 
 [query public uml_c_classifiers_need_declare(anOSet:OrderedSet(Classifier))
  : Boolean = not anOSet->select(c:Classifier | c.request_needs_storage())
              ->isEmpty()/]
+
+[query public uml_c_get_event_pool_type(traceabilityContext:OclAny):String 
+                                                         = 'event_pool_size_t'/]
 
 [template public uml_c_declare_structs(anOSet:OrderedSet(Classifier),
                                            indentation:Integer)
@@ -1039,7 +1140,16 @@ post(toUpper())][aVertex.eContainer(Package).name + '_'
  separator(utils_newline())
  ?(aClassifier.request_needs_storage())]
 [utils_indent(indentation)/][uml_c_struct_decl(aClassifier, indentation)/]
-[if (aClassifier.request_needs_vtable() )]
+[if ( (not aClassifier.ownedMember->selectByKind(Operation)
+                              ->exists(o:Operation|o.request_is_constructor()))
+      and (not (aClassifier.oclIsKindOf(Behavior) 
+            and not aClassifier.oclAsType(Behavior)._context.oclIsUndefined()))
+      and (not aClassifier.oclIsKindOf(Interface))
+      )]
+#error No constructor was defined for the [aClassifier.name/] class. 
+[/if]
+[debug_marker('uml_c_declare_structs step 1')
+/][if (aClassifier.request_needs_vtable() )]
 
 [utils_indent(indentation)/][uml_c_vtable_decl(aClassifier, indentation)/]
 [/if][/for]
@@ -1145,6 +1255,66 @@ static const [uml_c_get_vtable_type_name(aClassifier)
 [aString/]
 [/template]
 
+[template public uml_c_event_pool_init(bC:BehavioredClassifier, 
+                                                         indentation : Integer)]
+b_is_created = true;
+/* First it is necessary to initialize fifo objects for each event
+ * separately.*/
+[for (ev : Event | bC.request_classifier_events()) 
+      separator(utils_newline())
+      after(utils_newline())]
+b_is_created = b_is_created && fifo_initialize(
+                (&[uml_c_self_ev_fifo_pool() + 
+                             '[' + uml_c_get_event_enum(bC, ev) + ']'/].fifo),
+                [uml_c_get_event_queue_size(bC, ev)/], 0u, 0u);
+[uml_c_self_ev_fifo_pool() + '[' 
+                            + uml_c_get_event_enum(bC, ev) + ']'/].p_next_events
+               = [uml_c_self_event_pool()/].[ev.uml_c_get_event_next_queue()/];
+[/for]
+[uml_c_self_event_proc_status()/] = [request_transition_dispatched_state()/];
+[uml_c_self_fetched_event()/] =
+                            ([uml_c_event_pool_locator()/])
+                            {.event_type = [bC.uml_c_get_event_count()/],
+                             .event_index = (~(([uml_c_get_fifo_size_type()
+                                                                      /]) 0u))};
+
+/* Then the initialized [uml_c_event_fifo_pool()/] can be used to initialize the
+ * [utils_get_event_pool_name()/] manager.*/
+b_is_created = b_is_created
+                [uml_c_format_param_list('&& event_pool_initialize',
+                     Sequence{'&'+uml_c_self_ev_pool_mgr(),
+                              uml_c_self_ev_fifo_pool(),
+                              bC.uml_c_get_event_pool_sizes_name(),
+                              bC.uml_c_get_event_count()},
+                              indentation + 17)/];
+[if (not (bC.classifierBehavior.oclIsUndefined()))]
+/* Initialize the classifierBehavior. */
+[uml_c_format_param_list(bC.classifierBehavior.uml_c_get_behavior_full_name(),
+            uml_c_behavior_arg_strings(bC.classifierBehavior),
+            indentation + 1)/];
+[/if]
+[/template]
+
+[**
+ * Generates a code to send an event into an event pool.
+*/]
+[template public uml_c_enqueue_event(bC:BehavioredClassifier,
+                                     anEvent:Event, indentation:Integer)
+ {indent_width : Integer = getProperty('indent_width').toInteger();}]
+bool b_is_added = false;
+
+if(NULL != [utils_get_self_name()/])
+{
+[utils_indent(indent_width)
+          /]b_is_added = event_pool_enqueue(&[uml_c_self_ev_pool_mgr()/],
+[utils_indent(indent_width)
+/]                                ([uml_c_get_event_pool_type()
+                                      /]) [uml_c_get_event_enum(bC, anEvent)/]);
+}
+
+return b_is_added;
+[/template]
+
 [**
  * Provides the C definition of an operation. 
  */]
@@ -1154,7 +1324,25 @@ static const [uml_c_get_vtable_type_name(aClassifier)
      prefix : String = utils_indent(indent_width) 
          + if (anOperation.ownedParameter->request_return_value()->notEmpty()) 
            then request_return_value(anOperation.ownedParameter)->first().name
-                + ' = ' else '' endif;}]
+                + ' = ' else '' endif;
+    b_is_constructor : Boolean = anOperation.getAppliedStereotypes().name
+                                                          ->includes('Create')
+                               and anOperation.featuringClassifier->size() = 1;
+    behavior_indent:Integer = if b_is_constructor then indent_width*2
+                              else indent_width endif;
+    baseClassifiers:OrderedSet(Classifier)=if b_is_constructor then
+         request_elements_sorted(
+         anOperation.featuringClassifier->any(true).general
+         ->select(aC : Classifier | aC.request_needs_storage()))
+         ->filter(Classifier) else OrderedSet{} endif;
+    baseConstructorClassifiers:OrderedSet(Classifier) = baseClassifiers
+              ->select(c:Classifier|c.ownedMember->selectByKind(Operation)
+                       ->select(o:Operation|o.getAppliedStereotypes().name
+                                                    ->includes('Create') 
+                          and anOperation.request_has_dependency(o))
+                       ->size()=1);
+    bc:BehavioredClassifier = anOperation.featuringClassifier
+                               ->selectByKind(BehavioredClassifier)->any(true)}]
 [debug_marker('uml_c_operation_definition step 1')
 /][documentationElement(anOperation,indentation)/]
 [anOperation.visibility.uml_c_function_visibility(false) 
@@ -1165,7 +1353,7 @@ static const [uml_c_get_vtable_type_name(aClassifier)
 [if (anOperation.request_is_virtual_operation())]
 [if (anOperation.uml_c_operation_return_type() <> 'void')]
 [utils_indent(indent_width)/][uml_c_init_default_result(anOperation, 
-                                                        indentation)/]
+                                                     indentation+indent_width)/]
 [/if]
 [utils_indent(indent_width)/][uml_c_insert_text(
   '/*Code for handling a virtual operation.*/')/]
@@ -1191,16 +1379,66 @@ static const [uml_c_get_vtable_type_name(aClassifier)
 [utils_indent(indent_width)
      /]return [request_return_value(anOperation.ownedParameter)->first().name/];
 [/if]
-    [else]
-    [let b:Behavior = 
-                anOperation.method->any(b:Behavior|not b.oclIsUndefined())]
-    [if ( 1 = anOperation.method->size() )]
-[utils_get_indent_string()
-                     /][uml_c_implement_behavior(b,'C',indentation 
-                                           + utils_get_indent_string().size())/]
-    [/if]
-    [/let]
-    [/if]
+[else]
+[if (b_is_constructor)]
+[if (anOperation.uml_c_operation_return_type() <> 'bool')]
+#error The return type of the constructor must be set to bool in the model.
+[/if]
+[if (baseConstructorClassifiers->size() <> baseClassifiers->size())]
+#error Base class constructor dependencies are missing.
+[/if]
+[utils_indent(indent_width)/]bool b_is_created = false;
+
+[utils_indent(indent_width)/]if([(if baseClassifiers->notEmpty() 
+                             then '(NULL != p_obj)' else 'NULL != p_obj' endif)
+/][for 
+        (aBase:Classifier | baseConstructorClassifiers)
+        before(utils_newline()) separator(utils_newline())]
+[utils_indent(indent_width*2)/]&& [(let aBaseConstructor:Operation 
+               = aBase.ownedMember->selectByKind(Operation)
+              ->select(o:Operation|o.getAppliedStereotypes().name
+                 ->includes('Create') and anOperation.request_has_dependency(o))
+              ->any(true) in
+            uml_c_format_param_list(
+            aBaseConstructor.uml_c_get_operation_full_name(),
+            uml_c_arg_strings(aBaseConstructor.ownedParameter, 
+                                                    aBaseConstructor.isStatic)
+                 ->drop(1)->prepend('&'+utils_get_self_name()+'->'+aBase.name),
+            indentation + (indent_width*2) + 3))
+/][/for])
+[utils_indent(indent_width)/]{
+[if (bc.uml_c_needs_init_defaults())]
+[utils_indent(indent_width*2)/][uml_c_format_param_list(
+       bc.uml_c_get_init_default_name(),
+                         Sequence{utils_get_self_name()},
+                         indentation+(indent_width*2))/];
+[/if]
+[if (bc.request_classifier_needs_event_queue())]
+[utils_indent(indent_width*2)
+                    /][uml_c_event_pool_init(bc, indentation + indent_width*2)/]
+[/if]
+[/if]   
+[ let  b:Behavior = 
+                anOperation.method->any(b:Behavior|not b.oclIsUndefined())  ]
+[if ( 1 = anOperation.method->size() )]
+[utils_indent(behavior_indent)
+        /][uml_c_implement_behavior(b,'C',indentation + behavior_indent)/]
+[/if]
+[else]
+[if (bc.request_classifier_events()->filter(CallEvent)
+         ->select(ce:CallEvent|ce.operation=anOperation)->size() = 1)]
+[utils_indent(behavior_indent)/][uml_c_enqueue_event(bc, 
+           bc.request_classifier_events()->filter(CallEvent)
+                                ->any(ce:CallEvent|ce.operation=anOperation),
+                                indentation + behavior_indent)/]
+[/if]
+[/let]
+[if (b_is_constructor)]
+[utils_indent(indent_width)/]}
+
+[utils_indent(indent_width)/]return b_is_created;
+[/if]
+[/if]
 }
 [/template]
 
@@ -1244,7 +1482,11 @@ static const [uml_c_get_vtable_type_name(aClassifier)
    alt_indent : Integer = 8;
    default_param_width: Integer = line_width-2-prefix.size();
    alt_param_width: Integer = line_width-1-alt_indent;
-   b_fits_default_param_width : Boolean = aSequence->forAll(s:String 
+   commaSequence:Sequence(String) = if aSequence->size()>1 
+               then aSequence->dropRight(1)->collect(s:String|s+',')
+                                                     ->append(aSequence->last())
+               else aSequence endif;
+   b_fits_default_param_width : Boolean = commaSequence->forAll(s:String 
                             | s.uml_c_fits_param_width(default_param_width));
    sep : String = if b_fits_default_param_width 
                   then line_sep + utils_indent(prefix.size()+1)
@@ -1269,6 +1511,193 @@ static const [uml_c_get_vtable_type_name(aClassifier)
 [prefix
 /][if (b_prepend_linebreak)][line_sep + utils_indent(alt_indent-1)
 /][/if]([for (s : String | grouped) separator(sep)][s/][/for])
+[/template]
+
+[template public uml_c_declare_event_pool_functions(aClassifier:Classifier, 
+                                             visibility:VisibilityKind,
+                                             indentation:Integer)]
+[utils_indent(indentation)/][uml_c_format_param_list(
+                        uml_c_function_visibility(visibility, false) 
+                         + uml_c_event_pool_return_type() 
+                         + ' ' + aClassifier.uml_c_get_fetch_event_full_name(),
+                         Sequence{uml_c_classifier_self(aClassifier, false)},
+                         indentation+1)/];
+[utils_indent(indentation)/][uml_c_format_param_list(
+                       uml_c_function_visibility(visibility, false) 
+                       + uml_c_event_pool_return_type() 
+                       + ' ' + aClassifier.uml_c_get_dispatch_event_full_name(),
+                       Sequence{uml_c_classifier_self(aClassifier, false)},
+                       indentation+1)/];
+[utils_indent(indentation)/][uml_c_format_param_list(
+                       uml_c_function_visibility(visibility, false) 
+                       + uml_c_event_pool_return_type() 
+                       + ' ' + aClassifier.uml_c_get_release_event_full_name(),
+                       Sequence{uml_c_classifier_self(aClassifier, false)},
+                       indentation+1)/];
+[/template]
+
+[template public uml_c_implement_event_pool_functions(bC:BehavioredClassifier, 
+                                             visibility:VisibilityKind,
+                                             indentation:Integer)
+ {indent_width : Integer = getProperty('indent_width').toInteger();
+  spaces:String=utils_indent(indent_width);
+  spaces2:String=spaces+spaces;
+  spaces3:String=spaces2+spaces;
+  spaces4:String=spaces3+spaces;
+  spaces5:String=spaces4+spaces;}]
+[documentation_string('@brief Fetches the first event pending in the event '
+ + 'pool.' + utils_newline()
+ + '@details This function is separated to allow the user to call it from '
+ + 'an enclosing critical section when needed.' + utils_newline()
+ + '@param [in] ' + utils_get_self_name() + ' The pointer to the self object.'
+ + utils_newline() + '@returns true, when an event was fetched from the event '
+ + 'pool and is waiting for processing.'
+ + utils_newline() + '@returns false, when the event pool is empty, or the '
+ + 'p_obj is NULL.', indentation)/]
+[uml_c_function_visibility(visibility, false) + uml_c_event_pool_return_type()/]
+[uml_c_format_param_list(bC.uml_c_get_fetch_event_full_name(),
+                         Sequence{uml_c_classifier_self(bC, false)},
+                         indentation)/]
+{
+[spaces/]bool b_is_new_event = false;
+
+[spaces/]if(NULL != [utils_get_self_name()/])
+[spaces/]{
+[spaces2/]switch([uml_c_self_event_proc_status()/])
+[spaces2/]{
+[spaces3/]case [request_transition_dispatched_state()/]:
+[spaces4/][uml_c_self_fetched_event()/] =
+[spaces5/]([uml_c_event_pool_locator()/])
+[spaces5/]{.event_type = [uml_c_get_event_count(bC)/],
+[spaces5/] .event_index = (~(([uml_c_get_fifo_size_type()/]) 0u))};
+[spaces4/]b_is_new_event =
+[spaces5/][uml_c_format_param_list('event_pool_get_first_head',
+                     Sequence{'&'+uml_c_self_ev_pool_mgr(),
+                              '&'+uml_c_self_fetched_event()},
+                              indentation + spaces5.size()+1)/];
+[spaces4/]break;
+[spaces3/]case [request_transition_pending_state()/]:
+[spaces4/]b_is_new_event = true;
+[spaces4/]break;
+[spaces3/]default:
+[spaces4/]break;
+[spaces2/]}
+
+[spaces2/]if(b_is_new_event)
+[spaces2/]{
+[spaces3/][uml_c_self_event_proc_status()
+                                     /] = [request_transition_pending_state()/];
+[spaces2/]}
+[spaces/]}
+
+[spaces/]return b_is_new_event;
+}
+
+[documentation_string('@brief Executes the proper action corresponding to the '
+ + 'event fetched from the event pool.' + utils_newline()
+ + '@details This function was separated from the other two (*fetch* and '
+ + '*release*) functions, because in normal scenario this function doesn\'t '
+ + 'need'
+ + ' to be called from a critical section. Since the event at the head of the '
+ + 'event pool has already been fetched, no action on the event pool is able to'
+ + ' modify the event data contents. Because the event data is still in the '
+ + 'event pool, there is no need for an additional temporary buffer for keeping'
+ + ' a copy of the event data (which could be troublesome due to separate data '
+ + 'types for each event).' + utils_newline()
+ + 'To access the required event data it is enough to use information in the '
+ + '\'event_pool.fetched_event\' field. This approach saves memory and has no '
+ + 'need of event data copying, but may be only a little slower when accessing '
+ + 'the event data due to retrieving information from the '
+ + '\'event_pool.fetched_event\' field.' + utils_newline()
+ + '@returns true when a fetched event was waiting for processing.' 
+ + utils_newline() 
+ + '@returns false when there was no event waiting for processing or the '
+ + utils_get_self_name() + ' was NULL.', indentation)/]
+[uml_c_function_visibility(visibility, false) + uml_c_event_pool_return_type()/]
+[uml_c_format_param_list(bC.uml_c_get_dispatch_event_full_name(),
+                         Sequence{uml_c_classifier_self(bC, false)},
+                         indentation)/]
+{
+[spaces/]bool b_is_new_event = false;
+
+[spaces /]if ((NULL != [utils_get_self_name()/])
+[spaces2/]&& ([request_transition_pending_state()
+                                     /] == [uml_c_self_event_proc_status()/]))
+[spaces /]{
+[spaces2/][uml_c_get_event_status_type()
+                         /] temp_status = [request_transition_ignored_state()/];
+
+[spaces2/]switch([uml_c_self_fetched_event_type()/])
+[spaces2/]{
+[for (e:Event|bC.request_classifier_events())]
+[spaces3/]case [uml_c_get_event_enum(bC, e)/]:
+[spaces4/]temp_status = [uml_c_call_event_dispatch(bC, e, 
+                                             indentation+14+spaces4.size()+1)/];
+[spaces4/]break;
+[/for]
+[spaces3/]default:
+[spaces4/]break;
+[spaces2/]}
+
+[spaces2/][uml_c_self_event_proc_status()/] = temp_status;
+[spaces2/]b_is_new_event = true;
+[spaces /]}
+
+[spaces /]return b_is_new_event;
+}
+
+[documentation_string('@brief Removes the processed event from the event pool.'
+ + utils_newline()
+ + '@details This function is separated to allow the user to call it from '
+ + 'an enclosing critical section when needed.' + utils_newline()
+ + '@param [in] ' + utils_get_self_name() + ' The pointer to the self object '
+ + 'of the ' + bC.name + ' class.' + utils_newline() 
+ + '@returns true, if the last fetched event had already been processed and '
+ + 'then removed from the event pool.' + utils_newline() 
+ + '@returns false if the ' + utils_get_self_name() + ' is NULL or there was no'
+ + ' processed event in the event pool.', indentation)/]
+[uml_c_function_visibility(visibility, false) + uml_c_event_pool_return_type()/]
+[uml_c_format_param_list(bC.uml_c_get_release_event_full_name(),
+                         Sequence{uml_c_classifier_self(bC, false)},
+                         indentation)/]
+{
+[spaces /]bool b_is_released = false;
+
+[spaces /]if ((NULL != p_obj)
+[spaces2/]&& ([request_transition_pending_state()
+                          /] < [uml_c_self_event_proc_status()/])
+[spaces2/]&& ([request_transition_dispatched_state()
+                                        /] > [uml_c_self_event_proc_status()/]))
+[spaces /]{
+[spaces2/]b_is_released = event_pool_dequeue(&[uml_c_self_ev_pool_mgr()/]);
+
+[spaces2/]if(b_is_released)
+[spaces2/]{
+[spaces3/][uml_c_self_event_proc_status()
+                                  /] = [request_transition_dispatched_state()/];
+[spaces2/]}
+[spaces /]}
+
+[spaces /]return b_is_released;
+}
+
+[/template]
+
+[template public uml_c_call_event_dispatch(bC:BehavioredClassifier, 
+                                           anEvent:Event, indentation:Integer)
+{event_stateMachines:Set(StateMachine) = 
+                       bC.ownedBehavior
+                       ->selectByKind(StateMachine)->select(sm:StateMachine|
+                       sm.request_classifier_events()->includes(anEvent));}]
+[if (event_stateMachines->size()<>1)]
+#error Any event of a Class can be handled by only one StateMachine in that\
+       Class. 
+[else]
+[(let anSM:StateMachine=event_stateMachines->any(true) in
+          uml_c_format_param_list(
+                       anSM.uml_c_get_sm_event_dispatch(anEvent),
+                       Sequence{'&' + utils_get_self_name() + '->' + anSM.name}, 
+                         indentation))/][/if]
 [/template]
 
 [**
@@ -1359,11 +1788,13 @@ static const [uml_c_get_vtable_type_name(aClassifier)
    ->isEmpty()/]
 
 [query public uml_c_get_region_event_dispatch(aRegion:Region, anEvent: Event)
-  : String = (aRegion.containingStateMachine().name + '_dispatch_' 
+  : String = (aRegion.eContainer(Package).name + '_' 
+             + aRegion.containingStateMachine().name + '_dispatch_' 
              + anEvent.name + '_' + aRegion.name).toLower()/]
 
 [query public uml_c_get_sm_event_dispatch(anSM:StateMachine, anEvent: Event)
-  : String = (anSM.name + '_dispatch_' + anEvent.name).toLower()/]
+  : String = (anSM.eContainer(Package).name + '_' +
+                            anSM.name + '_dispatch_' + anEvent.name).toLower()/]
 
 [query public uml_c_get_transition_effect_name(aTransition:Transition)
   : String = if aTransition.effect.oclIsUndefined() then null else
@@ -1371,7 +1802,8 @@ static const [uml_c_get_vtable_type_name(aClassifier)
             + '_effect' endif /]
 
 [query public uml_c_get_state_event_dispatch(aState:State, anEvent: Event)
-  : String = (aState.containingStateMachine().name + '_dispatch_' 
+  : String = (aState.eContainer(Package).name + '_' 
+             + aState.containingStateMachine().name + '_dispatch_' 
              + anEvent.name + '_' + aState.name).toLower()/]
 
 [template public uml_c_declare_behaviors(aClassifier:BehavioredClassifier,
@@ -1416,8 +1848,34 @@ static const [uml_c_get_vtable_type_name(aClassifier)
 [bd.indent_newlines('')
 /][/let]
 [/if]
+[elselet sm : StateMachine = aBehavior]
+[ Sequence{utils_get_self_name(), '->' + sm.uml_c_statemachine_behavior_name(),
+           '.p_context'}
+          ->uml_c_get_vtable_qualified_entry(indentation,0)
+/] = [utils_get_self_name()/];
+[for (r:Region| sm.request_all_regions()) after(utils_newline())]
+[ Sequence{utils_get_self_name(), '->' + sm.uml_c_statemachine_behavior_name(),
+           '.' + r.uml_c_get_region_state_property_name()}
+          ->uml_c_get_vtable_qualified_entry(indentation,0)
+/] = [r.uml_c_get_region_initial_state_name()/];
+[/for]
+[if (sm.uml_c_needs_init_defaults())]
+[uml_c_format_param_list(
+       sm.uml_c_get_init_default_name(),
+                         Sequence{'&' + utils_get_self_name() 
+                           + '->' + sm.uml_c_statemachine_behavior_name()},
+                         indentation)/];
+[/if]
+/* Execute the initial transition.*/
+[for (r:Region| sm.region->request_regions_sorted()) separator(utils_newline())]
+[uml_c_format_param_list(
+         r.uml_c_get_region_entry_name(),
+         Sequence{'&' + utils_get_self_name() 
+                           + '->' + sm.uml_c_statemachine_behavior_name()}, 
+         indentation + 1)/];[/for]
 [else]
-#warning effect Behavior type not supported[/let]
+#warning effect Behavior type not supported
+[/let]
 [/template]
 
 [template public uml_c_define_behaviors(aClassifier:BehavioredClassifier,
@@ -1691,6 +2149,16 @@ static void
      Sequence{uml_c_param_decl(uml_c_get_type_name(sm) + '*', 
                                     utils_get_self_name())}/]
 
+[query public uml_c_get_child_conversion_params(aBase:Classifier, 
+                                                              aChild:Classifier)
+ :Sequence(String) =
+    Sequence{uml_c_param_decl(uml_c_get_type_name(aBase) + '*', 
+                                    'p_'+aBase.name.toLower()),
+             uml_c_param_decl(uml_c_get_type_name(aChild) + '**', 
+                                    'pp_'+aChild.name.toLower())}/]
+
+[query public uml_c_get_fifo_size_type(traceabilityContext:OclAny) : String = 
+      'fifo_size_t'/]
 [**
  * Declares a dispatch function of each event for each region for which a state
  * variable was defined. 
@@ -1777,7 +2245,7 @@ static [uml_c_get_event_status_type()/]
 [template public uml_c_declare_sm_dispatch(sm : StateMachine, 
                                           indentation : Integer)
  ?(sm.request_all_regions()->notEmpty() 
-   and (sm.request_class_events()->notEmpty()))]
+   and (sm.request_classifier_events()->notEmpty()))]
 [for (anEvent : Event | sm.request_sm_events())]
 [uml_c_format_param_list('static ' + uml_c_get_event_status_type() + ' ' 
                         + sm.uml_c_get_sm_event_dispatch(anEvent),
@@ -1857,6 +2325,21 @@ static [uml_c_get_event_status_type()/]
 [/for]
 [/template]
 
+[template public uml_c_define_event_pool_sizes(bc : BehavioredClassifier, 
+                                          indentation : Integer)
+{spaces : String = utils_get_indent_string();}]
+[documentation_string('@brief An array with fifo queue sizes for each event'
+  +' type.', indentation)/]
+static const [uml_c_get_fifo_size_type()/]
+[bc.uml_c_get_event_pool_sizes_name()+
+          '['+ bc.uml_c_get_event_count() + ']'/] =
+{
+[for (ev : Event | bc.request_classifier_events()) 
+      separator(','+utils_newline()) 
+      after(utils_newline())]
+[spaces/][uml_c_get_event_queue_size(bc, ev)/][/for]
+};
+[/template]
 [**
  * Implements a dispatch function of each event for each state for which the 
  * event should be handled. 
@@ -2754,4 +3237,44 @@ else
          Sequence{ utils_get_self_name(), resultname}, 
          indentation + and_sep.size())/]
 [/if]
+[/template]
+
+[template public uml_c_define_child_conversion_function(aBase:Classifier, 
+                                        aChild:Classifier, indentation:Integer)]
+[documentation_string('@brief Obtains the pointer to the specialized '
+ + aChild.name+' class from the pointer to the ' + aBase.name + ' class.'
+ + utils_newline() + '@details This function is static inline, so that it is '
+ + 'available practically only to the virtual functions for casting '
+ + aBase.uml_c_get_type_name() + ' to the specialized types.' + utils_newline()
+ + '@param [in] p_' + aBase.name.toLower() + ' The pointer to the base class '
+ + 'object.' + utils_newline()
+ + '@param [out] pp_' + aChild.name.toLower() + ' The pointer to the '
+ + 'location where the seeked child pointer should be stored.' + utils_newline()
+ + '@return true if the searched pointer was found and stored in the target '
+ + 'pointer.', indentation)/]
+static inline bool
+[uml_c_format_param_list(
+                   aBase.uml_c_get_base_to_child_conversion_full_name(aChild),
+                        aBase.uml_c_get_child_conversion_params(aChild),
+                         indentation)/]
+{
+    bool b_is_copied = false;
+
+    /* Check if this is really [aChild.name.toLower()/] class object 
+       by checking the specialized virtual function table which was assigned by
+       [aChild.name.toLower()/] class constructor.*/
+    if((NULL != pp_[aChild.name.toLower()/]) && (NULL != p_[
+                                                         aBase.name.toLower()/])
+            && (&[aChild.uml_c_get_vtable_instance_name()
+             /].[aBase.name.toLower()/] == p_[aBase.name.toLower()/]->p_vtable))
+    {
+        *pp_[aChild.name.toLower()/] = ([aChild.uml_c_get_type_name()/]*)(
+                         (uintptr_t)p_[aBase.name.toLower()
+                      /] - offsetof([aChild.uml_c_get_type_name()
+                                                  /], [aBase.name.toLower()/]));
+        b_is_copied = true;
+    }
+
+    return b_is_copied;
+}
 [/template]

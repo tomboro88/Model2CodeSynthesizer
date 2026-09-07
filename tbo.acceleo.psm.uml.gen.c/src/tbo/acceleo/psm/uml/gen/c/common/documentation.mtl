@@ -2,6 +2,7 @@
 [module documentation('http://www.eclipse.org/uml2/5.0.0/UML')]
 
 [import tbo::acceleo::psm::uml::gen::c::common::doxygen/]
+[import tbo::acceleo::psm::uml::gen::c::request::request/]
 
 [template public documentationCFile(aBrief : String)]
 [doxygen_source_doc(aBrief, getProperty('line_width').toInteger())/]
@@ -34,3 +35,9 @@
 [template public documentation_return(aDescription : String)]
 [doxygen_return(aDescription)/]
 [/template]
+
+[template public documentation_generated_note(indentation: Integer)]
+[doxygen_doc_string(request_generated_note(),
+     getProperty('line_width').toInteger() - indentation)/]
+[/template]
+

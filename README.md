@@ -1,16 +1,14 @@
-# M2T4Embedded
+# Model2CodeSynthesizer
 UML Model to text transformation templates for embedded systems programming in C. 
 
-*Work in progress...*
-
-M2T4Embedded is a tool for automated generation of C code for embedded systems from UML state machine diagrams created in Papyrus. It leverages custom Acceleo (MTL) templates to streamline development of reliable embedded software.
+Model2CodeSynthesizer is a tool for automated generation of C code for embedded systems from UML state machine diagrams created in Papyrus. It leverages custom Acceleo (MTL) templates to streamline development of reliable embedded software.
 
 ## Motivation
-This project originated from a willingness to speed up manual typing of state machines repeatable code in embedded systems. I observed that many embedded designs follow a common pattern—read sensors, calculate results, update outputs—resembling a PLC (Programmable Logic Controller) architecture. By consolidating proven code snippets into a tool, M2T4Embedded enables developers to design software at a higher level of abstraction using graphical UML diagrams. This approach shifts focus from low-level C programming to application-level design, improving efficiency and reliability in embedded development.
+This project originated from a willingness to speed up manual typing of state machines repeatable code in embedded systems. I observed that many embedded designs follow a common pattern—read sensors, calculate results, update outputs—resembling a PLC (Programmable Logic Controller) architecture. By consolidating proven code snippets into a tool, Model2CodeSynthesizer enables developers to design software at a higher level of abstraction using graphical UML diagrams. This approach shifts focus from low-level C programming to application-level design, improving efficiency and reliability in embedded development.
 
 ## Features
 - Converts UML state machines and state diagrams to C code (enums, switch statements).
-- Uses fully authored Acceleo (MTL) templates for code generation.
+- Uses custom Acceleo (MTL) templates.
 - Supports Eclipse Papyrus UML projects.
 - Allows various class property types, array members, literal constants.
 - Supports polymorphism with virtual functions.
@@ -24,7 +22,8 @@ This project originated from a willingness to speed up manual typing of state ma
 - Contains test diagrams for validation of generated code.
 - Doesn't use any framework nor runtime library, the transitions are hardcoded and strictly follow the state diagrams.
 - Contains expected code for the provided test diagrams, that can be compared with the generated code.
-- Status: Work in progress...
+- CMakeLists.txt files generation for each package in the UML model.
+- StateMachine Unity test groups generation for each possible state configuration - the user needs to fill it with setup code and test cases.
 
 ## Installation
 - **Requirements**: Technically it is only Acceleo project containing *.mtl template files, which can be used with Eclipse Papyrus to generate code from Papyrus UML models. 
@@ -42,13 +41,13 @@ TIP: In order to make the entry, exit, effect and guard behaviors visible direct
 - **c_generated** Eclipse C Project with the generated actual output C source code.
 - **c_test_expected** Project for unit tests for the expected output code.
 - **LaunchConfigurations** A folder with Eclipse Launch configuration files for Eclipse. By default these files are stored in Eclipse Workspace folder, but can be configured to be saved in another directory. In this particular case - they are stored here, so that they can be versioned by git and reused by other users cloning the repository. They will be imported automatically by Eclipse Papyrus when the complete repository will be opened by File>Import>Git>Projects from Git menu command in the main menu. There are the following Run configurations:
-  - **Generate** Runs Acceleo to generate the code from the included test diagrams to the c_ecpected/src directory.
+  - **Generate** Runs Acceleo to generate the code from the included test diagrams to the c_expected/src directory.
   - **Generate Code and Verify with Meld** Generates the code and launches git and Meld programs to make the comparison between the generated and expected output files. Uses bash commands to run Meld and git and tested at Ubuntu 22.04. For Windows the command must be changed in the Run>External tools>External tools configuration menu.
   - **Generate Code and Verify with Git** Generates the code and launches git to make a quick comparison between the generated and expected output files. In practice this is the most frequently used one, once you already have your Meld program opened. Git creates a short comparison status report and saves it in diff_report.txt file at the root of the git repository. Uses bash command similarly to the above.
   - **Compare with Git** Runs the git command for generated code comparison to the expected output.
   - **Compare with Git and Meld Folder** Runs the git and Meld commands for generated code comparison to the expected output. Eclipse Papyrus expects that you select some of the projects in the workspace, otherwise it will give a message that no resource was selected.
   - **Test Expected** Runs the c_test_expected project containing unit tests for the expected code modules.
-  - **c_expected** Runs the compiled c_expected project.
+  - **Run Expected** Runs the compiled c_expected project.
 - **tbo.acceleo.psm.uml.gen.c** The acceleo project used for code generation. It contains a **default.properties** file which can control some options related to the code generation:
   - **include_debug_markers** - By default set to false. Change to true to include additional comments in the generated code. They will provide information which pieces of the generator are responsible for each particular piece of output code. It greatly simplifies the further development of the generator.
   - **line_width** Sets the maximum number of characters in a single line of output code. The generator automatically formats the code to make it easy to read.
@@ -92,9 +91,10 @@ The generator also performs code formatting which relies on the proper configura
 - C++ version - The hardest part of the generator are queries traversing through the model. They already exist for C. Migration to C++ can reuse them.
 
 ## License
-MIT License. The MTL templates, UML diagrams and expected *.c and *.h source files are fully authored by @tomboro88. 
 
+This project is licensed under the **Eclipse Public License 2.0 (EPL-2.0)**. 
 
-**Papyrus** and **Acceleo** (both EPL 2.0) are used **only as offline development and code-generation tools** and are **not distributed** with this project. The generated code is not a derivative work of Papyrus/Acceleo and carries no EPL-2.0 obligations.
-
-Unit tests use **Unity** framework (MIT).
+* **Generator & Test Suite:** Acceleo templates (`*.mtl`), UML models, and reference tests (`*.c`, `*.h`) are licensed under **EPL-2.0**.
+* **Generated C Output:** Generated C source files (`*.c`, `*.h`) and build scripts (`CMakeLists.txt`) are free of generator licensing restrictions.
+* **Third-Party Libraries:** [Unity Test Framework](https://github.com/ThrowTheSwitch/Unity) is included under the **MIT License**.
+* **Tooling Note:** **Papyrus** and **Acceleo** are used solely as offline build tools and are not redistributed in this repository.

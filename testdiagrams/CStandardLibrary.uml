@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_mujBYJODEfGan9oICxlaTw" name="CStandardLibrary">
-  <packagedElement xmi:type="uml:Package" xmi:id="_yKC0UJODEfGan9oICxlaTw" name="stdio"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_0hVb0JODEfGan9oICxlaTw" name="stddef"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_1jyXUJODEfGan9oICxlaTw" name="string"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_24ZZ0JODEfGan9oICxlaTw" name="stdint"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_4SDUYJODEfGan9oICxlaTw" name="stdbool"/>
-  <packagedElement xmi:type="uml:Package" xmi:id="_zYyfYJODEfGan9oICxlaTw" name="stdlib"/>
-  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_mwuysJODEfGan9oICxlaTw">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_mwx2AJODEfGan9oICxlaTw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-      <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
-    </eAnnotations>
-    <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
-  </profileApplication>
-</uml:Model>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_mujBYJODEfGan9oICxlaTw" name="CStandardLibrary">
+    <packagedElement xmi:type="uml:Package" xmi:id="_yKC0UJODEfGan9oICxlaTw" name="stdio"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_0hVb0JODEfGan9oICxlaTw" name="stddef"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_1jyXUJODEfGan9oICxlaTw" name="string"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_24ZZ0JODEfGan9oICxlaTw" name="stdint">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_9hCrwKkOEfGUW58NsN5Xaw" name="uint64_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_2RFFIKkOEfGUW58NsN5Xaw" name="uint32_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_2RLLwKkOEfGUW58NsN5Xaw" name="uint16_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_2RLy0KkOEfGUW58NsN5Xaw" name="uint8_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="__6E_sKkOEfGUW58NsN5Xaw" name="int64_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_2RMZ4KkOEfGUW58NsN5Xaw" name="int32_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_4I_B8KkOEfGUW58NsN5Xaw" name="int16_t"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_4I_pAKkOEfGUW58NsN5Xaw" name="int8_t"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_4SDUYJODEfGan9oICxlaTw" name="stdbool">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_J-6hsKkPEfGUW58NsN5Xaw" name="bool"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_zYyfYJODEfGan9oICxlaTw" name="stdlib"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_l4o3EKkOEfGUW58NsN5Xaw" name="math"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_m-uVYKkOEfGUW58NsN5Xaw" name="float"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_HN_5QKkPEfGUW58NsN5Xaw" name="char"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Mm0YEKkPEfGUW58NsN5Xaw" name="float"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_TOU3kKkPEfGUW58NsN5Xaw" name="double"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_WPe7cKkPEfGUW58NsN5Xaw" name="int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Ybya8KkPEfGUW58NsN5Xaw" name="unsigned int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_aest4KkPEfGUW58NsN5Xaw" name="signed int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fH2qUKkPEfGUW58NsN5Xaw" name="unsigned char"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_jeZMwKkPEfGUW58NsN5Xaw" name="signed char"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lx78sKkPEfGUW58NsN5Xaw" name="long int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_oVe3gKkPEfGUW58NsN5Xaw" name="unsigned long int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_qTCJUKkPEfGUW58NsN5Xaw" name="signed long int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_tSjOcKkPEfGUW58NsN5Xaw" name="short int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_u7qhUKkPEfGUW58NsN5Xaw" name="unsigned short int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_xmIjgKkPEfGUW58NsN5Xaw" name="signed short int"/>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_mwuysJODEfGan9oICxlaTw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_mwx2AJODEfGan9oICxlaTw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <standard:ModelLibrary xmi:id="_VrvVYKk0EfGUW58NsN5Xaw" base_Package="_mujBYJODEfGan9oICxlaTw"/>
+</xmi:XMI>

@@ -1,5 +1,6 @@
 add_subdirectory(Tkind)
 add_subdirectory(TJunction)
+add_subdirectory(plogger)
 
 add_subdirectory(fifo)
 add_subdirectory(event_pool)
@@ -21,6 +22,7 @@ target_link_libraries(umltest
     PRIVATE
         Tkind
         TJunction
+        plogger
 )
 
 target_link_libraries(umltest

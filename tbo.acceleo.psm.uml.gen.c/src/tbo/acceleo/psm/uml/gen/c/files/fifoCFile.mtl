@@ -4,6 +4,7 @@
  */]
 [module fifoCFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
+[import tbo::acceleo::psm::uml::gen::c::common::documentation /]
 
 [**
  * The the template for C file of thye fifo module.
@@ -16,11 +17,8 @@
  * @brief An implementation of a FIFO queue based on array indexes.
  * @details The module only computes the indexes of the tail and head elements
  * in an array of a given size.
- * @author tomboro88
- * @date   2 Dec 2025
- * @copyright (c) 2025 tomboro88. All rights reserved.
- * @license MIT – see LICENSE file in project root
- * @project github.com/tomboro88/M2T4Embedded
+ * 
+[documentation_generated_note(0)/]
  */
 
 /*******************************************************************************
