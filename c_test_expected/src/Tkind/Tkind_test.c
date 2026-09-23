@@ -36,6 +36,12 @@
  ******************************************************************************/
 static void test_capture_logger(plogger_logger_t* const p_obj,
                                                        const char* const p_str);
+static void test_capture_logger_dbl(plogger_logger_t* const p_obj,
+                                      const char* const p_str, double const dbl);
+static void test_capture_logger_u16_char(plogger_logger_t* const p_obj,
+                                      const char* const p_str,
+									  uint16_t const u16_param,
+									  char const char_param);
 static void test_assert_logger(const char* p_str);
 /*******************************************************************************
  *
@@ -67,7 +73,9 @@ static bool b_expected_result = false;
  * @brief The virtual table for our test logger object.
  */
 static const plogger_logger_vt_t tkind_test_logger_funcs =
-                                              {.p_record = test_capture_logger};
+						  {.p_record = test_capture_logger,
+						   .p_record_dbl = test_capture_logger_dbl,
+						   .p_record_u16_char = test_capture_logger_u16_char};
 
 /**
  * @brief The logger object that will capture the logs from the tested state
@@ -231,6 +239,67 @@ test_capture_logger(plogger_logger_t* const p_obj, const char* const p_str)
         UNITY_PRINT_EOL();
         TEST_FAIL_MESSAGE("Captured string doesnt' fit into the buffer");
     }
+}
+
+static void test_capture_logger_dbl(plogger_logger_t* const p_obj,
+                                    const char* const p_str, double const dbl)
+{
+	TEST_ASSERT_NOT_NULL(p_obj);
+	TEST_ASSERT_NOT_NULL(p_str);
+
+	size_t const maxlen = TEST_LOGGER_BUFFER_GUARD2_POS - logger_index;
+	int const written = snprintf(&logger_buffer[logger_index], maxlen, p_str, dbl);
+
+	if(written < 0)
+	{
+		UnityPrint("Trying to log a string: ");
+		UnityPrint(p_str);
+		UNITY_PRINT_EOL();
+		TEST_FAIL_MESSAGE("Captured string formatting failed.");
+	}
+	else if((size_t)written < maxlen)
+	{
+		logger_index += written;
+	}
+	else
+	{
+		UnityPrint("Trying to log a string: ");
+		UnityPrint(p_str);
+		UNITY_PRINT_EOL();
+		TEST_FAIL_MESSAGE("Captured string doesn't fit into the buffer");
+	}
+}
+
+static void test_capture_logger_u16_char(plogger_logger_t* const p_obj,
+                                      const char* const p_str,
+									  uint16_t const u16_param,
+									  char const char_param)
+{
+	TEST_ASSERT_NOT_NULL(p_obj);
+	TEST_ASSERT_NOT_NULL(p_str);
+
+	size_t const maxlen = TEST_LOGGER_BUFFER_GUARD2_POS - logger_index;
+	int const written = snprintf(&logger_buffer[logger_index], maxlen, p_str,
+			                     u16_param, char_param);
+
+	if(written < 0)
+	{
+		UnityPrint("Trying to log a string: ");
+		UnityPrint(p_str);
+		UNITY_PRINT_EOL();
+		TEST_FAIL_MESSAGE("Captured string formatting failed.");
+	}
+	else if((size_t)written < maxlen)
+	{
+		logger_index += written;
+	}
+	else
+	{
+		UnityPrint("Trying to log a string: ");
+		UnityPrint(p_str);
+		UNITY_PRINT_EOL();
+		TEST_FAIL_MESSAGE("Captured string doesn't fit into the buffer");
+	}
 }
 
 static void

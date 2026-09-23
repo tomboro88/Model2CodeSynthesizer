@@ -115,15 +115,15 @@ TEST(TkindSm1State2, enqueue_dequeue_full)
 
         for(fifo_size_t j = 0u; j < TKIND_CTEST_H_CNT; ++j)
         {
-            TEST_ASSERT_TRUE(tkind_ctest_h(&tkind_ctest_obj));
+            TEST_ASSERT_TRUE(tkind_ctest_h(&tkind_ctest_obj, 16));
         }
-        TEST_ASSERT_FALSE(tkind_ctest_h(&tkind_ctest_obj));
+        TEST_ASSERT_FALSE(tkind_ctest_h(&tkind_ctest_obj, 16));
 
         for(fifo_size_t j = 0u; j < TKIND_CTEST_G_CNT; ++j)
         {
-            TEST_ASSERT_TRUE(tkind_ctest_g(&tkind_ctest_obj));
+            TEST_ASSERT_TRUE(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
         }
-        TEST_ASSERT_FALSE(tkind_ctest_g(&tkind_ctest_obj));
+        TEST_ASSERT_FALSE(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 
         for(fifo_size_t j = 0u; j < TKIND_CTEST_J_CNT; ++j)
         {
@@ -204,13 +204,13 @@ TEST(TkindSm1State2, DispatchF)
 TEST(TkindSm1State2, DispatchG)
 {
     tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1State2, DispatchH)
 {
     tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj, 16));
 }
 
 TEST(TkindSm1State2, DispatchI)

@@ -436,6 +436,27 @@ extern "C" {
     };
     
     /**
+     * @brief The type used to store the parameters passed to the h call event
+     */
+    typedef struct{
+        /**
+         */
+        double                          param1;
+    }tkind_ctest_h_t;
+    
+    /**
+     * @brief The type used to store the parameters passed to the g call event
+     */
+    typedef struct{
+        /**
+         */
+        uint16_t                        u16_param;
+        /**
+         */
+        char                            char_param;
+    }tkind_ctest_g_t;
+    
+    /**
      * @brief The type used to store the event pool of all events accepted by
      * the ctest class.
      */
@@ -511,11 +532,21 @@ extern "C" {
          */
         event_pool_size_t               h_next_events[TKIND_CTEST_H_CNT];
         /**
+         * @brief The array of the arguments passed to the corresponding h event
+         * in the event pool sequence.
+         */
+        tkind_ctest_h_t                 h_args[TKIND_CTEST_H_CNT];
+        /**
          * @brief The array of the events that follow any g event in the event
          * pool sequence.
          * @details It is referenced by the fifo_pool[TKIND_CTEST_G] object.
          */
         event_pool_size_t               g_next_events[TKIND_CTEST_G_CNT];
+        /**
+         * @brief The array of the arguments passed to the corresponding g event
+         * in the event pool sequence.
+         */
+        tkind_ctest_g_t                 g_args[TKIND_CTEST_G_CNT];
         /**
          * @brief The array of the events that follow any j event in the event
          * pool sequence.
@@ -626,8 +657,9 @@ extern "C" {
     bool tkind_ctest_d(tkind_ctest_t* const p_obj);
     bool tkind_ctest_e(tkind_ctest_t* const p_obj);
     bool tkind_ctest_f(tkind_ctest_t* const p_obj);
-    bool tkind_ctest_g(tkind_ctest_t* const p_obj);
-    bool tkind_ctest_h(tkind_ctest_t* const p_obj);
+    bool tkind_ctest_g(tkind_ctest_t* const p_obj, uint16_t const u16_param,\
+                       char const char_param);
+    bool tkind_ctest_h(tkind_ctest_t* const p_obj, double const param1);
     bool tkind_ctest_i(tkind_ctest_t* const p_obj);
     bool tkind_ctest_j(tkind_ctest_t* const p_obj);
     bool tkind_ctest_k(tkind_ctest_t* const p_obj);

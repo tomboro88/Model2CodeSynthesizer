@@ -96,9 +96,25 @@ TEST(TkindSm1State6, DispatchG)
 {
     tkind_ctest_logger_expect(true, "Exit State6\n"
                                     "Exit State4\n"
-                                    "State6 to State4\n"
+                                    "State6 to State4, u16=25, char=a\n"
                                     "Enter State4\n");
-    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a')
+    		                          && tkind_ctest_f(&tkind_ctest_obj)
+									  && tkind_ctest_g(&tkind_ctest_obj, 33, 'b'));
+
+    tkind_test_init_logger_buffer();
+    tkind_ctest_logger_expect(true, "Exit State4\n"
+									"State4 to State6\n"
+									"Enter State4\n"
+									"Enter State6\n");
+	tkind_ctest_logger_dispatch_given(true);
+
+	tkind_test_init_logger_buffer();
+	tkind_ctest_logger_expect(true, "Exit State6\n"
+									"Exit State4\n"
+									"State6 to State4, u16=33, char=b\n"
+									"Enter State4\n");
+	tkind_ctest_logger_dispatch_given(true);
 }
 
 TEST(TkindSm1State6, DispatchH)
@@ -106,11 +122,37 @@ TEST(TkindSm1State6, DispatchH)
     tkind_ctest_logger_expect(true, "Exit State6\n"
                                     "Exit State4\n"
                                     "Exit State1\n"
-                                    "State6 to State1\n"
+                                    "State6 to State1, param = 16.0\n"
                                     "Enter State1\n"
                                     "Initial3 to State2\n"
                                     "Enter State2\n");
-    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj, 16)
+    		                          && tkind_ctest_b(&tkind_ctest_obj)
+									  && tkind_ctest_f(&tkind_ctest_obj)
+									  && tkind_ctest_h(&tkind_ctest_obj, 17));
+
+    tkind_test_init_logger_buffer();
+    tkind_ctest_logger_expect(true, "Exit State2\n"
+                                  "State2 to State4\n"
+                                  "Enter State4\n");
+    tkind_ctest_logger_dispatch_given(true);
+
+    tkind_test_init_logger_buffer();
+	tkind_ctest_logger_expect(true, "Exit State4\n"
+									"State4 to State6\n"
+									"Enter State4\n"
+									"Enter State6\n");
+	tkind_ctest_logger_dispatch_given(true);
+
+	tkind_test_init_logger_buffer();
+	tkind_ctest_logger_expect(true, "Exit State6\n"
+									"Exit State4\n"
+									"Exit State1\n"
+									"State6 to State1, param = 17.0\n"
+									"Enter State1\n"
+									"Initial3 to State2\n"
+									"Enter State2\n");
+	tkind_ctest_logger_dispatch_given(true);
 }
 
 TEST(TkindSm1State6, DispatchI)

@@ -1,0 +1,32 @@
+[1mdiff --git a/c_expected/src/TJunction/TJunction.c b/c_generated/src/TJunction/TJunction.c[m
+[1mindex c6fcae9..383680f 100644[m
+[1m--- a/c_expected/src/TJunction/TJunction.c[m
+[1m+++ b/c_generated/src/TJunction/TJunction.c[m
+[36m@@ -1512,7 +1512,6 @@[m [mtjunction_sm1_dispatch_b_state36(tjunction_sm1_t* const p_obj)[m
+         tjunction_sm1_exit_state36(p_obj);[m
+         tjunction_sm1_enter_state36(p_obj);[m
+         tjunction_sm1_enter_state36_3(p_obj);[m
+[31m-        result = SM_EVENT_STATUS_CHANGEDSTATE;[m
+         tjunction_sm1_enter_region361(p_obj);[m
+     }[m
+ [m
+[36m@@ -1701,7 +1700,6 @@[m [mtjunction_sm1_dispatch_c_state43(tjunction_sm1_t* const p_obj)[m
+     {[m
+         tjunction_sm1_exit_state43(p_obj);[m
+         tjunction_sm1_enter_choice46(p_obj);[m
+[31m-        result = SM_EVENT_STATUS_CHANGEDSTATE;[m
+     }[m
+ [m
+     return result;[m
+[1mdiff --git a/c_expected/src/Tkind/Tkind.c b/c_generated/src/Tkind/Tkind.c[m
+[1mindex 3f7cbc3..a171ff1 100644[m
+[1m--- a/c_expected/src/Tkind/Tkind.c[m
+[1m+++ b/c_generated/src/Tkind/Tkind.c[m
+[36m@@ -2445,7 +2445,6 @@[m [mtkind_sm1_dispatch_i_state1(tkind_sm1_t* const p_obj)[m
+         tkind_sm1_rec_log(p_obj, "State1 to State7\n");[m
+         tkind_sm1_enter_state1(p_obj);[m
+         tkind_sm1_enter_state7(p_obj);[m
+[31m-        result = SM_EVENT_STATUS_CHANGEDSTATE;[m
+         tkind_sm1_enter_region2(p_obj);[m
+     }[m
+ [m

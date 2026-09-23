@@ -56,6 +56,13 @@ static void tkind_ctest_init_df(tkind_ctest_t* const p_obj);
 
 static void tkind_sm1_rec_log(tkind_sm1_t* const p_obj,\
                               const char* const p_str);
+static void tkind_sm1_rec_log_dbl(tkind_sm1_t* const p_obj,\
+                                  const char* const p_str,\
+                                  double const param_dbl);
+static void tkind_sm1_rec_log_u16_char(tkind_sm1_t* const p_obj,\
+                                       const char* const p_str,\
+                                       uint16_t const u16_param,\
+                                       char const char_param);
 
 static void tkind_sm1_init_df(tkind_sm1_t* const p_obj);
 
@@ -846,16 +853,26 @@ tkind_ctest_f(tkind_ctest_t* const p_obj)
 
 /**
  * @param [in] p_obj The pointer to the self object.
+ * @param [in] u16_param 
+ * @param [in] char_param 
  */
 bool
-tkind_ctest_g(tkind_ctest_t* const p_obj)
+tkind_ctest_g(tkind_ctest_t* const p_obj, uint16_t const u16_param,\
+              char const char_param)
 {
     bool b_is_added = false;
     
     if(NULL != p_obj)
     {
+        fifo_size_t tail = p_obj->event_pool.fifo_pool[TKIND_CTEST_G].fifo.tail;
         b_is_added = event_pool_enqueue(&p_obj->event_pool.manager,
                                         (event_pool_size_t) TKIND_CTEST_G);
+        if(b_is_added)
+        {
+            tkind_ctest_g_t * p_g_args = &p_obj->event_pool.g_args[tail];
+            p_g_args->u16_param = u16_param;
+            p_g_args->char_param = char_param;
+        }
     }
     
     return b_is_added;
@@ -863,16 +880,23 @@ tkind_ctest_g(tkind_ctest_t* const p_obj)
 
 /**
  * @param [in] p_obj The pointer to the self object.
+ * @param [in] param1 
  */
 bool
-tkind_ctest_h(tkind_ctest_t* const p_obj)
+tkind_ctest_h(tkind_ctest_t* const p_obj, double const param1)
 {
     bool b_is_added = false;
     
     if(NULL != p_obj)
     {
+        fifo_size_t tail = p_obj->event_pool.fifo_pool[TKIND_CTEST_H].fifo.tail;
         b_is_added = event_pool_enqueue(&p_obj->event_pool.manager,
                                         (event_pool_size_t) TKIND_CTEST_H);
+        if(b_is_added)
+        {
+            tkind_ctest_h_t * p_h_args = &p_obj->event_pool.h_args[tail];
+            p_h_args->param1 = param1;
+        }
     }
     
     return b_is_added;
@@ -1301,6 +1325,32 @@ static void
 tkind_sm1_rec_log(tkind_sm1_t* const p_obj, const char* const p_str)
 {
     plogger_logger_record(p_obj->p_context->p_logger, p_str);
+}
+
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str 
+ * @param [in] param_dbl 
+ */
+static void
+tkind_sm1_rec_log_dbl(tkind_sm1_t* const p_obj, const char* const p_str,\
+                      double const param_dbl)
+{
+    plogger_logger_record_dbl(p_obj->p_context->p_logger, p_str, param_dbl);
+}
+
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str 
+ * @param [in] u16_param 
+ * @param [in] char_param 
+ */
+static void
+tkind_sm1_rec_log_u16_char(tkind_sm1_t* const p_obj, const char* const p_str,\
+                           uint16_t const u16_param, char const char_param)
+{
+    plogger_logger_record_u16_char(p_obj->p_context->p_logger,
+        p_str, u16_param, char_param);
 }
 
 /**
@@ -2723,7 +2773,14 @@ tkind_sm1_dispatch_g_state6(tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     tkind_sm1_exit_state4(p_obj);
-    tkind_sm1_rec_log(p_obj, "State6 to State4\n");
+    tkind_ctest_t * p_context = p_obj->p_context;
+    fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
+    tkind_ctest_g_t * p_g_args = &p_context->event_pool.g_args[event_index];
+    uint16_t u16_param = p_g_args->u16_param;
+    char char_param = p_g_args->char_param;
+    tkind_sm1_rec_log_u16_char(p_obj, 
+        "State6 to State4, u16=%d, char=%c\n", 
+        u16_param, char_param);
     tkind_sm1_enter_state4(p_obj);
     tkind_sm1_enter_region4(p_obj);
 
@@ -2742,7 +2799,12 @@ tkind_sm1_dispatch_h_state6(tkind_sm1_t* const p_obj)
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
     tkind_sm1_exit_state1(p_obj);
-    tkind_sm1_rec_log(p_obj, "State6 to State1\n");
+    tkind_ctest_t * p_context = p_obj->p_context;
+    fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
+    tkind_ctest_h_t * p_h_args = &p_context->event_pool.h_args[event_index];
+    double param1 = p_h_args->param1;
+    tkind_sm1_rec_log_dbl(p_obj, 
+        "State6 to State1, param = %.1f\n", param1);
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_region2(p_obj);
     tkind_sm1_enter_region5(p_obj);

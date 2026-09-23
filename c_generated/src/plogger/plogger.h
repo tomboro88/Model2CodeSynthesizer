@@ -15,6 +15,7 @@ extern "C" {
 //Start of user code includes top
 //End of user code
 #    include "../umltest.h"
+#    include <stdint.h>
 //Start of user code includes bottom
 //End of user code
 
@@ -58,10 +59,34 @@ extern "C" {
          */
         void (*p_record)(plogger_logger_t* const p_obj,\
                          const char* const p_str);
+        /**
+         * @param [in] p_obj The pointer to the self object.
+         * @param [in] p_str A pointer to the string that will be logged.
+         * @param [in] dbl_param A double parameter that will be logged.
+         */
+        void (*p_record_dbl)(plogger_logger_t* const p_obj,\
+                             const char* const p_str, double const dbl_param);
+        /**
+         * @param [in] p_obj The pointer to the self object.
+         * @param [in] p_str A pointer to the string that will be logged.
+         * @param [in] u16_param 
+         * @param [in] char_param 
+         */
+        void (*p_record_u16_char)(plogger_logger_t* const p_obj,\
+                                  const char* const p_str,\
+                                  uint16_t const u16_param,\
+                                  char const char_param);
     };
 
     void plogger_logger_record(plogger_logger_t* const p_obj,\
                                const char* const p_str);
+    void plogger_logger_record_dbl(plogger_logger_t* const p_obj,\
+                                   const char* const p_str,\
+                                   double const dbl_param);
+    void plogger_logger_record_u16_char(plogger_logger_t* const p_obj,\
+                                        const char* const p_str,\
+                                        uint16_t const u16_param,\
+                                        char const char_param);
 
 #ifdef  __cplusplus
 }

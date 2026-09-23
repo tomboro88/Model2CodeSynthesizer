@@ -52,7 +52,7 @@
              'atomic_long', 'atomic_ulong', 'atomic_llong', 'atomic_ullong', 
              'atomic_intptr_t', 'atomic_uintptr_t', 'atomic_size_t', 
              'atomic_ptrdiff_t', 'atomic_intmax_t', 'atomic_uintmax_t'} in
-    builtinTypes->includes(aType.name)/]
+    not aType.oclIsUndefined() and builtinTypes->includes(aType.name)/]
 [**
  * Get a set of packages on which the given element depends. 
  */]
@@ -205,7 +205,10 @@
                .request_needs_vtable())/]
 
 [query public request_all_generals(aClassifier:Classifier) : Set(Classifier) = 
- aClassifier.general->addAll(aClassifier.general.request_all_generals())/]
+ if aClassifier.oclIsUndefined() 
+ then Set{} 
+ else aClassifier.general->addAll(aClassifier.general.request_all_generals())
+ endif/]
 
 [query public request_sort_classifiers(anOSet : OrderedSet(Classifier)) : 
   OrderedSet(Classifier)
@@ -223,20 +226,23 @@
 
 [query public request_classifier_depends(aClassifier:Classifier,
                                        bClassifier:Classifier):Boolean
- =aClassifier.attribute.type->includes(bClassifier.oclAsType(Type))
-  or aClassifier.attribute.type->exists(t:Type|
-        t.oclAsType(Classifier).request_classifier_depends(bClassifier))
-        or aClassifier.generalization.general->includes(bClassifier)
-        or aClassifier.generalization.general
+ =not aClassifier.oclIsUndefined() and not bClassifier.oclIsUndefined()
+  and (aClassifier.attribute.type->includes(bClassifier.oclAsType(Type))
+  or aClassifier.attribute.type->exists(t:Type| not t.oclIsUndefined() 
+        and t.oclIsKindOf(Classifier)
+        and t.oclAsType(Classifier).request_classifier_depends(bClassifier))
+  or aClassifier.generalization.general->includes(bClassifier)
+  or aClassifier.generalization.general
            ->exists(c:Classifier|c.request_classifier_depends(bClassifier))
-        or (aClassifier.oclIsKindOf(BehavioredClassifier) 
+  or (aClassifier.oclIsKindOf(BehavioredClassifier) 
             and bClassifier.oclIsKindOf(Behavior)
             and (aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
                                  ->includes(bClassifier.oclAsType(Behavior))
                  or aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
                   ->exists(b:Behavior|b.request_classifier_depends(bClassifier))
                  )
-            )/]
+            )
+)/]
 
 [query public request_has_virtual_operations(aClassifier : Classifier) : Boolean 
  = not aClassifier.request_virtual_operations()->isEmpty()/]
@@ -867,6 +873,11 @@ let exitState : State = request_transition_exit_state(aTransition) in
                              and (guardTransitions->size() = 0
                                   or elseTransitions->size() = 1)/]
 
+[query public request_is_result_declared(aState:State, anEvent:Event):Boolean = 
+    if request_is_always_handled(aState, anEvent) 
+          and aState.region->request_event_subregions(anEvent)->isEmpty() then
+          false
+     else true endif/]
 [**
  * @brief Checks if the given state needs a separate test group.
 */]
@@ -895,3 +906,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
 [query public request_generated_note(traceabilityContext:OclAny):String = 
  '@note Automatically generated code by Model2CodeSynthesizer' 
  + ' (github.com/tomboro88/Model2CodeSynthesizer).'/]
+
+[query public request_is_call_event_with_params(anEvent:Event) : Boolean = 
+    if anEvent.oclIsKindOf(CallEvent) 
+    then (not anEvent.oclAsType(CallEvent).operation.oclIsUndefined())
+       and anEvent.oclAsType(CallEvent).operation.ownedParameter->notEmpty()
+    else false endif/]

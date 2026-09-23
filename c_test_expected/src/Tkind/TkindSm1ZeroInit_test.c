@@ -133,25 +133,25 @@ TEST(TkindSm1ZeroInit, FResultsInFalse)
 TEST(TkindSm1ZeroInit, GNullPtrResultsInFalse)
 {
     tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_g(NULL));
+    tkind_ctest_logger_given(tkind_ctest_g(NULL, 25, 'a'));
 }
 
 TEST(TkindSm1ZeroInit, GResultsInFalse)
 {
     tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_g(&tkind_ctest_obj));
+    tkind_ctest_logger_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1ZeroInit, HNullPtrResultsInFalse)
 {
     tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_h(NULL));
+    tkind_ctest_logger_given(tkind_ctest_h(NULL, 16));
 }
 
 TEST(TkindSm1ZeroInit, HResultsInFalse)
 {
     tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_h(&tkind_ctest_obj));
+    tkind_ctest_logger_given(tkind_ctest_h(&tkind_ctest_obj,16));
 }
 
 TEST(TkindSm1ZeroInit, INullPtrResultsInFalse)

@@ -95,13 +95,13 @@ TEST(TkindSm1State9, DispatchF)
 TEST(TkindSm1State9, DispatchG)
 {
     tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1State9, DispatchH)
 {
     tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj));
+    tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj, 16));
 }
 
 TEST(TkindSm1State9, DispatchI)

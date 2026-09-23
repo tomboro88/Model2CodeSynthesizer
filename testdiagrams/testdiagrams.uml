@@ -37,6 +37,36 @@ It is automatically detected by the generator and included as a literal constant
           </ownedComment>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ckz8YBdwEfGmVulf-GfgLw"/>
         </ownedAttribute>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Tar_EKTFEfCF5Mxlt2zVCg" name="set_uint_incr" visibility="protected" specification="_gs_NgKTDEfCF5Mxlt2zVCg">
+          <language>C</language>
+          <body>p_obj->Property1 = param1 + 1u;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OJTvkKTGEfCF5Mxlt2zVCg" name="get_flt_from_uint" visibility="private" specification="_Xd0SwKTEEfCF5Mxlt2zVCg">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_JKBN0KVEEfCJwtlh12_YdQ" annotatedElement="_OJTvkKTGEfCF5Mxlt2zVCg">
+            <body>@brief Implementation of virtual function GetFloatProp () from the cbase2 class.
+@details It shows how a pointer to a base class can be converted to a pointer to a child class.
+After the pointer conversion, it returns the Property1 value of the another base class (cbase1).</body>
+          </ownedComment>
+          <language>C</language>
+          <body>float result = 0.0f;
+tkind_ctest_t* p_ctest = NULL;
+
+if(tkind_ctest_cast_from_cbase2(p_obj, &amp;p_ctest))
+{
+    /*Here the p_ctest pointer has the correct value.*/
+    /*Intentionally get the value of Property1 from the other base class
+      (cbase1).*/
+    result = (float)p_ctest->cbase1.Property1;
+}
+
+return result;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_956y0Js5EfGO1ZnaCGuunQ" name="init_behavior" specification="_eZhukJahEfGyIYl3O46cLA">
+          <language>C</language>
+          <body>p_obj->p_logger = p_logger;
+/* Initialize the state machine. */
+tkind_ctest_start_sm1(p_obj);</body>
+        </ownedBehavior>
         <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_nbBJMNw4Ee-clukbqF5Mtw" name="sm1" specification="_J9R48KDKEfGbF6dKjl1Mow">
           <ownedComment xmi:type="uml:Comment" xmi:id="_Ms4DoKfZEfGd4LbFpB-J5g" annotatedElement="_nbBJMNw4Ee-clukbqF5Mtw">
             <body>@brief An example StateMachine implementing different kinds of transitions.</body>
@@ -48,10 +78,40 @@ It is automatically detected by the generator and included as a literal constant
             <language>C</language>
             <body>plogger_logger_record(p_obj->p_context->p_logger, p_str);</body>
           </ownedBehavior>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_L_AJQLFWEfGnzrnt2Y_6jw" visibility="private" specification="_hqOVALFVEfGnzrnt2Y_6jw">
+            <language>C</language>
+            <body>plogger_logger_record_dbl(p_obj->p_context->p_logger, p_str, param_dbl);</body>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ruD3gLUxEfGjNJ8Dt4HgIw" visibility="private" specification="_ibQr4LUwEfGjNJ8Dt4HgIw">
+            <language>C</language>
+            <body>plogger_logger_record_u16_char(p_obj->p_context->p_logger,
+    p_str, u16_param, char_param);</body>
+          </ownedBehavior>
           <ownedOperation xmi:type="uml:Operation" xmi:id="_kvleEBdzEfGmVulf-GfgLw" name="rec_log" visibility="private" method="_8OVngBdzEfGmVulf-GfgLw">
             <ownedParameter xmi:type="uml:Parameter" xmi:id="_vtL0EBdzEfGmVulf-GfgLw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
               <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wpcoABdzEfGmVulf-GfgLw"/>
               <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wpnAEBdzEfGmVulf-GfgLw" value="*"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_hqOVALFVEfGnzrnt2Y_6jw" name="rec_log_dbl" visibility="private" method="_L_AJQLFWEfGnzrnt2Y_6jw">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_hqOVAbFVEfGnzrnt2Y_6jw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hqOVArFVEfGnzrnt2Y_6jw"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hqOVA7FVEfGnzrnt2Y_6jw" value="*"/>
+            </ownedParameter>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_qaWG0LFVEfGnzrnt2Y_6jw" name="param_dbl">
+              <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_TOU3kKkPEfGUW58NsN5Xaw"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_ibQr4LUwEfGjNJ8Dt4HgIw" name="rec_log_u16_char" visibility="private" method="_ruD3gLUxEfGjNJ8Dt4HgIw">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_sujgoLUwEfGjNJ8Dt4HgIw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sujgobUwEfGjNJ8Dt4HgIw"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sujgorUwEfGjNJ8Dt4HgIw" value="*"/>
+            </ownedParameter>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_3ZPhsLUwEfGjNJ8Dt4HgIw" name="u16_param" effect="read">
+              <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_2RLLwKkOEfGUW58NsN5Xaw"/>
+            </ownedParameter>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_8GG5cLUwEfGjNJ8Dt4HgIw" name="char_param" effect="read">
+              <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
             </ownedParameter>
           </ownedOperation>
           <region xmi:type="uml:Region" xmi:id="_vunXENw4Ee-clukbqF5Mtw" name="Region1">
@@ -93,6 +153,9 @@ It is automatically detected by the generator and included as a literal constant
                 </ownedComment>
                 <ownedComment xmi:type="uml:Comment" xmi:id="_x1Ai4OJ6Ee-YJfJPhIaSCQ" annotatedElement="_3KcSoNw8Ee-clukbqF5Mtw">
                   <body>This transition needs Region2 exit and then Region2 entry</body>
+                </ownedComment>
+                <ownedComment xmi:type="uml:Comment" xmi:id="_hpfsULOyEfGlgZuRKdbkDA" annotatedElement="_LWi_kNw9Ee-clukbqF5Mtw">
+                  <body>This call event has one parameter and uses it in the effect behavior</body>
                 </ownedComment>
                 <transition xmi:type="uml:Transition" xmi:id="_Vr7UcNw8Ee-clukbqF5Mtw" source="_HZtMANw8Ee-clukbqF5Mtw" target="_9oHWINw7Ee-clukbqF5Mtw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_weHvsDnLEfGpzs3AXu5PVg">
@@ -198,14 +261,17 @@ It is automatically detected by the generator and included as a literal constant
                     <transition xmi:type="uml:Transition" xmi:id="_LWi_kNw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_mqb9kEsuEfGsnfpIT_qm-w">
                         <language>C</language>
-                        <body>tkind_sm1_rec_log(p_obj, &quot;State6 to State1\n&quot;);</body>
+                        <body>tkind_sm1_rec_log_dbl(p_obj, 
+    &quot;State6 to State1, param = %.1f\n&quot;, param1);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_X1szUN27Ee-8CKMu-ENa-A" event="_XcYUYN27Ee-8CKMu-ENa-A"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="__P2eENw9Ee-clukbqF5Mtw" source="_HMPiVNw9Ee-clukbqF5Mtw" target="_F56XwNw9Ee-clukbqF5Mtw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_R9-ngEssEfGsnfpIT_qm-w">
                         <language>C</language>
-                        <body>tkind_sm1_rec_log(p_obj, &quot;State6 to State4\n&quot;);</body>
+                        <body>tkind_sm1_rec_log_u16_char(p_obj, 
+    &quot;State6 to State4, u16=%d, char=%c\n&quot;, 
+    u16_param, char_param);</body>
                       </effect>
                       <trigger xmi:type="uml:Trigger" xmi:id="_P4_bcN27Ee-8CKMu-ENa-A" event="_PTHuQN27Ee-8CKMu-ENa-A"/>
                     </transition>
@@ -327,36 +393,6 @@ It is automatically detected by the generator and included as a literal constant
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_gwLpwN21Ee-8CKMu-ENa-A" name="Initial1"/>
           </region>
         </ownedBehavior>
-        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Tar_EKTFEfCF5Mxlt2zVCg" name="set_uint_incr" visibility="protected" specification="_gs_NgKTDEfCF5Mxlt2zVCg">
-          <language>C</language>
-          <body>p_obj->Property1 = param1 + 1u;</body>
-        </ownedBehavior>
-        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OJTvkKTGEfCF5Mxlt2zVCg" name="get_flt_from_uint" visibility="private" specification="_Xd0SwKTEEfCF5Mxlt2zVCg">
-          <ownedComment xmi:type="uml:Comment" xmi:id="_JKBN0KVEEfCJwtlh12_YdQ" annotatedElement="_OJTvkKTGEfCF5Mxlt2zVCg">
-            <body>@brief Implementation of virtual function GetFloatProp () from the cbase2 class.
-@details It shows how a pointer to a base class can be converted to a pointer to a child class.
-After the pointer conversion, it returns the Property1 value of the another base class (cbase1).</body>
-          </ownedComment>
-          <language>C</language>
-          <body>float result = 0.0f;
-tkind_ctest_t* p_ctest = NULL;
-
-if(tkind_ctest_cast_from_cbase2(p_obj, &amp;p_ctest))
-{
-    /*Here the p_ctest pointer has the correct value.*/
-    /*Intentionally get the value of Property1 from the other base class
-      (cbase1).*/
-    result = (float)p_ctest->cbase1.Property1;
-}
-
-return result;</body>
-        </ownedBehavior>
-        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_956y0Js5EfGO1ZnaCGuunQ" name="init_behavior" specification="_eZhukJahEfGyIYl3O46cLA">
-          <language>C</language>
-          <body>p_obj->p_logger = p_logger;
-/* Initialize the state machine. */
-tkind_ctest_start_sm1(p_obj);</body>
-        </ownedBehavior>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_eZhukJahEfGyIYl3O46cLA" name="init" method="_956y0Js5EfGO1ZnaCGuunQ">
           <ownedComment xmi:type="uml:Comment" xmi:id="_moZCwJqZEfGql7rLR4AR_w" annotatedElement="_eZhukJahEfGyIYl3O46cLA">
             <body>@brief The initialization function of the ctest class.</body>
@@ -374,8 +410,19 @@ tkind_ctest_start_sm1(p_obj);</body>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_rzVRUN25Ee-8CKMu-ENa-A" name="d"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_1fz9sN25Ee-8CKMu-ENa-A" name="e"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_wAxssN26Ee-8CKMu-ENa-A" name="f"/>
-        <ownedOperation xmi:type="uml:Operation" xmi:id="_Ls9f4N27Ee-8CKMu-ENa-A" name="g"/>
-        <ownedOperation xmi:type="uml:Operation" xmi:id="_WdbY0N27Ee-8CKMu-ENa-A" name="h"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_Ls9f4N27Ee-8CKMu-ENa-A" name="g">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fpzpcLImEfGmUaMA1853Zw" name="u16_param">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_2RLLwKkOEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_kpIDILImEfGmUaMA1853Zw" name="char_param">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_WdbY0N27Ee-8CKMu-ENa-A" name="h">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_WLBt0LFVEfGnzrnt2Y_6jw" name="param1">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_TOU3kKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_3XiCYN27Ee-8CKMu-ENa-A" name="i"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_CkAh4N28Ee-8CKMu-ENa-A" name="j"/>
         <ownedOperation xmi:type="uml:Operation" xmi:id="_PaqEMN28Ee-8CKMu-ENa-A" name="k"/>
@@ -504,6 +551,9 @@ This is important for critical events, that are sent only occasionally, and cann
       </packagedElement>
       <packagedElement xmi:type="uml:Usage" xmi:id="_Cstk8JqhEfGql7rLR4AR_w" client="_eZhukJahEfGyIYl3O46cLA" supplier="_ctV6kJaWEfGyIYl3O46cLA"/>
       <packagedElement xmi:type="uml:Usage" xmi:id="_nEyxQJqhEfGql7rLR4AR_w" client="_eZhukJahEfGyIYl3O46cLA" supplier="_Ak95oJahEfGyIYl3O46cLA"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_YwafsLOaEfGlgZuRKdbkDA" client="_mqb9kEsuEfGsnfpIT_qm-w" supplier="_WLBt0LFVEfGnzrnt2Y_6jw"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_xrNdULUvEfGjNJ8Dt4HgIw" client="_R9-ngEssEfGsnfpIT_qm-w" supplier="_fpzpcLImEfGmUaMA1853Zw"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_1mp_MLUvEfGjNJ8Dt4HgIw" client="_R9-ngEssEfGsnfpIT_qm-w" supplier="_kpIDILImEfGmUaMA1853Zw"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_tzRuEAHPEfCgXv5ODs4Seg" name="TJunction">
       <ownedComment xmi:type="uml:Comment" xmi:id="_krpNQKU4EfCJwtlh12_YdQ" annotatedElement="_tzRuEAHPEfCgXv5ODs4Seg">
@@ -1003,7 +1053,10 @@ tjunction_jtest_invoke_sm1(p_obj);</body>
     <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_k464wJMQEfG7kMZh4wQhfg" name="main_behavior" visibility="private" specification="_lq_18JMQEfG7kMZh4wQhfg">
       <language>C</language>
       <body>printf(&quot;Initialize my_ctest:\n&quot;);
-const plogger_logger_vt_t logger_funcs = {.p_record = umltest_umltest_record};
+const plogger_logger_vt_t logger_funcs = 
+    {.p_record = umltest_umltest_record,
+     .p_record_dbl = umltest_umltest_record_dbl,
+     .p_record_u16_char = umltest_umltest_record_u16_char};
 plogger_logger_t local_logger = {.p_vtable = &amp;logger_funcs};
 tkind_ctest_t my_ctest = {0};
 tkind_ctest_init(&amp;my_ctest, &amp;local_logger);
@@ -1042,6 +1095,29 @@ return EXIT_SUCCESS;</body>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sNJasJMYEfG7kMZh4wQhfg" value="*"/>
         </ownedParameter>
       </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_ICaa8LLiEfG_Uu2-ewdiMw" name="record_dbl" visibility="private" isStatic="true" method="_eIJjALLiEfG_Uu2-ewdiMw">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_ICaa8bLiEfG_Uu2-ewdiMw" name="p_obj" type="_Ij1hQBaHEfG70Ybw1j3UxQ" direction="inout"/>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_ICaa8rLiEfG_Uu2-ewdiMw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ICaa87LiEfG_Uu2-ewdiMw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ICaa9LLiEfG_Uu2-ewdiMw" value="*"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_MZP4ULLiEfG_Uu2-ewdiMw" name="dbl_param">
+          <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_TOU3kKkPEfGUW58NsN5Xaw"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_E-RTULU5EfGjNJ8Dt4HgIw" name="record_u16_char" visibility="private" isStatic="true" method="_tRth8LU5EfGjNJ8Dt4HgIw">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-RTUbU5EfGjNJ8Dt4HgIw" name="p_obj" type="_Ij1hQBaHEfG70Ybw1j3UxQ" direction="inout"/>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-RTUrU5EfGjNJ8Dt4HgIw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_E-RTU7U5EfGjNJ8Dt4HgIw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_E-RTVLU5EfGjNJ8Dt4HgIw" value="*"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_5fkl8LU5EfGjNJ8Dt4HgIw" name="u16_param">
+          <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_2RLLwKkOEfGUW58NsN5Xaw"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_9IOHoLU5EfGjNJ8Dt4HgIw" name="char_param" effect="read">
+          <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+        </ownedParameter>
+      </ownedOperation>
     </packagedElement>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_HUwMEJMXEfG7kMZh4wQhfg" name="int"/>
     <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_L1CHEJMcEfG7kMZh4wQhfg" name="record_behavior" specification="_6f0EgJMXEfG7kMZh4wQhfg">
@@ -1066,11 +1142,51 @@ return EXIT_SUCCESS;</body>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eI-oQBaIEfG70Ybw1j3UxQ" value="*"/>
           </ownedParameter>
         </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_e48OILLfEfG_Uu2-ewdiMw" name="record_dbl">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_e48OIbLfEfG_Uu2-ewdiMw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_e48OIrLfEfG_Uu2-ewdiMw" annotatedElement="_e48OIbLfEfG_Uu2-ewdiMw">
+              <body>A pointer to the string that will be logged.</body>
+            </ownedComment>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e48OI7LfEfG_Uu2-ewdiMw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e48OJLLfEfG_Uu2-ewdiMw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_qqRHILLfEfG_Uu2-ewdiMw" name="dbl_param">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_2wc10LLfEfG_Uu2-ewdiMw" annotatedElement="_qqRHILLfEfG_Uu2-ewdiMw">
+              <body>A double parameter that will be logged.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_TOU3kKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_5NDzQLUxEfGjNJ8Dt4HgIw" name="record_u16_char">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_CYoK8LUyEfGjNJ8Dt4HgIw" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_CYoK8bUyEfGjNJ8Dt4HgIw" annotatedElement="_CYoK8LUyEfGjNJ8Dt4HgIw">
+              <body>A pointer to the string that will be logged.</body>
+            </ownedComment>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CYoK8rUyEfGjNJ8Dt4HgIw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CYoK87UyEfGjNJ8Dt4HgIw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_GohS0LUyEfGjNJ8Dt4HgIw" name="u16_param" effect="read">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_2RLLwKkOEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_O3kX4LUyEfGjNJ8Dt4HgIw" name="char_param" effect="read">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Dependency" xmi:id="_PLu2wKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_-IUdANw3Ee-clukbqF5Mtw"/>
     <packagedElement xmi:type="uml:Dependency" xmi:id="_TxXlIKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_tzRuEAHPEfCgXv5ODs4Seg"/>
     <packagedElement xmi:type="uml:Dependency" xmi:id="_XDxxEKkNEfGUW58NsN5Xaw" visibility="private" client="_k464wJMQEfG7kMZh4wQhfg" supplier="_uNK1UKibEfGE44h4OLtglA"/>
+    <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_eIJjALLiEfG_Uu2-ewdiMw" name="record_dbl_behavior" specification="_ICaa8LLiEfG_Uu2-ewdiMw">
+      <language>C</language>
+      <body>(void) p_obj;
+(void) printf(p_str, dbl_param);</body>
+    </packagedElement>
+    <packagedElement xmi:type="uml:OpaqueBehavior" xmi:id="_tRth8LU5EfGjNJ8Dt4HgIw" name="record_u16_char_behavior" specification="_E-RTULU5EfGjNJ8Dt4HgIw">
+      <language>C</language>
+      <body>(void) p_obj;
+(void) printf(p_str, u16_param, char_param);</body>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_svVXgOqlEe2Yz7yVfkC93Q">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_svYa0OqlEe2Yz7yVfkC93Q" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>

@@ -47,11 +47,12 @@ endif/]
  * This query decides if a parameter is passed by copy or by reference. 
  */]
 [query private uml_c_param_by_ref(p : Parameter) : Boolean = 
-    (not p.type.oclIsKindOf(DataType)) 
+    not p.oclIsUndefined() and not p.type.oclIsUndefined()
+    and (not p.type.oclIsKindOf(DataType)
     or (p.direction = ParameterDirectionKind::inout)
     or (p.direction = ParameterDirectionKind::out)
     or (p.upper <> 0 and p.upper <> 1)
-    or (p.lower = 0)/]
+    or (p.lower = 0))/]
 
 [**
  * This query forms a full parameter type specification string. 
@@ -241,11 +242,12 @@ endif/]
  * This query decides if a property is stored by copy or by reference. 
  */]
 [query private uml_c_property_by_ref(p : Property) : Boolean = 
-    (not (p.aggregation = AggregationKind::composite
+    not p.oclIsUndefined() and not p.type.oclIsUndefined()
+    and ((not (p.aggregation = AggregationKind::composite
       or p.type.oclIsKindOf(DataType)))
     or (p.aggregation = AggregationKind::shared)
     or (p.upper = *)
-    or (p.lower = 0)/]
+    or (p.lower = 0))/]
 
 [query public 
    uml_c_get_predefined_integer_base_types(OclTraceabilityContxt:OclAny)
@@ -598,10 +600,12 @@ endif
 [query public uml_c_get_event_next_queue(ev : Event) : String = 
  ev.name + '_next_events'/]
 
-[query public uml_c_get_event_typedef(bClass : BehavioredClassifier, ev : Event) 
+[query public uml_c_get_event_typedef(aClassifier : Classifier, ev : Event) 
   : String = 
- (bClass.uml_c_get_element_full_name() + '_' + ev.name)
+ (aClassifier.uml_c_get_element_full_name() + '_' + ev.name)
   .uml_c_get_string_typedef_name()/]
+
+[query public uml_c_get_event_args_name(ev:Event) : String = ev.name+'_args'/]
 
 [query public uml_c_get_event_queue_typedef(aClass : Class, ev : Event) : 
  String = 
@@ -702,6 +706,9 @@ endif
 [query public uml_c_self_event_pool(traceabilityContext:OclAny):String = 
   utils_get_self_name() + '->' + utils_get_event_pool_name()/]
 
+[query public uml_c_context_event_pool(traceabilityContext:OclAny):String = 
+  'p_context->' + utils_get_event_pool_name()/]
+
 [query public uml_c_self_event_proc_status(traceabilityContext:OclAny):String = 
   utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
   + uml_c_event_proc_status()/]
@@ -709,6 +716,13 @@ endif
 [query public uml_c_self_fetched_event(traceabilityContext:OclAny):String = 
     utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
     + uml_c_fetched_event() /]
+
+[query public uml_c_context_fetched_event(traceabilityContext:OclAny):String = 
+    'p_context->' + utils_get_event_pool_name() + '.' 
+    + uml_c_fetched_event() /]
+
+[query public uml_c_self_context(traceabilityContext:OclAny):String = 
+    utils_get_self_name() + '->p_context'/]
 
 [query public uml_c_self_fetched_event_type(traceabilityContext:OclAny):String = 
     utils_get_self_name() + '->' + utils_get_event_pool_name() + '.' 
@@ -814,10 +828,22 @@ enum [aClass.uml_c_get_event_type_name()/]
 [spaces/][documentationElement(ev,total_indentation)/]
 [spaces/][uml_c_get_event_enum(aClass, ev)/][/for]
 [spaces/][documentation_string('@brief The number of all events handled by ' 
-  + aClass.name + ' Class.', indentation)/]
+  + aClass.name + ' Class.', total_indentation)/]
 [spaces/][uml_c_get_event_count(aClass)/]
 };
 
+[for (ev : CallEvent | events->selectByKind(CallEvent)->select(e:CallEvent|e.request_is_call_event_with_params())) 
+     separator(utils_newline()) after(utils_newline())]
+[documentation_string('@brief The type used to store the parameters '
+ + 'passed to the ' + ev.operation.name + ' call event', indentation)/]
+typedef struct{
+[for (p: Parameter | ev.operation.ownedParameter)]
+[spaces/][documentationElement(p,total_indentation)/]
+[spaces/][uml_c_property_decl_string(p.uml_c_parameter_type(), p.name,
+                                                        '', total_indentation)/]
+[/for]
+}[uml_c_get_event_typedef(aClass, ev)/];
+[/for]
 [documentation_string('@brief The type used to store the event pool of all '
  + 'events accepted by the ' + aClass.name + ' class.', indentation)/]
 typedef struct {
@@ -841,6 +867,17 @@ typedef struct {
           ev.uml_c_get_event_next_queue(),
           '['+ uml_c_get_event_queue_size(aClass, ev) + ']', 
  total_indentation)/]
+[let cev:CallEvent = ev]
+[if (cev.request_is_call_event_with_params())]
+[spaces/][documentation_string('@brief The array of the arguments passed to the '
++ 'corresponding ' + cev.name + ' event in the event pool sequence.', 
+total_indentation)/]
+[spaces/][uml_c_property_decl_string(uml_c_get_event_typedef(aClass, cev), 
+          uml_c_get_event_args_name(cev),
+          '['+ uml_c_get_event_queue_size(aClass, cev) + ']', 
+ total_indentation)/]
+[/if]
+[/let]
 [/for]
 [spaces/][documentation_string('@brief The marker that stores the processing '
           + 'status of the event at the \'first\' position.'  + utils_newline()
@@ -1300,16 +1337,33 @@ b_is_created = b_is_created
 */]
 [template public uml_c_enqueue_event(bC:BehavioredClassifier,
                                      anEvent:Event, indentation:Integer)
- {indent_width : Integer = getProperty('indent_width').toInteger();}]
+ {indent_width : Integer = getProperty('indent_width').toInteger();
+  spaces : String = utils_indent(indent_width);}]
 bool b_is_added = false;
 
 if(NULL != [utils_get_self_name()/])
 {
+[if (anEvent.request_is_call_event_with_params())]
+[spaces/]fifo_size_t tail = p_obj->event_pool.fifo_pool['[' + 
+                                  uml_c_get_event_enum(bC, anEvent) + ']'/].fifo.tail;
+[/if]
 [utils_indent(indent_width)
           /]b_is_added = event_pool_enqueue(&[uml_c_self_ev_pool_mgr()/],
 [utils_indent(indent_width)
 /]                                ([uml_c_get_event_pool_type()
                                       /]) [uml_c_get_event_enum(bC, anEvent)/]);
+[if (anEvent.request_is_call_event_with_params())]
+[spaces/]if(b_is_added)
+[spaces/]{
+[spaces/][spaces/][uml_c_get_event_typedef(bC, anEvent)
+                     /] * ['p_' + uml_c_get_event_args_name(anEvent)
+              /] = &p_obj->event_pool.[uml_c_get_event_args_name(anEvent) + '[tail]'/];
+[for (p: Parameter | anEvent.oclAsType(CallEvent).operation.ownedParameter)]
+[spaces/][spaces/]['p_' + uml_c_get_event_args_name(anEvent)
+              /]->[p.name/] = [p.name/];
+[/for]
+[spaces/]}
+[/if]
 }
 
 return b_is_added;
@@ -2426,7 +2480,9 @@ static [uml_c_get_event_status_type()/]
 */]
 [template public uml_c_implement_event_handler(aState: State, anEvent: Event,
                                        indentation : Integer)]
-[uml_c_implement_vertex_transitions(aState, Sequence{}, anEvent, indentation)/]
+[debug_marker('uml_c_implement_event_handler 1')
+/][uml_c_implement_vertex_transitions(aState, Sequence{}, anEvent, indentation)
+/]
 [/template]
 
 [**
@@ -2586,7 +2642,36 @@ static [uml_c_get_event_status_type()/]
 */]
 [template public uml_c_implement_transition_effect(aTransition:Transition,
                                                    indentation : Integer)
- ?(not aTransition.effect.oclIsUndefined())]
+ ?(not aTransition.effect.oclIsUndefined())
+{neededUsages:Set(Usage) = aTransition.effect.clientDependency->selectByKind(Usage)
+   ->select(u:Usage|u.supplier->exists(n:NamedElement|
+         n.oclIsKindOf(Parameter) 
+     and n.oclAsType(Parameter).operation.request_operation_calls_event_queue()));
+ neededParams:OrderedSet(Parameter) = request_elements_sorted(neededUsages
+      ->collect(u:Usage|u.supplier->filter(Parameter))->flatten()
+          ->select(p:Parameter|p.operation.request_operation_calls_event_queue())->asSet())
+      ->filter(Parameter);
+ neededEvents:OrderedSet(CallEvent) = request_elements_sorted(neededParams
+                                     ->collect(p:Parameter|p.operation.eContainer(Package)
+                                    .packagedElement->selectByKind(CallEvent)
+                                   ->select(e:CallEvent|e.operation=p.operation))->flatten()->asSet())
+                                      ->filter(CallEvent);
+}]
+[debug_marker('uml_c_implement_transition_effect 1')
+/][if (neededEvents->notEmpty())]
+[aTransition.effect._context.uml_c_get_type_name()/] * p_context = [uml_c_self_context()/];
+[uml_c_get_fifo_size_type()/] event_index = [uml_c_context_fetched_event()/].event_index;
+[for(aCallEvent:CallEvent|neededEvents)]
+[aCallEvent.operation.featuringClassifier->any(true).uml_c_get_event_typedef(aCallEvent)
+/] * ['p_' + uml_c_get_event_args_name(aCallEvent)/] = &[uml_c_context_event_pool()
+                              /].[uml_c_get_event_args_name(aCallEvent)/]['[event_index]'/];
+[for (aParam:Parameter|aCallEvent.operation.ownedParameter
+                       ->select(p:Parameter|neededParams->includes(p)))]
+[aParam.uml_c_parameter_type()/] [aParam.name/] = ['p_' 
+                + uml_c_get_event_args_name(aCallEvent) + '->' + aParam.name/];
+[/for]
+[/for]
+[/if]
 [uml_c_implement_behavior(aTransition.effect,'C',indentation)/]
 [/template]
 

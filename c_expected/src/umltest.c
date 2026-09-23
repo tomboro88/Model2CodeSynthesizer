@@ -37,6 +37,13 @@
  ******************************************************************************/
 static void umltest_umltest_record(plogger_logger_t* const p_obj,\
                                    const char* const p_str);
+static void umltest_umltest_record_dbl(plogger_logger_t* const p_obj,\
+                                       const char* const p_str,\
+                                       double const dbl_param);
+static void umltest_umltest_record_u16_char(plogger_logger_t* const p_obj,\
+                                            const char* const p_str,\
+                                            uint16_t const u16_param,\
+                                            char const char_param);
 
 /*******************************************************************************
  *
@@ -60,7 +67,10 @@ int
 main(void)
 {
     printf("Initialize my_ctest:\n");
-    const plogger_logger_vt_t logger_funcs = {.p_record = umltest_umltest_record};
+    const plogger_logger_vt_t logger_funcs = 
+        {.p_record = umltest_umltest_record,
+         .p_record_dbl = umltest_umltest_record_dbl,
+         .p_record_u16_char = umltest_umltest_record_u16_char};
     plogger_logger_t local_logger = {.p_vtable = &logger_funcs};
     tkind_ctest_t my_ctest = {0};
     tkind_ctest_init(&my_ctest, &local_logger);
@@ -103,6 +113,34 @@ umltest_umltest_record(plogger_logger_t* const p_obj, const char* const p_str)
 {
     (void) p_obj;
     (void) puts(p_str);
+}
+
+/**
+ * @param [in,out] p_obj 
+ * @param [in] p_str 
+ * @param [in] dbl_param 
+ */
+static void
+umltest_umltest_record_dbl(plogger_logger_t* const p_obj,\
+                           const char* const p_str, double const dbl_param)
+{
+    (void) p_obj;
+    (void) printf(p_str, dbl_param);
+}
+
+/**
+ * @param [in,out] p_obj 
+ * @param [in] p_str 
+ * @param [in] u16_param 
+ * @param [in] char_param 
+ */
+static void
+umltest_umltest_record_u16_char(plogger_logger_t* const p_obj,\
+                                const char* const p_str,\
+                                uint16_t const u16_param, char const char_param)
+{
+    (void) p_obj;
+    (void) printf(p_str, u16_param, char_param);
 }
 
 /*** end of file ***/
