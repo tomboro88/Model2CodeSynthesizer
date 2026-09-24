@@ -1512,6 +1512,7 @@ tjunction_sm1_dispatch_b_state36(tjunction_sm1_t* const p_obj)
         tjunction_sm1_exit_state36(p_obj);
         tjunction_sm1_enter_state36(p_obj);
         tjunction_sm1_enter_state36_3(p_obj);
+        result = SM_EVENT_STATUS_CHANGEDSTATE;
         tjunction_sm1_enter_region361(p_obj);
     }
 
@@ -1700,6 +1701,7 @@ tjunction_sm1_dispatch_c_state43(tjunction_sm1_t* const p_obj)
     {
         tjunction_sm1_exit_state43(p_obj);
         tjunction_sm1_enter_choice46(p_obj);
+        result = SM_EVENT_STATUS_CHANGEDSTATE;
     }
 
     return result;
@@ -1929,7 +1931,6 @@ tjunction_sm1_enter_choice46(tjunction_sm1_t* const p_obj)
     else
     {
         tjunction_sm1_enter_state43(p_obj);
-        result = SM_EVENT_STATUS_CHANGEDSTATE;
         tjunction_sm1_enter_region431(p_obj);
         tjunction_sm1_enter_region432(p_obj);
     }

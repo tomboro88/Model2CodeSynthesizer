@@ -58,7 +58,8 @@ TEST(TkindSm1State3, DispatchA)
 
 TEST(TkindSm1State3, DispatchB)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_expect(true, "Internal transition in State1 "
+    		                        "on event b\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
 

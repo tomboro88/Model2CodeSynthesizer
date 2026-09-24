@@ -135,6 +135,13 @@ tkind_ctest_start_sm1(p_obj);</body>
               </effect>
               <trigger xmi:type="uml:Trigger" xmi:id="_SdvdsPh2Ee-9W4mcsGdJGQ" event="_SJivUPh2Ee-9W4mcsGdJGQ"/>
             </transition>
+            <transition xmi:type="uml:Transition" xmi:id="_Bq-g4LhKEfGvO6sp8izLsQ" kind="internal" source="_xRPncNw4Ee-clukbqF5Mtw" target="_xRPncNw4Ee-clukbqF5Mtw">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_IrrjgLhKEfGvO6sp8izLsQ">
+                <language>C</language>
+                <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State1 on event b\n&quot;);</body>
+              </effect>
+              <trigger xmi:type="uml:Trigger" xmi:id="_E4RjULhKEfGvO6sp8izLsQ" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
+            </transition>
             <subvertex xmi:type="uml:State" xmi:id="_xRPncNw4Ee-clukbqF5Mtw" name="State1">
               <entry xmi:type="uml:OpaqueBehavior" xmi:id="_L--osN3WEe-K46f0PJjDaQ">
                 <language>C</language>
@@ -326,6 +333,42 @@ tkind_ctest_start_sm1(p_obj);</body>
                     <language>C</language>
                     <body>tkind_sm1_rec_log(p_obj, &quot;Choice1 to State1\n&quot;);</body>
                   </effect>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_fX0PILhIEfGvO6sp8izLsQ" guard="_EkXlULhJEfGvO6sp8izLsQ" kind="internal" source="_N0T38Nw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_EkXlULhJEfGvO6sp8izLsQ">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_EkXlUbhJEfGvO6sp8izLsQ">
+                      <language>C</language>
+                      <body>p_obj->b_test_condition</body>
+                    </specification>
+                  </ownedRule>
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_aT4lwLhJEfGvO6sp8izLsQ">
+                    <language>C</language>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State8. b_test_condition is true.\n&quot;);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_hocN8LhIEfGvO6sp8izLsQ" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_gUcaALhJEfGvO6sp8izLsQ" guard="_mZYX8LhJEfGvO6sp8izLsQ" kind="internal" source="_N0T38Nw8Ee-clukbqF5Mtw" target="_N0T38Nw8Ee-clukbqF5Mtw">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_mZYX8LhJEfGvO6sp8izLsQ">
+                    <specification xmi:type="uml:Expression" xmi:id="_mZYX8bhJEfGvO6sp8izLsQ" symbol="else"/>
+                  </ownedRule>
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_q_0XkLhJEfGvO6sp8izLsQ">
+                    <language>C</language>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State8. b_test_condition is false.\n&quot;);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_h078YLhJEfGvO6sp8izLsQ" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="__xxKQLhOEfGvO6sp8izLsQ" guard="_UpJBwLhPEfGvO6sp8izLsQ" kind="internal" source="_MQR5Ydw8Ee-clukbqF5Mtw" target="_MQR5Ydw8Ee-clukbqF5Mtw">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_UpJBwLhPEfGvO6sp8izLsQ">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_UpJBwbhPEfGvO6sp8izLsQ">
+                      <language>C</language>
+                      <body>p_obj->b_test_condition</body>
+                    </specification>
+                  </ownedRule>
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_b1t9MLhPEfGvO6sp8izLsQ">
+                    <language>C</language>
+                    <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State7. b_test_condition is true.\n&quot;);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_B9c-sLhPEfGvO6sp8izLsQ" event="_O8xyMN24Ee-8CKMu-ENa-A"/>
                 </transition>
                 <subvertex xmi:type="uml:State" xmi:id="_MQR5Ydw8Ee-clukbqF5Mtw" name="State7">
                   <entry xmi:type="uml:OpaqueBehavior" xmi:id="_jRjMwN3VEe-K46f0PJjDaQ">

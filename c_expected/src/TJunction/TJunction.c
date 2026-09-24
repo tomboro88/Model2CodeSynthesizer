@@ -1931,7 +1931,6 @@ tjunction_sm1_enter_choice46(tjunction_sm1_t* const p_obj)
     else
     {
         tjunction_sm1_enter_state43(p_obj);
-        result = SM_EVENT_STATUS_CHANGEDSTATE;
         tjunction_sm1_enter_region431(p_obj);
         tjunction_sm1_enter_region432(p_obj);
     }

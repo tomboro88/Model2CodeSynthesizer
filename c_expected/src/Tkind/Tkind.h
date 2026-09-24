@@ -392,10 +392,10 @@ extern "C" {
         TKIND_CTEST_O,
         /**
          */
-        TKIND_CTEST_A,
+        TKIND_CTEST_B,
         /**
          */
-        TKIND_CTEST_B,
+        TKIND_CTEST_A,
         /**
          */
         TKIND_CTEST_C,
@@ -484,17 +484,17 @@ extern "C" {
          */
         event_pool_size_t               o_next_events[TKIND_CTEST_O_CNT];
         /**
-         * @brief The array of the events that follow any a event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_A] object.
-         */
-        event_pool_size_t               a_next_events[TKIND_CTEST_A_CNT];
-        /**
          * @brief The array of the events that follow any b event in the event
          * pool sequence.
          * @details It is referenced by the fifo_pool[TKIND_CTEST_B] object.
          */
         event_pool_size_t               b_next_events[TKIND_CTEST_B_CNT];
+        /**
+         * @brief The array of the events that follow any a event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_A] object.
+         */
+        event_pool_size_t               a_next_events[TKIND_CTEST_A_CNT];
         /**
          * @brief The array of the events that follow any c event in the event
          * pool sequence.

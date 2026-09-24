@@ -417,10 +417,14 @@ endif
  * Returns the name of the local variable holding the status of the event 
  * dispatch process.
 */]
-[query private uml_c_dispatch_result_val(aVertex:Vertex): String = 
+[query private uml_c_dispatch_result_val(aVertex:Vertex, 
+                   b_is_result_declared : Boolean): String = 
                    if request_is_static_junction(aVertex) then
                        '*' + utils_dispatch_junction_result_name(null)
-                   else utils_dispatch_result_name(null) endif/]
+                   else if b_is_result_declared 
+                        then '' 
+                        else uml_c_get_event_status_type() + ' ' endif 
+                       + utils_dispatch_result_name(null) endif/]
 
 [**
  * Get all subpackages visible in the package header file. 
@@ -885,7 +889,7 @@ total_indentation)/]
           + 'prevent processing of the same event multiple times, and from '
           + 'removing unprocessed events. Moreover it can be used to handle '
           + 'event deferring.', total_indentation)/]
-[spaces/][uml_c_property_decl_string('sm_event_status_t', 
+[spaces/][uml_c_property_decl_string(uml_c_get_event_status_type(), 
                                      uml_c_event_proc_status(),
                                                         '', total_indentation)/]
 [spaces/][documentation_string('@brief Stores the location of the event that '
@@ -2400,7 +2404,8 @@ static const [uml_c_get_fifo_size_type()/]
  */]
 [template public uml_c_implement_state_dispatch(sm : StateMachine, 
                                           indentation : Integer)
- {spaces : String = utils_get_indent_string();
+ {
+  spaces : String = utils_get_indent_string();
   temp_name : String = request_temp_dispatch_result_name();
   assign_temp_status : String = temp_name + ' = ';
   assign_result : String = utils_dispatch_result_name()+' = ';}]
@@ -2423,10 +2428,12 @@ static [uml_c_get_event_status_type()/]
                         indentation)/]
 {
 [spaces/][uml_c_get_event_status_type()/] [assign_result
-  /][(if request_is_always_handled(aState, anEvent) 
-          and aState.region->request_event_subregions(anEvent)->isEmpty() then
-          request_transition_changed_state() 
-     else request_transition_ignored_state() endif)/];
+  /][(if request_is_event_ignored(aState, anEvent) 
+      then request_transition_ignored_state()
+      else if request_is_event_internal(aState, anEvent)
+           then request_transition_same_state()
+           else request_transition_changed_state() endif 
+      endif)/];
 [if ( aState.region->request_event_subregions(anEvent)->size() > 1 )]
 [spaces/][uml_c_get_event_status_type()/] [assign_temp_status
                                         /][request_transition_ignored_state()/];
@@ -2456,12 +2463,14 @@ static [uml_c_get_event_status_type()/]
                                       /] == [utils_dispatch_result_name()/])
 [spaces/]{
 [spaces/][spaces/][uml_c_implement_event_handler(aState, anEvent, 
-                                                 indentation+spaces.size()*2)/]
+    request_is_event_ignored(aState, anEvent), true, 
+    indentation+spaces.size()*2)/]
 [spaces/]}
 
 [else]
 [debug_marker('uml_c_implement_state_dispatch 2')/]
 [spaces/][uml_c_implement_event_handler(aState, anEvent,
+                       request_is_event_ignored(aState, anEvent), true,
                                         indentation+spaces.size()).trim()/]
 
 [/if]
@@ -2479,9 +2488,12 @@ static [uml_c_get_event_status_type()/]
  * The checked transitions are executed by the order of occurence in the model.
 */]
 [template public uml_c_implement_event_handler(aState: State, anEvent: Event,
+                                       b_should_assign_result : Boolean,
+                                       b_is_result_declared : Boolean,
                                        indentation : Integer)]
 [debug_marker('uml_c_implement_event_handler 1')
-/][uml_c_implement_vertex_transitions(aState, Sequence{}, anEvent, indentation)
+/][uml_c_implement_vertex_transitions(aState, Sequence{}, anEvent, 
+          b_should_assign_result, b_is_result_declared, indentation)
 /]
 [/template]
 
@@ -2515,6 +2527,7 @@ static [uml_c_get_event_status_type()/]
 [template public uml_c_implement_transition_execution(aTransition:Transition,
                                                aSeq:Sequence(Transition),
                                                b_should_assign_result : Boolean,
+                                               b_is_result_declared : Boolean,
                                                indentation : Integer)
     post(trim())
     {aState:State = aTransition.request_transition_exit_state();
@@ -2526,9 +2539,10 @@ static [uml_c_get_event_status_type()/]
 /][if (not aTransition.effect.oclIsUndefined() )]
 [uml_c_implement_transition_effect(aTransition, indentation)/]
 [/if]
+[if b_should_assign_result]
 [utils_dispatch_result_name()
                          /] = [aTransition.request_transition_dispatch_result() 
-/];[else]
+/];[/if][else]
 [if ( aTransition.request_transition_needs_exit() and 
     not (aTransition.source.request_vertex_is_choice() 
          and (aTransition.source.container 
@@ -2549,14 +2563,14 @@ static [uml_c_get_event_status_type()/]
                             Sequence{ utils_get_self_name()}, 
                             indentation + 1)/];
 [/if]
-[uml_c_implement_transition_transit(aTransition, aSeq,
-                            b_should_assign_result, indentation)
+[uml_c_implement_transition_transit(aTransition, aSeq, b_should_assign_result,
+                            b_is_result_declared, indentation)
 /][else]
 [comment This is for transitions that do not require exit or the source is 
  a Choice Pseudostate./]
 [debug_marker('uml_c_implement_transition_execution 4')
-/][uml_c_implement_transition_transit(aTransition, aSeq, 
-                            b_should_assign_result, spaces.size() + indentation)
+/][uml_c_implement_transition_transit(aTransition, aSeq, b_should_assign_result,
+                            b_is_result_declared, spaces.size() + indentation)
 /][/if]
 [/if]
 [/template]
@@ -2590,22 +2604,26 @@ static [uml_c_get_event_status_type()/]
 [template public uml_c_implement_transition_transit(aTransition:Transition,
                                           aSeq:Sequence(Transition),
                                           b_should_assign_result : Boolean,
+                                          b_is_result_declared : Boolean,
                                                    indentation : Integer)
    ?(not aTransition.oclIsUndefined())
    post(trim())
    {
     assign_result : String = 
-                         uml_c_dispatch_result_val(aTransition.source) + ' = ';
+                         uml_c_dispatch_result_val(aTransition.source, 
+                                               b_is_result_declared) + ' = ';
     sync_vertices : OrderedSet(Vertex) = 
                     request_transition_target_vertices(aTransition)
                     ->select(v:Vertex | not v.request_is_static_junction());}]
 [debug_marker('uml_c_implement_transition_transit 0')
-/][for (t:Transition|aSeq) 
+/][comment For a Junction Pseudostate the transitions in the aSeq
+Sequence must be executed before the aTransition/][for (t:Transition|aSeq) 
    ?(t.request_transition_entry_states()->select(s:State | 
                              not s.entry.oclIsUndefined())->notEmpty() 
      or (not t.effect.oclIsUndefined()) 
      or t.request_transition_needs_exit())]
-[uml_c_implement_transition_execution(t,Sequence{}, false, indentation)/]
+[uml_c_implement_transition_execution(t,Sequence{}, false,
+                                       b_is_result_declared, indentation)/]
 [/for]
 [debug_marker('uml_c_implement_transition_transit 1')
 /][if ( not aTransition.effect.oclIsUndefined() )]
@@ -2618,7 +2636,7 @@ static [uml_c_get_event_status_type()/]
 [uml_c_format_param_list(aVertex.uml_c_get_entry_name(),
          Sequence{ utils_get_self_name()}, indentation+1)/];
 [/for][debug_marker('uml_c_implement_transition_transit 3')
-/][if (b_should_assign_result) ]
+/][if (b_should_assign_result)]
 [assign_result/][request_transition_changed_state()/];
 [/if]
 [comment then initialize all other concurrent regions that are
@@ -2843,7 +2861,7 @@ static inline void
     and (aRegion.request_region_initial_pseudostate().outgoing->size() = 1) )]
 [spaces/][uml_c_implement_transition_transit(aRegion
        .request_region_initial_pseudostate().outgoing->any(true), Sequence{}, 
-                                    false, spaces.size() + indentation)/]
+                                    false, false, spaces.size() + indentation)/]
 [/if]
 }[/if]
 [/template]
@@ -2858,7 +2876,9 @@ static inline void
 [template public uml_c_implement_choice(aChoice : Pseudostate, 
                                         indentation : Integer)
  ?(aChoice.kind = PseudostateKind::choice)
- {spaces : String = utils_get_indent_string();
+ {b_should_assign_result : Boolean = false;
+  b_is_result_declared : Boolean = true;
+  spaces : String = utils_get_indent_string();
   assign_result : String = utils_dispatch_result_name() + ' = ';}]
 [documentation_string('@brief Implements entry of'
  +' the ' + aChoice.name + ' choice Pseudostate of the ' 
@@ -2877,7 +2897,9 @@ static [uml_c_get_event_status_type()/]
 [if (aChoice.request_vertex_events()->notEmpty())]
 #error A choice vertex outgoing transitions cannot contain any trigger.
 [else]
-[spaces/][uml_c_implement_vertex_transitions(aChoice, Sequence{}, null, 
+[spaces/][uml_c_implement_vertex_transitions(aChoice, Sequence{}, null,
+                                             b_should_assign_result,
+                                             b_is_result_declared,  
                                              indentation+spaces.size())/]
 [/if]
 [spaces/]return [utils_dispatch_result_name()/];
@@ -3116,7 +3138,10 @@ else aSeq->first().source endif.request_incoming_transitions())
                              and (guardTransitions->size() = 0
                                   or elseTransitions->size() = 1);
   init_handled : String = if b_is_handled then 'true' else 'false' endif;
-  spaces : String = utils_get_indent_string();}]
+  spaces : String = utils_get_indent_string();
+  b_should_assign_result : Boolean = 
+    if request_is_always_handled(aJunction, anEvent) then false else true endif;
+  b_is_result_declared : Boolean = true;}]
 [documentation_string('@brief Implements entry of'
  +' the ' + aJunction.name + ' junction Pseudostate of the ' 
  + aJunction.containingStateMachine().name + ' state machine'
@@ -3140,10 +3165,12 @@ static bool
 /][spaces/]bool b_is_handled = [init_handled/];
 
 [spaces/][uml_c_implement_vertex_transitions(aJunction, aSeq, anEvent, 
+                                             b_should_assign_result,
+                                             b_is_result_declared,
                                              indentation+spaces.size())/]
 [debug_marker('uml_c_implement_junction_func 2')
 /][if (b_is_handled)]
-[spaces/][uml_c_dispatch_result_val(aJunction)
+[spaces/][uml_c_dispatch_result_val(aJunction, b_is_result_declared)
                                   /] = [request_transition_changed_state()/];
 
 [/if]
@@ -3164,6 +3191,8 @@ static bool
 [template public uml_c_implement_vertex_transitions(aVertex : Vertex,
                                        aSeq:Sequence(Transition), 
                                        anEvent : Event,
+                                       b_should_assign_result : Boolean,
+                                       b_is_result_declared : Boolean,
                                        indentation : Integer)
  {transitions: OrderedSet(Transition)= 
                    aVertex.request_outgoing_transitions(anEvent,'');
@@ -3173,8 +3202,6 @@ static bool
                    aVertex.request_outgoing_transitions(anEvent, 'Else');
   sortedTransitions : OrderedSet(Transition) = 
                    guardTransitions->removeAll(elseTransitions);
-  b_should_assign_result : Boolean = 
-      if request_is_always_handled(aVertex, anEvent) then false else true endif;
   spaces : String = utils_get_indent_string();}]
 [if ((elseTransitions->size() > 1) or 
      (elseTransitions->size() > sortedTransitions->size()))]
@@ -3196,25 +3223,28 @@ static bool
 [if ( transitions->first().target.request_is_static_junction() )]
 [debug_marker('uml_c_implement_vertex_transitions -1')
 /][uml_c_implement_transition_guard(transitions->first(), aSeq, anEvent, 
+                                   b_should_assign_result, b_is_result_declared,
                                                                 indentation)/]
 {
-[spaces/][uml_c_dispatch_result_val(aVertex)
+[spaces/][uml_c_dispatch_result_val(aVertex, b_is_result_declared)
                                   /] = [request_transition_ignored_state()/];
 }
 [else]
 [debug_marker('uml_c_implement_vertex_transitions 0')
-/][uml_c_implement_transition_execution(transitions->first(), aSeq,
-                                       b_should_assign_result, indentation)
+/][uml_c_implement_transition_execution(transitions->first(), aSeq, 
+                                        b_should_assign_result,
+                                        b_is_result_declared, indentation)
 /][/if][/if][elseif guardTransitions->notEmpty()]
 [debug_marker('uml_c_implement_vertex_transitions 1')
 /][for (aTransition : Transition | sortedTransitions) separator(' ')]
-[uml_c_implement_transition_guard(aTransition, aSeq, anEvent, indentation)
+[uml_c_implement_transition_guard(aTransition, aSeq, anEvent, 
+                      b_should_assign_result, b_is_result_declared, indentation)
 /][/for][debug_marker('uml_c_implement_vertex_transitions 2,\n'
           '\'else\' transitions size: ' + elseTransitions->size())
 /][if (elseTransitions->notEmpty() 
              and elseTransitions->first().target.request_is_static_junction() )]
  [uml_c_implement_transition_guard(elseTransitions->first(), aSeq, anEvent, 
-                                                                indentation)/]
+                     b_should_assign_result, b_is_result_declared,indentation)/]
 [else]
 
 [/if]
@@ -3224,13 +3254,14 @@ static bool
    and not elseTransitions->first().target.request_is_static_junction() )]
 [debug_marker('uml_c_implement_vertex_transitions 4')
 /][spaces/][uml_c_implement_transition_execution(elseTransitions->first(), aSeq,
-                      b_should_assign_result, indentation + spaces.size())/]
+                      b_should_assign_result,
+                      b_is_result_declared, indentation + spaces.size())/]
 [elseif (aVertex.oclIsKindOf(Pseudostate) 
         and aVertex.oclAsType(Pseudostate).kind = PseudostateKind::choice )]
 #error The Choice pseudostate named [aVertex.name/] has no else transition.
 [else]
 [debug_marker('uml_c_implement_vertex_transitions 5')
-/][spaces/][uml_c_dispatch_result_val(aVertex)
+/][spaces/][uml_c_dispatch_result_val(aVertex, b_is_result_declared)
                                   /] = [request_transition_ignored_state()/];
 [/if]
 }
@@ -3252,11 +3283,10 @@ static bool
 [template public uml_c_implement_transition_guard(aTransition:Transition, 
                                             aSeq:Sequence(Transition),
                                             anEvent : Event,
+                                            b_should_assign_result : Boolean,
+                                            b_is_result_declared : Boolean,
                                             indentation:Integer)
 {
-  b_should_assign_result : Boolean = 
-        if aTransition.source.request_is_always_handled(anEvent) 
-                                                   then false else true endif;
   spaces : String = utils_get_indent_string();}]
 if([uml_c_implement_guard_expression(aTransition, aSeq, anEvent, 
                                      indentation + 4)/])
@@ -3271,7 +3301,8 @@ if([uml_c_implement_guard_expression(aTransition, aSeq, anEvent,
 [else]
 [debug_marker('uml_c_implement_transition_guard 4')
 /][spaces/][uml_c_implement_transition_execution(aTransition, aSeq,
-                    b_should_assign_result, indentation + spaces.size())/]
+                    b_should_assign_result, true,
+                    indentation + spaces.size())/]
 [if ( aTransition.source.request_is_static_junction() 
      and b_should_assign_result )]
 [debug_marker('uml_c_implement_transition_guard 5')

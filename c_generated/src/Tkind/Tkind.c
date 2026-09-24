@@ -105,6 +105,7 @@ static sm_event_status_t tkind_sm1_dispatch_n_region3(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_g_region4(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_h_region4(tkind_sm1_t* const p_obj);
 
+static sm_event_status_t tkind_sm1_dispatch_b_region5(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_i_region5(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_j_region5(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_k_region5(tkind_sm1_t* const p_obj);
@@ -148,6 +149,8 @@ static sm_event_status_t tkind_sm1_dispatch_n_state5(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_g_state6(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_h_state6(tkind_sm1_t* const p_obj);
 
+static sm_event_status_t tkind_sm1_dispatch_b_state7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_b_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_i_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_j_state7(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_k_state8(tkind_sm1_t* const p_obj);
@@ -198,8 +201,8 @@ tkind_ctest_fifo_sizes[TKIND_CTEST_EVENT_COUNT] =
 {
     TKIND_CTEST_I_CNT,
     TKIND_CTEST_O_CNT,
-    TKIND_CTEST_A_CNT,
     TKIND_CTEST_B_CNT,
+    TKIND_CTEST_A_CNT,
     TKIND_CTEST_C_CNT,
     TKIND_CTEST_F_CNT,
     TKIND_CTEST_E_CNT,
@@ -650,16 +653,16 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.o_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
-                        TKIND_CTEST_A_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
-                       = p_obj->event_pool.a_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_B].fifo),
                         TKIND_CTEST_B_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_B].p_next_events
                        = p_obj->event_pool.b_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
+                        TKIND_CTEST_A_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
+                       = p_obj->event_pool.a_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_C].fifo),
@@ -1102,11 +1105,11 @@ tkind_ctest_dispatch_event(tkind_ctest_t* const p_obj)
             case TKIND_CTEST_O:
                 temp_status = tkind_sm1_dispatch_o(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_A:
-                temp_status = tkind_sm1_dispatch_a(&p_obj->sm1);
-                break;
             case TKIND_CTEST_B:
                 temp_status = tkind_sm1_dispatch_b(&p_obj->sm1);
+                break;
+            case TKIND_CTEST_A:
+                temp_status = tkind_sm1_dispatch_a(&p_obj->sm1);
                 break;
             case TKIND_CTEST_C:
                 temp_status = tkind_sm1_dispatch_c(&p_obj->sm1);
@@ -2115,6 +2118,32 @@ tkind_sm1_dispatch_h_region4(tkind_sm1_t* const p_obj)
 }
 
 /**
+ * @brief Implements b event handling by the Region5 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_region5(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region5)
+    {
+        case TKIND_SM1_STATE7:
+            result = tkind_sm1_dispatch_b_state7(p_obj);
+            break;
+        case TKIND_SM1_STATE8:
+            result = tkind_sm1_dispatch_b_state8(p_obj);
+            break;
+        default:
+            break;
+    }
+
+    return result;
+}
+
+/**
  * @brief Implements i event handling by the Region5 region of the sm1 state
  * machine.
  * @param [in] p_obj The pointer to the self object.
@@ -2324,8 +2353,19 @@ static sm_event_status_t
 tkind_sm1_dispatch_b_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
 
-    result = tkind_sm1_dispatch_b_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_b_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    temp_status = tkind_sm1_dispatch_b_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        tkind_sm1_rec_log(p_obj, "Internal transition in State1 on event b\n");
+        result = SM_EVENT_STATUS_SAMESTATE;
+    }
 
     return result;
 }
@@ -2445,6 +2485,7 @@ tkind_sm1_dispatch_i_state1(tkind_sm1_t* const p_obj)
         tkind_sm1_rec_log(p_obj, "State1 to State7\n");
         tkind_sm1_enter_state1(p_obj);
         tkind_sm1_enter_state7(p_obj);
+        result = SM_EVENT_STATUS_CHANGEDSTATE;
         tkind_sm1_enter_region2(p_obj);
     }
 
@@ -2813,6 +2854,53 @@ tkind_sm1_dispatch_h_state6(tkind_sm1_t* const p_obj)
 }
 
 /**
+ * @brief Implements b event handling by the State7 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_state7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    if(p_obj->b_test_condition)
+    {
+        tkind_sm1_rec_log(p_obj, "Internal transition in State7. b_test_condition is true.\n");
+        result = SM_EVENT_STATUS_SAMESTATE;
+    }
+    else
+    {
+        result = SM_EVENT_STATUS_IGNORED;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements b event handling by the State8 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_state8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_SAMESTATE;
+
+    if(p_obj->b_test_condition)
+    {
+        tkind_sm1_rec_log(p_obj, "Internal transition in State8. b_test_condition is true.\n");
+    }
+    else
+    {
+        tkind_sm1_rec_log(p_obj, "Internal transition in State8. b_test_condition is false.\n");
+    }
+
+    return result;
+}
+
+/**
  * @brief Implements i event handling by the State8 state of the sm1 state
  * machine.
  * @param [in] p_obj The pointer to the self object.
@@ -2908,10 +2996,9 @@ tkind_sm1_dispatch_m_state8(tkind_sm1_t* const p_obj)
 static sm_event_status_t
 tkind_sm1_dispatch_i_state9(tkind_sm1_t* const p_obj)
 {
-    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
+    sm_event_status_t result = SM_EVENT_STATUS_SAMESTATE;
 
     tkind_sm1_rec_log(p_obj, "Internal transition in State9 on event i\n");
-    result = SM_EVENT_STATUS_SAMESTATE;
 
     return result;
 }

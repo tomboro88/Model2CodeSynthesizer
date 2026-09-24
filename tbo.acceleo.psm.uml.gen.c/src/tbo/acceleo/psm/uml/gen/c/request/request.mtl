@@ -873,11 +873,16 @@ let exitState : State = request_transition_exit_state(aTransition) in
                              and (guardTransitions->size() = 0
                                   or elseTransitions->size() = 1)/]
 
-[query public request_is_result_declared(aState:State, anEvent:Event):Boolean = 
+[query public request_is_event_ignored(aState:State, anEvent:Event):Boolean = 
     if request_is_always_handled(aState, anEvent) 
           and aState.region->request_event_subregions(anEvent)->isEmpty() then
           false
      else true endif/]
+
+[query public request_is_event_internal(aState:State, anEvent:Event):Boolean = 
+    aState.request_outgoing_transitions(anEvent,'')
+                     ->forAll(t:Transition|t.kind=TransitionKind::internal)
+/]
 [**
  * @brief Checks if the given state needs a separate test group.
 */]

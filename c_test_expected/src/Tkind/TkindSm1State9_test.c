@@ -60,11 +60,25 @@ TEST(TkindSm1State9, DispatchA)
     tkind_ctest_logger_dispatch_given(tkind_ctest_a(&tkind_ctest_obj));
 }
 
-TEST(TkindSm1State9, DispatchB)
+TEST(TkindSm1State9, DispatchBGuardFalse)
 {
     tkind_ctest_logger_expect(true, "Exit State2\n"
                                     "State2 to State4\n"
-                                    "Enter State4\n");
+                                    "Enter State4\n"
+    		                        "Internal transition in State8."
+    		                        " b_test_condition is false.\n");
+    tkind_ctest_obj.sm1.b_test_condition = false;
+    tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
+}
+
+TEST(TkindSm1State9, DispatchBGuardTrue)
+{
+    tkind_ctest_logger_expect(true, "Exit State2\n"
+                                    "State2 to State4\n"
+                                    "Enter State4\n"
+    		                        "Internal transition in State8."
+    		                        " b_test_condition is true.\n");
+    tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
 
@@ -219,7 +233,8 @@ TEST_GROUP_RUNNER(TkindSm1State9)
     RUN_TEST_CASE(TkindSm1State9, InitResultsInInitialTransition);
 
     RUN_TEST_CASE(TkindSm1State9, DispatchA);
-    RUN_TEST_CASE(TkindSm1State9, DispatchB);
+    RUN_TEST_CASE(TkindSm1State9, DispatchBGuardFalse);
+    RUN_TEST_CASE(TkindSm1State9, DispatchBGuardTrue);
     RUN_TEST_CASE(TkindSm1State9, DispatchC);
     RUN_TEST_CASE(TkindSm1State9, DispatchD);
     RUN_TEST_CASE(TkindSm1State9, DispatchE);
