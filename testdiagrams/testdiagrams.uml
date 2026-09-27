@@ -323,6 +323,20 @@ It is automatically detected by the generator and included as a literal constant
                 </subvertex>
                 <subvertex xmi:type="uml:Pseudostate" xmi:id="_vz5U0Ph1Ee-9W4mcsGdJGQ" name="Choice1" kind="choice"/>
               </region>
+              <region xmi:type="uml:Region" xmi:id="_53W1MLpaEfGVNsyi9tGUkw" name="Region9">
+                <subvertex xmi:type="uml:State" xmi:id="_gubMcLpbEfGVNsyi9tGUkw" name="State10">
+                  <region xmi:type="uml:Region" xmi:id="_O5cyILpfEfGVNsyi9tGUkw" name="Region7">
+                    <transition xmi:type="uml:Transition" xmi:id="_ju4hMLplEfGVNsyi9tGUkw" source="_iK0tcLplEfGVNsyi9tGUkw" target="_PgxQ0LpfEfGVNsyi9tGUkw"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_PgxQ0LpfEfGVNsyi9tGUkw" name="State11"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_Gqyf4LplEfGVNsyi9tGUkw" name="State12"/>
+                    <subvertex xmi:type="uml:Pseudostate" xmi:id="_iK0tcLplEfGVNsyi9tGUkw" name="Initial5"/>
+                  </region>
+                  <region xmi:type="uml:Region" xmi:id="_-JvE0LpkEfGVNsyi9tGUkw" name="Region8">
+                    <subvertex xmi:type="uml:State" xmi:id="_-2RasLpkEfGVNsyi9tGUkw" name="State13"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_JZ2uMLplEfGVNsyi9tGUkw" name="State14"/>
+                  </region>
+                </subvertex>
+              </region>
             </subvertex>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_gwLpwN21Ee-8CKMu-ENa-A" name="Initial1"/>
           </region>

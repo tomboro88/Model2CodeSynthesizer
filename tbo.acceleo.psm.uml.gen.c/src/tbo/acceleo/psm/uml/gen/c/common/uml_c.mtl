@@ -242,7 +242,7 @@ endif/]
  */]
 [query private uml_c_property_by_ref(p : Property) : Boolean = 
     (not (p.aggregation = AggregationKind::composite
-      or p.type.oclIsKindOf(DataType)))
+      or (not p.type.oclIsUndefined() and p.type.oclIsKindOf(DataType))))
     or (p.aggregation = AggregationKind::shared)
     or (p.upper = *)
     or (p.lower = 0)/]

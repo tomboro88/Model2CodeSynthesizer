@@ -19,7 +19,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 //Start of user code includes bottom
-#include <stdio.h>
 //End of user code
 /*******************************************************************************
  *
@@ -342,6 +341,56 @@ tkind_sm1_enter_state9(tkind_sm1_t* const p_obj)
 }
 
 /**
+ * @brief Enters the State10 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_state10(tkind_sm1_t* const p_obj)
+{
+    p_obj->region9 = TKIND_SM1_STATE10;
+}
+
+/**
+ * @brief Enters the State11 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_state11(tkind_sm1_t* const p_obj)
+{
+    p_obj->region7 = TKIND_SM1_STATE11;
+}
+
+/**
+ * @brief Enters the State12 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_state12(tkind_sm1_t* const p_obj)
+{
+    p_obj->region7 = TKIND_SM1_STATE12;
+}
+
+/**
+ * @brief Enters the State13 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_state13(tkind_sm1_t* const p_obj)
+{
+    p_obj->region8 = TKIND_SM1_STATE13;
+}
+
+/**
+ * @brief Enters the State14 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_state14(tkind_sm1_t* const p_obj)
+{
+    p_obj->region8 = TKIND_SM1_STATE14;
+}
+
+/**
  * @brief Implements entry of the Region3 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
@@ -396,6 +445,37 @@ tkind_sm1_enter_region5(tkind_sm1_t* const p_obj)
 }
 
 /**
+ * @brief Implements entry of the Region7 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_region7(tkind_sm1_t* const p_obj)
+{
+    p_obj->region7 = TKIND_SM1_INITIAL5;
+    tkind_sm1_enter_state11(p_obj);
+}
+
+/**
+ * @brief Implements entry of the Region8 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_region8(tkind_sm1_t* const p_obj)
+{
+    p_obj->region8 = TKIND_SM1_REGION8_INL;
+}
+
+/**
+ * @brief Implements entry of the Region9 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_enter_region9(tkind_sm1_t* const p_obj)
+{
+    p_obj->region9 = TKIND_SM1_REGION9_INL;
+}
+
+/**
  * @brief Implements entry of the Region1 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
@@ -407,6 +487,7 @@ tkind_sm1_enter_region1(tkind_sm1_t* const p_obj)
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_region2(p_obj);
     tkind_sm1_enter_region5(p_obj);
+    tkind_sm1_enter_region9(p_obj);
 }
 
 /**
@@ -1238,6 +1319,9 @@ tkind_ctest_start_sm1(tkind_ctest_t* const p_obj)
     p_obj->sm1.region4               = TKIND_SM1_REGION4_INL;
     p_obj->sm1.region5               = TKIND_SM1_REGION5_INL;
     p_obj->sm1.region6               = TKIND_SM1_INITIAL4;
+    p_obj->sm1.region9               = TKIND_SM1_REGION9_INL;
+    p_obj->sm1.region7               = TKIND_SM1_INITIAL5;
+    p_obj->sm1.region8               = TKIND_SM1_REGION8_INL;
     
     tkind_sm1_init_df(&p_obj->sm1);
     /* Execute the initial transition.*/
@@ -2396,6 +2480,7 @@ tkind_sm1_dispatch_i_state1(tkind_sm1_t* const p_obj)
         tkind_sm1_enter_state1(p_obj);
         tkind_sm1_enter_state7(p_obj);
         tkind_sm1_enter_region2(p_obj);
+        tkind_sm1_enter_region9(p_obj);
     }
 
     return result;
@@ -2497,6 +2582,7 @@ tkind_sm1_dispatch_o_state1(tkind_sm1_t* const p_obj)
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_choice1(p_obj);
     tkind_sm1_enter_region2(p_obj);
+    tkind_sm1_enter_region9(p_obj);
 
     return result;
 }
@@ -2746,6 +2832,7 @@ tkind_sm1_dispatch_h_state6(tkind_sm1_t* const p_obj)
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_region2(p_obj);
     tkind_sm1_enter_region5(p_obj);
+    tkind_sm1_enter_region9(p_obj);
 
     return result;
 }
@@ -2833,6 +2920,7 @@ tkind_sm1_dispatch_m_state8(tkind_sm1_t* const p_obj)
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_region2(p_obj);
     tkind_sm1_enter_region5(p_obj);
+    tkind_sm1_enter_region9(p_obj);
 
     return result;
 }
@@ -2889,6 +2977,7 @@ tkind_sm1_dispatch_l_state9(tkind_sm1_t* const p_obj)
     tkind_sm1_enter_state1(p_obj);
     tkind_sm1_enter_region2(p_obj);
     tkind_sm1_enter_region5(p_obj);
+    tkind_sm1_enter_region9(p_obj);
 
     return result;
 }

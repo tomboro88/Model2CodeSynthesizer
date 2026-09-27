@@ -16,7 +16,6 @@
 //End of user code
 #include "TJunction.h"
 //Start of user code includes bottom
-#include <stdio.h>
 //End of user code
 /*******************************************************************************
  *

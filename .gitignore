@@ -1,4 +1,5 @@
 tbo.acceleo.psm.uml.gen.c/bin
+tbo.acceleo.psm.uml.gen.c/tasks
 *.emtl
 *.class
 /c_generated/Debug/*

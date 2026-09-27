@@ -5,6 +5,23 @@
 [import tbo::acceleo::psm::uml::gen::c::common::documentation /]
 [import tbo::acceleo::psm::uml::gen::c::request::request /]
 
+[**
+ * Reorders state_config to sequence default vs. explicit state/region 
+ * initializations.
+ * Places explicitly targeted orthogonal states after their default-initialized
+ * region contexts.
+ * @param state_config The state configuration left for reordering
+ * @param reordered_config the state configuration already sorted so far in 
+ *        previous iterations.
+ * local variables:
+ *     aRegion - The region at the beginning of state_config.
+ *     reg_ortogonals - OrderedSet of States and Regions from reordered_config
+ *                      that are children of the aRegion container 
+ *                      (State/StateMachine)
+ *     new_ordered_config_prefix - the reordered_config without reg_orthogonals
+ *     new_reordered_config - the new_ordered_config_prefix with the aRegion and
+ *         reg_orthogonals appended.
+ *]
 [query public gen_test_reorder_state_config(state_config : OrderedSet(OclAny), 
                       reordered_config: OrderedSet(OclAny)):OrderedSet(OclAny)=
     if state_config->isEmpty() 
@@ -32,6 +49,15 @@
                   reordered_config->append(state_config->first())) endif
     else gen_test_reorder_state_config(state_config->drop(1), 
                   reordered_config->append(state_config->first())) endif endif/]
+[**
+ * Removes regions from the state_config, so that there are not any two 
+ * subregions from the same State(or StateMachine for the top level regions),
+ * and reorders the result so it is friendly for state configuration 
+ * name generation. We do not want two regions from the same State/StateMachine
+ * because the presence of the region from the given State/StateMachine means
+ * that the State/StateMachine must be initialized to the default state, so we 
+ * just remove  the duplication of the information.
+ */]
 [query public gen_test_get_readable_state_config(
                     state_config : OrderedSet(OclAny)) : OrderedSet(OclAny) 
     = let filtered_state_config : OrderedSet(OclAny) = state_config
@@ -44,6 +70,9 @@
              reg1.state=reg2.state and reg1.stateMachine=reg2.stateMachine))) in
     gen_test_reorder_state_config(filtered_state_config, OrderedSet{})/]
 
+[**
+ * Returns test group name for the given state configuration.
+ */]
 [query public gen_test_get_state_config_group_name(
                                     state_config : OrderedSet(OclAny)): String 
 = let aPackage:Package=state_config->first().eContainer(Package) in
@@ -157,14 +186,39 @@ void
 [**
  * @brief Generates test groups for all possible state configurations of a 
  * StateMachine owning the given regions.
- * @param state_config The unique state configuration reached by thew algorithm
+ * @param state_config The unique state configuration reached by the algorithm
  *                     so far.
  * @param nestedRegion The region for which all state configurations should be
- *                                                                      created.
- * @param regions The Regions Ordered Set for whihh the tests are to be 
- *                                                                    generated.
- * @param mode Selects what should be generated: 1 - test greoup files, 
+ *                     created. The state_config is generated for region itself,
+ *                     as well as for all its substates.
+ * @param regions The Regions Ordered Set for which the tests are to be 
+ *                generated. In general all regions in the StateMachine.
+ * @param mode Selects what should be generated: 1 - test group files, 
  *                              2- RUN_TEST_GROUP callers for TEST_GROUP_RUNNER.
+ * @details
+ * local variables:
+ * regionsWithSimpleStates - contains a selected set of regions with States 
+ *                           requiring individual test groups.
+ * excludedParentRegions - list of any region from regionsWithSimpleStates,
+ *                         for which there is a child Region or State in 
+ *                         state_config. That means these regions are already 
+ *                         the part of the state configuration selected by the 
+ *                         state_config.
+ * excludedChildRegions - list of any region from regionsWithSimpleStates that 
+ *                        is already a child of any region from state_config,
+ *                        or of any region that contains any state from 
+ *                        state_config. That meas, these are the regions that 
+ *                        cannot be added to the state_config, because the 
+ *                        current state_config says the are not the current 
+ *                        state.
+ * excludedRegions - the union of excludedParentRegions and excludedChildRegions
+ * excludedOrthogonalRegions - orthogonal regions from excludedParentRegions.
+ * allowedRegions - all regions regionsWithSimpleStates that are not part of 
+ *                  excludedRegions.
+ * complementaryOrthogonalRegions - allowedRegions that are orthogonal to the
+ *                                  parent regions that are already excluded.
+ * topComplementaryRegions - topmost complementaryOrthogonalRegions that have 
+ *                           no parents.
 */]
 [template private gen_tests_for_regions(state_config : OrderedSet(OclAny),
                                         nestedRegion : Region,

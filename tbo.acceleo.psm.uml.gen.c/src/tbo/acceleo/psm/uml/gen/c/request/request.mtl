@@ -52,7 +52,7 @@
              'atomic_long', 'atomic_ulong', 'atomic_llong', 'atomic_ullong', 
              'atomic_intptr_t', 'atomic_uintptr_t', 'atomic_size_t', 
              'atomic_ptrdiff_t', 'atomic_intmax_t', 'atomic_uintmax_t'} in
-    builtinTypes->includes(aType.name)/]
+    not aType.oclIsUndefined() and builtinTypes->includes(aType.name)/]
 [**
  * Get a set of packages on which the given element depends. 
  */]
@@ -205,7 +205,10 @@
                .request_needs_vtable())/]
 
 [query public request_all_generals(aClassifier:Classifier) : Set(Classifier) = 
- aClassifier.general->addAll(aClassifier.general.request_all_generals())/]
+ if aClassifier.oclIsUndefined() 
+ then Set{}
+ else aClassifier.general->addAll(aClassifier.general.request_all_generals())
+ endif/]
 
 [query public request_sort_classifiers(anOSet : OrderedSet(Classifier)) : 
   OrderedSet(Classifier)
@@ -224,7 +227,7 @@
 [query public request_classifier_depends(aClassifier:Classifier,
                                        bClassifier:Classifier):Boolean
  =aClassifier.attribute.type->includes(bClassifier.oclAsType(Type))
-  or aClassifier.attribute.type->exists(t:Type|
+  or aClassifier.attribute.type->exists(t:Type| not t.oclIsUndefined() and
         t.oclAsType(Classifier).request_classifier_depends(bClassifier))
         or aClassifier.generalization.general->includes(bClassifier)
         or aClassifier.generalization.general
@@ -871,7 +874,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
  * @brief Checks if the given state needs a separate test group.
 */]
 [query public request_state_needs_tests(aState:State) : Boolean = 
-    aState.isSimple/]
+    aState.isSimple or aState.region
+    ->exists(r:Region|r.subvertex->selectByKind(State)
+                            ->exists(s:State|s.request_state_needs_tests()))/]
 
 [query public request_get_base_to_child_conversion_name(aBase:Classifier, 
    aChild:Classifier):String = 

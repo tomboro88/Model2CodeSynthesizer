@@ -19,7 +19,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 //Start of user code includes bottom
-#include <stdio.h>
 //End of user code
 /*******************************************************************************
  *

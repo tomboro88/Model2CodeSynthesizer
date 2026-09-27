@@ -345,6 +345,72 @@ extern "C" {
     }tkind_sm1_region6_t;
     
     /**
+     * @brief The enumeration of all substates of Region9 Region of sm1
+     * StateMachine.
+     */
+    typedef enum{
+        /**
+         * @brief The default substate of the Region9 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_REGION9_INL,
+        /**
+         */
+        TKIND_SM1_STATE10,
+        /**
+         * @brief The number of all substates of Region9 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_REGION9_SIZE
+    }tkind_sm1_region9_t;
+    
+    /**
+     * @brief The enumeration of all substates of Region7 Region of sm1
+     * StateMachine.
+     */
+    typedef enum{
+        /**
+         * @brief The default substate of the Region7 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_INITIAL5,
+        /**
+         */
+        TKIND_SM1_STATE11,
+        /**
+         */
+        TKIND_SM1_STATE12,
+        /**
+         * @brief The number of all substates of Region7 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_REGION7_SIZE
+    }tkind_sm1_region7_t;
+    
+    /**
+     * @brief The enumeration of all substates of Region8 Region of sm1
+     * StateMachine.
+     */
+    typedef enum{
+        /**
+         * @brief The default substate of the Region8 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_REGION8_INL,
+        /**
+         */
+        TKIND_SM1_STATE13,
+        /**
+         */
+        TKIND_SM1_STATE14,
+        /**
+         * @brief The number of all substates of Region8 Region of sm1
+         * StateMachine.
+         */
+        TKIND_SM1_REGION8_SIZE
+    }tkind_sm1_region8_t;
+    
+    /**
      * @brief An example StateMachine implementing different kinds of
      * transitions.
      */
@@ -374,6 +440,15 @@ extern "C" {
         /**
          */
         tkind_sm1_region6_t             region6;
+        /**
+         */
+        tkind_sm1_region9_t             region9;
+        /**
+         */
+        tkind_sm1_region7_t             region7;
+        /**
+         */
+        tkind_sm1_region8_t             region8;
         /**
          */
         bool                            b_test_condition;
