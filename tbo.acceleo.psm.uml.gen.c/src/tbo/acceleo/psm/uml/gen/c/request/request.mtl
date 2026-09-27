@@ -206,7 +206,7 @@
 
 [query public request_all_generals(aClassifier:Classifier) : Set(Classifier) = 
  if aClassifier.oclIsUndefined() 
- then Set{} 
+ then Set{}
  else aClassifier.general->addAll(aClassifier.general.request_all_generals())
  endif/]
 
@@ -887,7 +887,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
  * @brief Checks if the given state needs a separate test group.
 */]
 [query public request_state_needs_tests(aState:State) : Boolean = 
-    aState.isSimple/]
+    aState.isSimple or aState.region
+    ->exists(r:Region|r.subvertex->selectByKind(State)
+                            ->exists(s:State|s.request_state_needs_tests()))/]
 
 [query public request_get_base_to_child_conversion_name(aBase:Classifier, 
    aChild:Classifier):String = 

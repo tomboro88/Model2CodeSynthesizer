@@ -432,6 +432,20 @@ tkind_ctest_start_sm1(p_obj);</body>
                 </subvertex>
                 <subvertex xmi:type="uml:Pseudostate" xmi:id="_vz5U0Ph1Ee-9W4mcsGdJGQ" name="Choice1" kind="choice"/>
               </region>
+              <region xmi:type="uml:Region" xmi:id="_WxkQALqCEfGvPeTCLG8jqw" name="Region7">
+                <subvertex xmi:type="uml:State" xmi:id="_iWbaULqCEfGvPeTCLG8jqw" name="State10">
+                  <region xmi:type="uml:Region" xmi:id="_jpfksLqCEfGvPeTCLG8jqw" name="Region8">
+                    <transition xmi:type="uml:Transition" xmi:id="_tIM60LqCEfGvPeTCLG8jqw" source="_sngBgLqCEfGvPeTCLG8jqw" target="_mWDRkLqCEfGvPeTCLG8jqw"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_mWDRkLqCEfGvPeTCLG8jqw" name="State11"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_nLGDMLqCEfGvPeTCLG8jqw" name="State12"/>
+                    <subvertex xmi:type="uml:Pseudostate" xmi:id="_sngBgLqCEfGvPeTCLG8jqw" name="Initial3"/>
+                  </region>
+                  <region xmi:type="uml:Region" xmi:id="_lSSHcLqCEfGvPeTCLG8jqw" name="Region9">
+                    <subvertex xmi:type="uml:State" xmi:id="_oWYxoLqCEfGvPeTCLG8jqw" name="State13"/>
+                    <subvertex xmi:type="uml:State" xmi:id="_pNf_0LqCEfGvPeTCLG8jqw" name="State14"/>
+                  </region>
+                </subvertex>
+              </region>
             </subvertex>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_gwLpwN21Ee-8CKMu-ENa-A" name="Initial1"/>
           </region>
