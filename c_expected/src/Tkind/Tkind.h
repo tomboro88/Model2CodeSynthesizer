@@ -373,7 +373,7 @@ extern "C" {
          * @brief The default substate of the Region8 Region of sm1
          * StateMachine.
          */
-        TKIND_SM1_INITIAL3,
+        TKIND_SM1_INITIAL8,
         /**
          */
         TKIND_SM1_STATE11,
@@ -511,7 +511,7 @@ extern "C" {
     };
     
     /**
-     * @brief The type used to store the parameters passed to the h call event
+     * @brief The type used to store the parameters passed to the h call event.
      */
     typedef struct{
         /**
@@ -520,7 +520,7 @@ extern "C" {
     }tkind_ctest_h_t;
     
     /**
-     * @brief The type used to store the parameters passed to the g call event
+     * @brief The type used to store the parameters passed to the g call event.
      */
     typedef struct{
         /**

@@ -318,12 +318,13 @@ endif
 */]
 [query public uml_c_is_using_types(cList:OrderedSet(Classifier), 
                                               types:Set(String)) : Boolean
- = cList->select(c:Classifier|c.attribute->select(p:Property|
-         types->includes(p.type.name))->notEmpty())->notEmpty()
-   or cList->select(c:Classifier|c.ownedMember->filter(Operation)
-         ->select(o:Operation|o.ownedParameter
-         ->select(p:Parameter|types->includes(p.type.name))->notEmpty()
-                                              )->notEmpty())->notEmpty()/]
+ = cList->exists(c:Classifier|c.attribute->exists(p:Property|
+         types->exists(s:String|not p.type.oclIsUndefined() and p.type.name=s)))
+   or cList->exists(c:Classifier|c.ownedMember->filter(Operation)
+         ->exists(o:Operation|o.ownedParameter
+         ->exists(p:Parameter|types
+               ->exists(s:String|not p.type.oclIsUndefined() and p.type.name=s))
+                                              ))/]
 
 [**
  * Creates the name of a bound template class./]
@@ -839,7 +840,7 @@ enum [aClass.uml_c_get_event_type_name()/]
 [for (ev : CallEvent | events->selectByKind(CallEvent)->select(e:CallEvent|e.request_is_call_event_with_params())) 
      separator(utils_newline()) after(utils_newline())]
 [documentation_string('@brief The type used to store the parameters '
- + 'passed to the ' + ev.operation.name + ' call event', indentation)/]
+ + 'passed to the ' + ev.operation.name + ' call event.', indentation)/]
 typedef struct{
 [for (p: Parameter | ev.operation.ownedParameter)]
 [spaces/][documentationElement(p,total_indentation)/]
@@ -900,8 +901,9 @@ total_indentation)/]
 }[uml_c_get_event_pool_type_name(aClass)/];
 [/template]
 
-[query public uml_c_statemachine_behavior_name(sm:StateMachine) : String = 
-    sm.name.toLower()/]
+[query public uml_c_behavior_name(aBehavior:Behavior) : String = 
+    if aBehavior.name.oclIsUndefined() then '#error' 
+    else aBehavior.name.toLower() endif/]
 
 [**
  * Provides C declaration of a classifier.
@@ -961,10 +963,12 @@ struct [uml_c_get_struct_name(aClassifier)/]
                                      total_indentation)/]
 [/for][debug_marker('uml_c_struct_decl step 5')
 /][let sm:StateMachine =  aClassifier]
+[if (not sm._context.oclIsUndefined())]
 [spaces/][documentation_string('@brief The pointer to the StateMachine\'s '
           'context object.', total_indentation)/]
 [spaces/][uml_c_property_decl_string(sm._context.uml_c_get_type_name()+'*',
         'p_context','', total_indentation)/]
+[/if]
 [for (r:Region| sm.request_all_regions())]
 [spaces/][documentationElement(r,indentation)/]
 [spaces/][uml_c_property_decl_string(
@@ -984,14 +988,14 @@ struct [uml_c_get_struct_name(aClassifier)/]
 [for (sm:StateMachine | request_elements_sorted(aClass.ownedBehavior)
                                                   ->selectByKind(StateMachine))]
 [spaces/][documentation_string('@brief The instance of the ' 
-         + sm.uml_c_statemachine_behavior_name()
+         + sm.uml_c_behavior_name()
          + ' state machine. '
          + utils_newline() + '@details According to UML, ' + aClass.name
          + ' class is the context of the ' 
-         + sm.uml_c_statemachine_behavior_name()+ ' state machine.'
+         + sm.uml_c_behavior_name()+ ' state machine.'
                                                           , total_indentation)/]
 [spaces/][uml_c_property_decl_string(sm.uml_c_get_type_name(),
-                                     sm.uml_c_statemachine_behavior_name(),'',
+                                     sm.uml_c_behavior_name(),'',
                                      total_indentation)/]
 [/for]
 [if (aClass.request_class_needs_event_defer() )]
@@ -1475,6 +1479,11 @@ return b_is_added;
 [utils_indent(indent_width*2)
                     /][uml_c_event_pool_init(bc, indentation + indent_width*2)/]
 [/if]
+[if (bc.oclIsKindOf(StateMachine))]
+[utils_indent(indent_width*2)
+       /][uml_c_implement_behavior(bc.oclAsType(StateMachine), 'C', 
+                                           indentation + behavior_indent)/]
+[/if]
 [/if]   
 [ let  b:Behavior = 
                 anOperation.method->any(b:Behavior|not b.oclIsUndefined())  ]
@@ -1743,18 +1752,25 @@ return b_is_added;
 
 [template public uml_c_call_event_dispatch(bC:BehavioredClassifier, 
                                            anEvent:Event, indentation:Integer)
-{event_stateMachines:Set(StateMachine) = 
+{event_stateMachines:Set(StateMachine) = (if bC.oclIsKindOf(StateMachine)
+                       then Set{bC.oclAsType(StateMachine)}
+                       else Set{} endif)->union(
                        bC.ownedBehavior
                        ->selectByKind(StateMachine)->select(sm:StateMachine|
-                       sm.request_classifier_events()->includes(anEvent));}]
+                       sm.request_classifier_events()->includes(anEvent)));}]
 [if (event_stateMachines->size()<>1)]
 #error Any event of a Class can be handled by only one StateMachine in that\
-       Class. 
+       Class.
 [else]
 [(let anSM:StateMachine=event_stateMachines->any(true) in
           uml_c_format_param_list(
                        anSM.uml_c_get_sm_event_dispatch(anEvent),
-                       Sequence{'&' + utils_get_self_name() + '->' + anSM.name}, 
+                       Sequence{if bC.ownedBehavior->includes(anSM)
+                                then '&' else '' endif
+                                + utils_get_self_name() + 
+                                if bC.ownedBehavior->includes(anSM)
+                                then '->' + anSM.name
+                                else '' endif}, 
                          indentation))/][/if]
 [/template]
 
@@ -1896,7 +1912,17 @@ return b_is_added;
 
 [template public uml_c_implement_behavior(aBehavior : Behavior, 
                              language : String, indentation : Integer)
- {indent_width : Integer = getProperty('indent_width').toInteger();}]
+ {indent_width : Integer = getProperty('indent_width').toInteger();
+  behavior_self : Sequence(String)= 
+        if aBehavior._context.oclIsUndefined()
+        then Sequence{utils_get_self_name()}
+        else Sequence{utils_get_self_name(), 
+                      '->' + aBehavior.uml_c_behavior_name()} endif;
+  behavior_field_sep : String = if aBehavior._context.oclIsUndefined() 
+                                then '->' else '.' endif;
+  behavior_ref : String = if aBehavior._context.oclIsUndefined() 
+                                then '' else '&' endif 
+                          + behavior_self->utils_concat()}]
 [let ob : OpaqueBehavior = aBehavior]
 [if (ob.language->includes(language))]
 [let bd : String = 
@@ -1907,29 +1933,28 @@ return b_is_added;
 /][/let]
 [/if]
 [elselet sm : StateMachine = aBehavior]
-[ Sequence{utils_get_self_name(), '->' + sm.uml_c_statemachine_behavior_name(),
-           '.p_context'}
+[if (not sm._context.oclIsUndefined())]
+[ behavior_self->append(behavior_field_sep+'p_context')
           ->uml_c_get_vtable_qualified_entry(indentation,0)
 /] = [utils_get_self_name()/];
+[/if]
 [for (r:Region| sm.request_all_regions()) after(utils_newline())]
-[ Sequence{utils_get_self_name(), '->' + sm.uml_c_statemachine_behavior_name(),
-           '.' + r.uml_c_get_region_state_property_name()}
+[ behavior_self->append(behavior_field_sep 
+                        + r.uml_c_get_region_state_property_name())
           ->uml_c_get_vtable_qualified_entry(indentation,0)
 /] = [r.uml_c_get_region_initial_state_name()/];
 [/for]
 [if (sm.uml_c_needs_init_defaults())]
 [uml_c_format_param_list(
        sm.uml_c_get_init_default_name(),
-                         Sequence{'&' + utils_get_self_name() 
-                           + '->' + sm.uml_c_statemachine_behavior_name()},
+                         Sequence{behavior_ref},
                          indentation)/];
 [/if]
 /* Execute the initial transition.*/
 [for (r:Region| sm.region->request_regions_sorted()) separator(utils_newline())]
 [uml_c_format_param_list(
          r.uml_c_get_region_entry_name(),
-         Sequence{'&' + utils_get_self_name() 
-                           + '->' + sm.uml_c_statemachine_behavior_name()}, 
+         Sequence{behavior_ref}, 
          indentation + 1)/];[/for]
 [else]
 #warning effect Behavior type not supported

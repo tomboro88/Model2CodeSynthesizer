@@ -438,7 +438,7 @@ tkind_ctest_start_sm1(p_obj);</body>
                     <transition xmi:type="uml:Transition" xmi:id="_tIM60LqCEfGvPeTCLG8jqw" source="_sngBgLqCEfGvPeTCLG8jqw" target="_mWDRkLqCEfGvPeTCLG8jqw"/>
                     <subvertex xmi:type="uml:State" xmi:id="_mWDRkLqCEfGvPeTCLG8jqw" name="State11"/>
                     <subvertex xmi:type="uml:State" xmi:id="_nLGDMLqCEfGvPeTCLG8jqw" name="State12"/>
-                    <subvertex xmi:type="uml:Pseudostate" xmi:id="_sngBgLqCEfGvPeTCLG8jqw" name="Initial3"/>
+                    <subvertex xmi:type="uml:Pseudostate" xmi:id="_sngBgLqCEfGvPeTCLG8jqw" name="Initial8"/>
                   </region>
                   <region xmi:type="uml:Region" xmi:id="_lSSHcLqCEfGvPeTCLG8jqw" name="Region9">
                     <subvertex xmi:type="uml:State" xmi:id="_oWYxoLqCEfGvPeTCLG8jqw" name="State13"/>
@@ -1244,6 +1244,47 @@ return EXIT_SUCCESS;</body>
       <body>(void) p_obj;
 (void) printf(p_str, u16_param, char_param);</body>
     </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_FWqMsLxhEfGtje4UXC--Ww" name="standalone">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_t8yt0LxhEfGtje4UXC--Ww" annotatedElement="_FWqMsLxhEfGtje4UXC--Ww">
+        <body>@brief Package with standalone state machine not having it's parent context class.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:StateMachine" xmi:id="_aTTJQLxiEfGtje4UXC--Ww" name="sm" visibility="public">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_0Ax-oLxjEfGtje4UXC--Ww" name="a"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_FKB-kLxkEfGtje4UXC--Ww" name="b">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_FKB-kbxkEfGtje4UXC--Ww" name="b">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_J-6hsKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_rA4DEL3REfGF0aeH7lbk0g" name="init">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_rA4DEb3REfGF0aeH7lbk0g" annotatedElement="_rA4DEL3REfGF0aeH7lbk0g">
+            <body>@brief The initialization function of the standalone StateMachine sm.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_rA4DEr3REfGF0aeH7lbk0g" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+        </ownedOperation>
+        <region xmi:type="uml:Region" xmi:id="_cg_v4LxiEfGtje4UXC--Ww" name="Region1">
+          <transition xmi:type="uml:Transition" xmi:id="_ryVzALxiEfGtje4UXC--Ww" source="_f4GOkLxiEfGtje4UXC--Ww" target="_o16eILxiEfGtje4UXC--Ww"/>
+          <transition xmi:type="uml:Transition" xmi:id="_1TgAMLxiEfGtje4UXC--Ww" source="_o16eILxiEfGtje4UXC--Ww" target="_u_9lkLxiEfGtje4UXC--Ww">
+            <trigger xmi:type="uml:Trigger" xmi:id="_1n67kLxjEfGtje4UXC--Ww" event="_0gKpULxjEfGtje4UXC--Ww"/>
+          </transition>
+          <transition xmi:type="uml:Transition" xmi:id="_2DxmkLxiEfGtje4UXC--Ww" source="_u_9lkLxiEfGtje4UXC--Ww" target="_vzwaALxiEfGtje4UXC--Ww">
+            <trigger xmi:type="uml:Trigger" xmi:id="_F-orULxkEfGtje4UXC--Ww" event="_FgdhkLxkEfGtje4UXC--Ww"/>
+          </transition>
+          <subvertex xmi:type="uml:Pseudostate" xmi:id="_f4GOkLxiEfGtje4UXC--Ww" name="Initial1"/>
+          <subvertex xmi:type="uml:State" xmi:id="_o16eILxiEfGtje4UXC--Ww" name="State2"/>
+          <subvertex xmi:type="uml:State" xmi:id="_u_9lkLxiEfGtje4UXC--Ww" name="State4"/>
+          <subvertex xmi:type="uml:State" xmi:id="_vzwaALxiEfGtje4UXC--Ww" name="State5"/>
+        </region>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_0gKpULxjEfGtje4UXC--Ww" name="a" operation="_0Ax-oLxjEfGtje4UXC--Ww"/>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_FgdhkLxkEfGtje4UXC--Ww" name="b" operation="_FKB-kLxkEfGtje4UXC--Ww"/>
+      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MqjnEL3gEfGF0aeH7lbk0g" name="SM_A_CNT" value="2"/>
+      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_V5DW8L3gEfGF0aeH7lbk0g" name="SM_B_CNT" value="2"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_elInULxhEfGtje4UXC--Ww" name="sync">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_OAVi0LxiEfGtje4UXC--Ww" annotatedElement="_elInULxhEfGtje4UXC--Ww">
+        <body>@brief Package with state machines with callevents being processed synchronously with the operation calls.</body>
+      </ownedComment>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_svVXgOqlEe2Yz7yVfkC93Q">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_svYa0OqlEe2Yz7yVfkC93Q" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
@@ -1256,4 +1297,5 @@ return EXIT_SUCCESS;</body>
   <standard:Create xmi:id="_LsIbUJahEfGyIYl3O46cLA" base_BehavioralFeature="_Ak95oJahEfGyIYl3O46cLA"/>
   <standard:Create xmi:id="_kJrIQJahEfGyIYl3O46cLA" base_BehavioralFeature="_eZhukJahEfGyIYl3O46cLA"/>
   <standard:Create xmi:id="_9DcXAKfgEfGd4LbFpB-J5g" base_BehavioralFeature="_2zKEsKfgEfGd4LbFpB-J5g"/>
+  <standard:Create xmi:id="_rDcO4L3REfGF0aeH7lbk0g" base_BehavioralFeature="_rA4DEL3REfGF0aeH7lbk0g"/>
 </xmi:XMI>

@@ -74,7 +74,7 @@
  = let indent_width : Integer = getProperty('indent_width').toInteger() in
    utils_indent(indent_width)/]
 
-[query private utils_concat(aSequence : Sequence(String)):String
+[query public utils_concat(aSequence : Sequence(String)):String
 = if aSequence->isEmpty() then '' 
   else aSequence->first().concat(utils_concat(aSequence->drop(1))) endif/]
 

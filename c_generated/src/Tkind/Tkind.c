@@ -461,7 +461,7 @@ tkind_sm1_enter_region5(tkind_sm1_t* const p_obj)
 static inline void
 tkind_sm1_enter_region8(tkind_sm1_t* const p_obj)
 {
-    p_obj->region8 = TKIND_SM1_INITIAL3;
+    p_obj->region8 = TKIND_SM1_INITIAL8;
     tkind_sm1_enter_state11(p_obj);
 }
 
@@ -1347,7 +1347,7 @@ tkind_ctest_start_sm1(tkind_ctest_t* const p_obj)
     p_obj->sm1.region5               = TKIND_SM1_REGION5_INL;
     p_obj->sm1.region6               = TKIND_SM1_INITIAL4;
     p_obj->sm1.region7               = TKIND_SM1_REGION7_INL;
-    p_obj->sm1.region8               = TKIND_SM1_INITIAL3;
+    p_obj->sm1.region8               = TKIND_SM1_INITIAL8;
     p_obj->sm1.region9               = TKIND_SM1_REGION9_INL;
     
     tkind_sm1_init_df(&p_obj->sm1);
