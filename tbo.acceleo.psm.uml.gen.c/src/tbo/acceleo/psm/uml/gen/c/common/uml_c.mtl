@@ -826,6 +826,23 @@ typedef struct [s_name/] \
         [t_name/];
 [/template]
 
+[**
+ * Provides the definitions of the event queue sizes, one for each event
+ * handled by a given classifier. Must be invoked at the beginning of a line
+ * (not indented by the caller) to keep the hash at the first column.
+ */]
+[template public uml_c_define_event_queue_sizes(bc : BehavioredClassifier,
+                                                indentation : Integer)]
+[for (ev : Event | bc.request_classifier_events())
+     separator(utils_newline()) after(utils_newline())]
+[utils_indent(indentation)/][documentation_string(
+   '@brief The size of the event queue storing the ' + ev.name + ' events.',
+   indentation)/]
+#[utils_indent(indentation)/]define [uml_c_get_event_queue_size(bc, ev)
+                               /] [ev.request_get_queued_event_capacity()/]u
+[/for]
+[/template]
+
 [template public uml_c_enumerate_events(aClass : Class,
                                         indentation : Integer)
  {events : OrderedSet(Event)=aClass.request_classifier_events();
@@ -1211,7 +1228,10 @@ post(toUpper())][aVertex.eContainer(Package).name + '_'
 /][/for][for (aClassifier : Classifier | aSorted)
  separator(utils_newline())
  ?(aClassifier.request_needs_storage())]
-[utils_indent(indentation)/][uml_c_struct_decl(aClassifier, indentation)/]
+[if (aClassifier.request_classifier_needs_event_queue())]
+[uml_c_define_event_queue_sizes(aClassifier.oclAsType(BehavioredClassifier),
+                                indentation)
+/][/if][utils_indent(indentation)/][uml_c_struct_decl(aClassifier, indentation)/]
 [if ( (not aClassifier.ownedMember->selectByKind(Operation)
                               ->exists(o:Operation|o.request_is_constructor()))
       and (not (aClassifier.oclIsKindOf(Behavior) 

@@ -28,82 +28,6 @@ extern "C" {
 //End of user code
 
     /**
-     * @brief The maximum number of I events stored in the I event queue.
-     * @details This (and other) constant must be included by the creator inside
-     * of the model. This way it provides an elastic way to specify the queue
-     * size for each event.
-     * A missing (unspecified explicitly in the model) constant will result in
-     * the C-compiler error, since the queue buffers use these names as the
-     * internal array sizes.
-     * The specified size of 2 is not a random number. This is the minimum
-     * recommended size of the created event queue. Although it may seem obvious
-     * for a queue, the number of two
-     * events in the queue means, that when one event is being processed by the
-     * state machine, there will still be place for at least one new event in
-     * the queue.
-     * This is important for critical events, that are sent only occasionally,
-     * and cannot be missed just because the event queue was filled with other
-     * more frequent event types.
-     */
-#    define TKIND_CTEST_I_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_O_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_A_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_B_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_C_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_F_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_E_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_D_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_N_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_H_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_G_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_J_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_M_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_K_CNT 2u
-
-    /**
-     */
-#    define TKIND_CTEST_L_CNT 2u
-
-    /**
      * @brief The size of the internal name string.
      * @details This constant is defined internally in the model as an upper
      * limit of the number of characters in the my_name property of ctest class.
@@ -461,6 +385,81 @@ extern "C" {
          */
         bool                            b_test_condition;
     };
+
+    /**
+     * @brief The size of the event queue storing the a events.
+     */
+#    define TKIND_CTEST_A_CNT 10u
+
+    /**
+     * @brief The size of the event queue storing the b events.
+     */
+#    define TKIND_CTEST_B_CNT 5u
+
+    /**
+     * @brief The size of the event queue storing the c events.
+     */
+#    define TKIND_CTEST_C_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the d events.
+     */
+#    define TKIND_CTEST_D_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the e events.
+     */
+#    define TKIND_CTEST_E_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the f events.
+     */
+#    define TKIND_CTEST_F_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the g events.
+     */
+#    define TKIND_CTEST_G_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the h events.
+     */
+#    define TKIND_CTEST_H_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the i events.
+     */
+#    define TKIND_CTEST_I_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the j events.
+     */
+#    define TKIND_CTEST_J_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the k events.
+     */
+#    define TKIND_CTEST_K_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the l events.
+     */
+#    define TKIND_CTEST_L_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the m events.
+     */
+#    define TKIND_CTEST_M_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the n events.
+     */
+#    define TKIND_CTEST_N_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the o events.
+     */
+#    define TKIND_CTEST_O_CNT 2u
 
     /**
      * @brief The enumeration of all events handled by ctest Class.

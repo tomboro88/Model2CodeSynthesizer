@@ -1101,3 +1101,14 @@ let exitState : State = request_transition_exit_state(aTransition) in
  = aStateMachine.request_state_machine_states()
                           ->any(s:State|s.request_is_unexpected_state())/]
 
+[query public request_is_queued_event(anEvent : Event) : Boolean
+ = not anEvent.getAppliedStereotype('CodeSynthesizerProfile::QueuedEvent')
+       .oclIsUndefined()
+/]
+
+[query public request_get_queued_event_capacity(anEvent : Event) : Integer
+ = if anEvent.request_is_queued_event() then anEvent.getValue(
+       anEvent.getAppliedStereotype('CodeSynthesizerProfile::QueuedEvent'),
+       'capacity').oclAsType(Integer)
+   else 2 endif
+/]

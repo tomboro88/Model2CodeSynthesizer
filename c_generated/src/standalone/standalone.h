@@ -26,18 +26,20 @@ extern "C" {
 //End of user code
 
     /**
-     */
-#    define STANDALONE_SM_A_CNT 2u
-
-    /**
-     */
-#    define STANDALONE_SM_B_CNT 2u
-
-    /**
      * @brief The type representing the standalone_sm_s struct.
      */
     typedef struct standalone_sm_s \
             standalone_sm_t;
+
+    /**
+     * @brief The size of the event queue storing the a events.
+     */
+#    define STANDALONE_SM_A_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the b events.
+     */
+#    define STANDALONE_SM_B_CNT 2u
 
     /**
      * @brief The enumeration of all substates of Region1 Region of sm

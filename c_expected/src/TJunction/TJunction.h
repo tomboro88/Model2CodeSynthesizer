@@ -31,30 +31,6 @@ extern "C" {
 //End of user code
 
     /**
-     * @brief The size of the A event queue. Specified directly in the UML
-     * model.
-     */
-#    define TJUNCTION_JTEST_A_CNT 4u
-
-    /**
-     * @brief The size of the B event queue. Specified individually in the UML
-     * model.
-     */
-#    define TJUNCTION_JTEST_B_CNT 10u
-
-    /**
-     * @brief The size of the C event queue. Specified explicitly in the UML
-     * model.
-     */
-#    define TJUNCTION_JTEST_C_CNT 8u
-
-    /**
-     * @brief The size of the A event queue. Specified manually in the UML
-     * model.
-     */
-#    define TJUNCTION_JTEST_D_CNT 2u
-
-    /**
      * @brief The type representing the tjunction_sm1_s struct.
      */
     typedef struct tjunction_sm1_s \
@@ -307,6 +283,26 @@ extern "C" {
          */
         bool                            b_guard9;
     };
+
+    /**
+     * @brief The size of the event queue storing the a events.
+     */
+#    define TJUNCTION_JTEST_A_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the b events.
+     */
+#    define TJUNCTION_JTEST_B_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the c events.
+     */
+#    define TJUNCTION_JTEST_C_CNT 2u
+
+    /**
+     * @brief The size of the event queue storing the d events.
+     */
+#    define TJUNCTION_JTEST_D_CNT 2u
 
     /**
      * @brief The enumeration of all events handled by Jtest Class.

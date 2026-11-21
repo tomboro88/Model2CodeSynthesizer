@@ -4,6 +4,7 @@ add_subdirectory(plogger)
 add_subdirectory(standalone)
 add_subdirectory(sync)
 add_subdirectory(SafeSm)
+add_subdirectory(Components)
 
 add_subdirectory(fifo)
 add_subdirectory(event_pool)
@@ -29,6 +30,7 @@ target_link_libraries(umltest
         standalone
         sync
         SafeSm
+        Components
 )
 
 target_link_libraries(umltest

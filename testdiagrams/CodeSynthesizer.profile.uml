@@ -8,6 +8,39 @@
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_2pl0tL9oEfG4Rv7UhG7YhA" key="Date" value=""/>
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_2pl0tb9oEfG4Rv7UhG7YhA" key="Author" value="&lt;undefined>"/>
     </eAnnotations>
+    <contents xmi:type="ecore:EPackage" xmi:id="_EUy0IOXvEfGGX8SKypoZcw" name="CodeSynthesizerProfile" nsURI="http:///schemas/CodeSynthesizerProfile/_EUxmAOXvEfGGX8SKypoZcw/9" nsPrefix="CodeSynthesizerProfile">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EU0CQ-XvEfGGX8SKypoZcw" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EU0CROXvEfGGX8SKypoZcw" key="Version" value="0.0.10"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EU0CReXvEfGGX8SKypoZcw" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EU0CRuXvEfGGX8SKypoZcw" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EU0CR-XvEfGGX8SKypoZcw" key="Date" value="2026-11-21"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EU0CSOXvEfGGX8SKypoZcw" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_EUy0IeXvEfGGX8SKypoZcw" name="StateMachineSetup">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EUy0IuXvEfGGX8SKypoZcw" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_nhykkL9nEfG4Rv7UhG7YhA"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_EUy0I-XvEfGGX8SKypoZcw" name="state_config" ordered="false" lowerBound="1" upperBound="-1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//State"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_EUy0JeXvEfGGX8SKypoZcw" name="base_UseCase" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//UseCase"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_EUy0J-XvEfGGX8SKypoZcw" name="UnexpectedState">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EUy0KOXvEfGGX8SKypoZcw" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_js7VIMKDEfGXJLPamao8cA"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_EUy0KeXvEfGGX8SKypoZcw" name="base_State" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//State"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_EUy0K-XvEfGGX8SKypoZcw" name="QueuedEvent">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EUy0LOXvEfGGX8SKypoZcw" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_06taUMKEEfGXJLPamao8cA"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_EUy0LeXvEfGGX8SKypoZcw" name="base_Event" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Event"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_EUy0L-XvEfGGX8SKypoZcw" name="capacity" ordered="false" lowerBound="1" defaultValueLiteral="2">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//UnlimitedNatural"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
     <contents xmi:type="ecore:EPackage" xmi:id="_yPhxAMKFEfGXJLPamao8cA" name="CodeSynthesizerProfile" nsURI="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8" nsPrefix="CodeSynthesizerProfile">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_yPi_IMKFEfGXJLPamao8cA" source="PapyrusVersion">
         <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_yPi_IcKFEfGXJLPamao8cA" key="Version" value="0.0.9"/>
@@ -241,6 +274,9 @@
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ETYNccKFEfGXJLPamao8cA"/>
     </ownedAttribute>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_wHjX4MKFEfGXJLPamao8cA" name="capacity">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_BeGT0OXvEfGGX8SKypoZcw" annotatedElement="_wHjX4MKFEfGXJLPamao8cA">
+        <body>Specifies the size of event queue for tha associated event type.</body>
+      </ownedComment>
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#UnlimitedNatural"/>
       <defaultValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wHjX4cKFEfGXJLPamao8cA" value="2"/>
     </ownedAttribute>

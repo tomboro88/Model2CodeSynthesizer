@@ -29,6 +29,11 @@ extern "C" {
             safesm_sm1_t;
 
     /**
+     * @brief The size of the event queue storing the a events.
+     */
+#    define SAFESM_SM1_A_CNT 2u
+
+    /**
      * @brief The enumeration of all substates of Region1 Region of sm1
      * StateMachine.
      */

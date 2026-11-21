@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CodeSynthesizerProfile="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8 CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CodeSynthesizerProfile="http:///schemas/CodeSynthesizerProfile/_EUxmAOXvEfGGX8SKypoZcw/9" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CodeSynthesizerProfile/_EUxmAOXvEfGGX8SKypoZcw/9 CodeSynthesizer.profile.uml#_EUy0IOXvEfGGX8SKypoZcw">
   <uml:Model xmi:id="_ye_tMOqeEe2Yz7yVfkC93Q" name="umltest" URI="">
     <ownedComment xmi:type="uml:Comment" xmi:id="_AlcTwKU7EfCJwtlh12_YdQ" annotatedElement="_ye_tMOqeEe2Yz7yVfkC93Q">
       <body>@brief Top level module of the model.
@@ -607,16 +607,6 @@ tkind_ctest_start_sm1(p_obj);</body>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_iePp4N28Ee-8CKMu-ENa-A" name="m" operation="_gM9jwN28Ee-8CKMu-ENa-A"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_Cf5OAOAZEe-Dn89-xPPa6w" name="n" operation="_CMnssOAZEe-Dn89-xPPa6w"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_SJivUPh2Ee-9W4mcsGdJGQ" name="o" operation="_RWp50Ph2Ee-9W4mcsGdJGQ"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_51O44G2PEfCUtIW8tiOy3A" name="CTEST_I_CNT" value="2">
-        <ownedComment xmi:type="uml:Comment" xmi:id="_Q5x9kKU-EfCJwtlh12_YdQ" annotatedElement="_51O44G2PEfCUtIW8tiOy3A">
-          <body>@brief The maximum number of I events stored in the I event queue.
-@details This (and other) constant must be included by the creator inside of the model. This way it provides an elastic way to specify the queue size for each event.
-A missing (unspecified explicitly in the model) constant will result in the C-compiler error, since the queue buffers use these names as the internal array sizes.
-The specified size of 2 is not a random number. This is the minimum recommended size of the created event queue. Although it may seem obvious for a queue, the number of two
-events in the queue means, that when one event is being processed by the state machine, there will still be place for at least one new event in the queue.
-This is important for critical events, that are sent only occasionally, and cannot be missed just because the event queue was filled with other more frequent event types.</body>
-        </ownedComment>
-      </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_6-nZIKTBEfCF5Mxlt2zVCg" name="cbase1">
         <ownedComment xmi:type="uml:Comment" xmi:id="_USxr8KU5EfCJwtlh12_YdQ" annotatedElement="_6-nZIKTBEfCF5Mxlt2zVCg">
           <body>@brief An example base class with one uint32 property.</body>
@@ -679,20 +669,6 @@ This is important for critical events, that are sent only occasionally, and cann
           </ownedParameter>
         </ownedOperation>
       </packagedElement>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_C27P8L4uEfCF3MoXlXpSFw" name="CTEST_O_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NdlsoL4uEfCF3MoXlXpSFw" name="CTEST_A_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ToS7YL4uEfCF3MoXlXpSFw" name="CTEST_B_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WVRfAL4uEfCF3MoXlXpSFw" name="CTEST_C_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZybiYL4uEfCF3MoXlXpSFw" name="CTEST_F_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dS4xYL4uEfCF3MoXlXpSFw" name="CTEST_E_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hErA8L4uEfCF3MoXlXpSFw" name="CTEST_D_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kz4doL4uEfCF3MoXlXpSFw" name="CTEST_N_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_npsNIL4uEfCF3MoXlXpSFw" name="CTEST_H_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rfey8L4uEfCF3MoXlXpSFw" name="CTEST_G_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_vBp5ML4uEfCF3MoXlXpSFw" name="CTEST_J_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_x334YL4uEfCF3MoXlXpSFw" name="CTEST_M_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0kz_wL4uEfCF3MoXlXpSFw" name="CTEST_K_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2-IAgL4uEfCF3MoXlXpSFw" name="CTEST_L_CNT" value="2"/>
       <packagedElement xmi:type="uml:Association" xmi:id="_CA9DMBdwEfGmVulf-GfgLw" name="A_logger_ctest" visibility="private" memberEnd="_MgmxcBaKEfG70Ybw1j3UxQ _CBFmEBdwEfGmVulf-GfgLw">
         <ownedEnd xmi:type="uml:Property" xmi:id="_CBFmEBdwEfGmVulf-GfgLw" name="ctest" type="_F3pgMNw4Ee-clukbqF5Mtw" association="_CA9DMBdwEfGmVulf-GfgLw">
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CBFmERdwEfGmVulf-GfgLw"/>
@@ -1218,26 +1194,6 @@ tjunction_jtest_invoke_sm1(p_obj);</body>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_hL0o4AHQEfCgXv5ODs4Seg" name="b" operation="_g9YkQAHQEfCgXv5ODs4Seg"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_IY2pEAHREfCgXv5ODs4Seg" name="c" operation="_IKL68AHREfCgXv5ODs4Seg"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_zJ3CIAHYEfCkTbNMLPdxiA" name="d" operation="_y1_D4AHYEfCkTbNMLPdxiA"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_AsyRYLeQEfCYkYHbB_5Hqw" name="JTEST_A_CNT" value="4">
-        <ownedComment xmi:type="uml:Comment" xmi:id="_MO83kLeREfCYkYHbB_5Hqw" annotatedElement="_AsyRYLeQEfCYkYHbB_5Hqw">
-          <body>@brief The size of the A event queue. Specified directly in the UML model.</body>
-        </ownedComment>
-      </packagedElement>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JH3AQLeQEfCYkYHbB_5Hqw" name="JTEST_B_CNT" value="10">
-        <ownedComment xmi:type="uml:Comment" xmi:id="_byRbgLeREfCYkYHbB_5Hqw" annotatedElement="_JH3AQLeQEfCYkYHbB_5Hqw">
-          <body>@brief The size of the B event queue. Specified individually in the UML model.</body>
-        </ownedComment>
-      </packagedElement>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Rcd6wLeQEfCYkYHbB_5Hqw" name="JTEST_C_CNT" value="8">
-        <ownedComment xmi:type="uml:Comment" xmi:id="_fib6cLeREfCYkYHbB_5Hqw" annotatedElement="_Rcd6wLeQEfCYkYHbB_5Hqw">
-          <body>@brief The size of the C event queue. Specified explicitly in the UML model.</body>
-        </ownedComment>
-      </packagedElement>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U3LHELeQEfCYkYHbB_5Hqw" name="JTEST_D_CNT" value="2">
-        <ownedComment xmi:type="uml:Comment" xmi:id="_h9WdsLeREfCYkYHbB_5Hqw" annotatedElement="_U3LHELeQEfCYkYHbB_5Hqw">
-          <body>@brief The size of the A event queue. Specified manually in the UML model.</body>
-        </ownedComment>
-      </packagedElement>
       <packagedElement xmi:type="uml:AnyReceiveEvent" xmi:id="_egci8OWSEfGcpcne-VvXGQ" name="Any"/>
     </packagedElement>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_XDi8sKU0EfCJFuHNEOD_Ew" name="float"/>
@@ -1421,8 +1377,6 @@ return EXIT_SUCCESS;</body>
       </packagedElement>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_0gKpULxjEfGtje4UXC--Ww" name="a" operation="_0Ax-oLxjEfGtje4UXC--Ww"/>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_FgdhkLxkEfGtje4UXC--Ww" name="b" operation="_FKB-kLxkEfGtje4UXC--Ww"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MqjnEL3gEfGF0aeH7lbk0g" name="SM_A_CNT" value="2"/>
-      <packagedElement xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_V5DW8L3gEfGF0aeH7lbk0g" name="SM_B_CNT" value="2"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_elInULxhEfGtje4UXC--Ww" name="sync">
       <ownedComment xmi:type="uml:Comment" xmi:id="_OAVi0LxiEfGtje4UXC--Ww" annotatedElement="_elInULxhEfGtje4UXC--Ww">
@@ -1499,6 +1453,36 @@ return EXIT_SUCCESS;</body>
       </packagedElement>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_CEbqYOBlEfGoWdtPcu4jOQ" name="a" operation="_BlGDAOBlEfGoWdtPcu4jOQ"/>
     </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_mGU6IOXdEfGGX8SKypoZcw" name="Components">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_zr5_AOXdEfGGX8SKypoZcw" name="IRequired">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_4ITqIOXjEfGGX8SKypoZcw" name="Operation1"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_1m_LoOXdEfGGX8SKypoZcw" name="IProvided">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_6RYPcOXjEfGGX8SKypoZcw" name="Operation1"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_6-DvQOXjEfGGX8SKypoZcw" name="Operation2"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_COHEMOXeEfGGX8SKypoZcw" name="CRequired"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_Q2mXkOXeEfGGX8SKypoZcw" name="CProvided">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_c42ogOXeEfGGX8SKypoZcw" client="_Q2mXkOXeEfGGX8SKypoZcw" supplier="_1m_LoOXdEfGGX8SKypoZcw" contract="_1m_LoOXdEfGGX8SKypoZcw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_hWRPAOXeEfGGX8SKypoZcw" client="_COHEMOXeEfGGX8SKypoZcw" supplier="_zr5_AOXdEfGGX8SKypoZcw"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_jA-dUOXeEfGGX8SKypoZcw" name="Component6">
+        <ownedAttribute xmi:type="uml:Port" xmi:id="_FDPBwOXfEfGGX8SKypoZcw" name="Port1" type="_Q2mXkOXeEfGGX8SKypoZcw" aggregation="composite"/>
+        <ownedAttribute xmi:type="uml:Port" xmi:id="_GvkAsOXfEfGGX8SKypoZcw" name="Port2" type="_COHEMOXeEfGGX8SKypoZcw" aggregation="composite"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_SNXEQOXgEfGGX8SKypoZcw" name="Component7">
+        <ownedAttribute xmi:type="uml:Port" xmi:id="_TyAG0OXgEfGGX8SKypoZcw" name="Port1" type="_6CV1QOXgEfGGX8SKypoZcw" aggregation="composite"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_6CV1QOXgEfGGX8SKypoZcw" name="CRequireProvided"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_-E2BYOXgEfGGX8SKypoZcw" client="_6CV1QOXgEfGGX8SKypoZcw" supplier="_1m_LoOXdEfGGX8SKypoZcw"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_BVQXUOXjEfGGX8SKypoZcw" client="_1m_LoOXdEfGGX8SKypoZcw" supplier="_1m_LoOXdEfGGX8SKypoZcw"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_dIJIEOXmEfGGX8SKypoZcw" name="Component11">
+        <ownedConnector xmi:type="uml:Connector" xmi:id="_3uyaEOXnEfGGX8SKypoZcw" name="Connector1">
+          <end xmi:type="uml:ConnectorEnd" xmi:id="_3uzBIOXnEfGGX8SKypoZcw" role="_TyAG0OXgEfGGX8SKypoZcw"/>
+          <end xmi:type="uml:ConnectorEnd" xmi:id="_3uzoMOXnEfGGX8SKypoZcw" role="_FDPBwOXfEfGGX8SKypoZcw"/>
+        </ownedConnector>
+      </packagedElement>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_svVXgOqlEe2Yz7yVfkC93Q">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_svYa0OqlEe2Yz7yVfkC93Q" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
@@ -1506,8 +1490,15 @@ return EXIT_SUCCESS;</body>
       <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
     </profileApplication>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Arg_0MKOEfGXJLPamao8cA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_NkrrIOXvEfGGX8SKypoZcw" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NkrrIeXvEfGGX8SKypoZcw" key="Version" value="0.0.10"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NkrrIuXvEfGGX8SKypoZcw" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NkrrI-XvEfGGX8SKypoZcw" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NkrrJOXvEfGGX8SKypoZcw" key="Date" value="2026-11-21"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NkrrJeXvEfGGX8SKypoZcw" key="Author" value=""/>
+      </eAnnotations>
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Arhm4MKOEfGXJLPamao8cA" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA"/>
+        <references xmi:type="ecore:EPackage" href="CodeSynthesizer.profile.uml#_EUy0IOXvEfGGX8SKypoZcw"/>
       </eAnnotations>
       <appliedProfile xmi:type="uml:Profile" href="CodeSynthesizer.profile.uml#_inGzQL9nEfG4Rv7UhG7YhA"/>
     </profileApplication>
@@ -1521,4 +1512,6 @@ return EXIT_SUCCESS;</body>
   <CodeSynthesizerProfile:UnexpectedState xmi:id="_B7ARwMKOEfGXJLPamao8cA" base_State="_5rNl0MKNEfGXJLPamao8cA"/>
   <CodeSynthesizerProfile:UnexpectedState xmi:id="_WCTjgOBkEfGoWdtPcu4jOQ" base_State="_SufCUOBkEfGoWdtPcu4jOQ"/>
   <standard:Create xmi:id="_PxZJoOBlEfGoWdtPcu4jOQ" base_BehavioralFeature="_PxX7gOBlEfGoWdtPcu4jOQ"/>
+  <CodeSynthesizerProfile:QueuedEvent xmi:id="_Jzl_IOXvEfGGX8SKypoZcw" base_Event="_CqC1QN24Ee-8CKMu-ENa-A" capacity="10"/>
+  <CodeSynthesizerProfile:QueuedEvent xmi:id="_RupxMOXvEfGGX8SKypoZcw" base_Event="_O8xyMN24Ee-8CKMu-ENa-A" capacity="5"/>
 </xmi:XMI>
