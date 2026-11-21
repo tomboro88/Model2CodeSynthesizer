@@ -124,6 +124,45 @@ tkind_ctest_logger_expect(bool const b_is_result_ok, const char* const p_str)
 }
 
 void
+tkind_ctest_logger_expect_initial(void)
+{
+	tkind_ctest_logger_expect(true, "Initial1 to State1\n"
+								  "Enter State1\n"
+								  "Initial3 to State2\n"
+								  "Enter State2\n");
+}
+
+void
+tkind_ctest_logger_expect_failure_a(void)
+{
+    tkind_ctest_logger_expect(true, "Enter Failure\n");
+}
+
+void
+tkind_ctest_logger_expect_failure_all(void)
+{
+    tkind_ctest_logger_expect(true, "Enter Failure\n");
+}
+
+void
+tkind_ctest_logger_expect_recovery(void)
+{
+    tkind_ctest_logger_expect(true, "UnexpectedState to State1.\n"
+                                    "Enter State1\n"
+                                    "Initial3 to State2\n"
+                                    "Enter State2\n");
+}
+
+void
+tkind_ctest_logger_expect_recovery_b(void)
+{
+    tkind_ctest_logger_expect(true, "b triggered UnexpectedState to State1.\n"
+                                    "Enter State1\n"
+                                    "Initial3 to State2\n"
+                                    "Enter State2\n");
+}
+
+void
 tkind_ctest_logger_dispatch_given(bool const b_is_result_ok)
 {
     if(b_expected_result)

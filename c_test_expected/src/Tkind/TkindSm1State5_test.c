@@ -42,10 +42,7 @@ TEST_TEAR_DOWN(TkindSm1State5)
 /*================================TEST_CASES==================================*/
 TEST(TkindSm1State5, InitResultsInInitialTransition)
 {
-    tkind_ctest_logger_expect(true, "Initial1 to State1\n"
-                              "Enter State1\n"
-                              "Initial3 to State2\n"
-                              "Enter State2\n");
+    tkind_ctest_logger_expect_initial();
     tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
                                               &tkind_test_logger));
 }
@@ -76,6 +73,7 @@ TEST(TkindSm1State5, DispatchD)
 {
     tkind_ctest_logger_expect(true, "Exit State5\n"
                                     "State5 to State3\n");
+    tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_d(&tkind_ctest_obj));
 }
 
@@ -114,9 +112,10 @@ TEST(TkindSm1State5, DispatchI)
                                     "Exit State1\n"
                                     "State1 to State7\n"
                                     "Enter State1\n"
+    		                        "Initial3 to State2\n"
+    		                        "Enter State2\n"
                                     "Enter State7\n"
-                                    "Initial3 to State2\n"
-                                    "Enter State2\n");
+                                    );
     tkind_ctest_logger_dispatch_given(tkind_ctest_i(&tkind_ctest_obj));
 }
 
@@ -128,7 +127,7 @@ TEST(TkindSm1State5, DispatchJ)
 
 TEST(TkindSm1State5, DispatchK)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    tkind_ctest_logger_expect(true, "Local State1 to State10.\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_k(&tkind_ctest_obj));
 }
 
@@ -161,9 +160,9 @@ TEST(TkindSm1State5, DispatchOWithFalseChoice1)
                                     "Exit State1\n"
                                     "State1 to Choice1\n"
                                     "Enter State1\n"
-                                    "Choice1 to State1\n"
                                     "Initial3 to State2\n"
-                                    "Enter State2\n");
+                                    "Enter State2\n"
+                                    "Choice1 to State1\n");
     tkind_ctest_obj.sm1.b_test_condition = false;
     tkind_ctest_logger_dispatch_given(tkind_ctest_o(&tkind_ctest_obj));
 }
@@ -175,12 +174,12 @@ TEST(TkindSm1State5, DispatchOWithTrueChoice1)
                                     "Exit State1\n"
                                     "State1 to Choice1\n"
                                     "Enter State1\n"
+    		                        "Initial3 to State2\n"
+									"Enter State2\n"
                                     "Choice1 to State8\n"
                                     "Enter State8\n"
                                     "Initial4 to State9\n"
-                                    "Enter State9\n"
-                                    "Initial3 to State2\n"
-                                    "Enter State2\n");
+                                    "Enter State9\n");
     tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_o(&tkind_ctest_obj));
 }

@@ -3,6 +3,7 @@ add_subdirectory(TJunction)
 add_subdirectory(plogger)
 add_subdirectory(standalone)
 add_subdirectory(sync)
+add_subdirectory(SafeSm)
 
 add_subdirectory(fifo)
 add_subdirectory(event_pool)
@@ -27,6 +28,7 @@ target_link_libraries(umltest
         plogger
         standalone
         sync
+        SafeSm
 )
 
 target_link_libraries(umltest

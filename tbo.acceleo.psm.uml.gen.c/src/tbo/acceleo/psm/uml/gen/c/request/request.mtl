@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module request('http://www.eclipse.org/uml2/5.0.0/UML')]
 
+[import tbo::acceleo::psm::uml::gen::c::common::utils /]
 
 [**
  * Filters the OrderedSet of parameters from the return parameter.
@@ -220,29 +221,46 @@
           c:Classifier | aFirst.request_classifier_depends(c)) in
       let aRest_non_dependencies:OrderedSet(Classifier) 
           = aRest->removeAll(aRest_dependencies) in
-      aRest_dependencies->request_sort_classifiers()->append(aFirst)
+      let aRest_mutual_dependencies:OrderedSet(Classifier) 
+          = aRest_dependencies->select(c:Classifier | 
+                        c.request_classifier_has_composite(aFirst)) in
+      let aRest_nonmutual_dependencies:OrderedSet(Classifier) 
+          = aRest_dependencies->removeAll(aRest_mutual_dependencies) in
+      aRest_nonmutual_dependencies->request_sort_classifiers()
+      ->append(aFirst)
+      ->addAll(aRest_mutual_dependencies->request_sort_classifiers())
       ->addAll(aRest_non_dependencies->request_sort_classifiers())
     endif/]
 
 [query public request_classifier_depends(aClassifier:Classifier,
                                        bClassifier:Classifier):Boolean
  =not aClassifier.oclIsUndefined() and not bClassifier.oclIsUndefined()
-  and (aClassifier.attribute.type->includes(bClassifier.oclAsType(Type))
-  or aClassifier.attribute.type->exists(t:Type| not t.oclIsUndefined() 
-        and t.oclIsKindOf(Classifier)
-        and t.oclAsType(Classifier).request_classifier_depends(bClassifier))
-  or aClassifier.generalization.general->includes(bClassifier)
-  or aClassifier.generalization.general
-           ->exists(c:Classifier|c.request_classifier_depends(bClassifier))
-  or (aClassifier.oclIsKindOf(BehavioredClassifier) 
-            and bClassifier.oclIsKindOf(Behavior)
-            and (aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
-                                 ->includes(bClassifier.oclAsType(Behavior))
-                 or aClassifier.oclAsType(BehavioredClassifier).ownedBehavior
-                  ->exists(b:Behavior|b.request_classifier_depends(bClassifier))
-                 )
-            )
-)/]
+  and aClassifier->closure(c:Classifier | 
+        c.attribute.type->selectByKind(Classifier)
+        ->addAll(c.generalization.general)
+        ->addAll(
+            if c.oclIsKindOf(BehavioredClassifier) then 
+              c.oclAsType(BehavioredClassifier).ownedBehavior 
+            else 
+              Set(Behavior){} 
+            endif
+          ))->includes(bClassifier)/]
+
+[query public request_classifier_has_composite(aClassifier:Classifier,
+                                       bClassifier:Classifier):Boolean
+ =not aClassifier.oclIsUndefined() and not bClassifier.oclIsUndefined()
+  and aClassifier->closure(c:Classifier | 
+        c.attribute
+            ->select(a:Property|a.aggregation = AggregationKind::composite)
+        .type->selectByKind(Classifier)
+        ->addAll(c.generalization.general)
+        ->addAll(
+            if c.oclIsKindOf(BehavioredClassifier) then 
+              c.oclAsType(BehavioredClassifier).ownedBehavior 
+            else 
+              Set(Behavior){} 
+            endif
+          ))->includes(bClassifier)/]
 
 [query public request_has_virtual_operations(aClassifier : Classifier) : Boolean 
  = not aClassifier.request_virtual_operations()->isEmpty()/]
@@ -336,7 +354,8 @@
     (aClassifier.templateBinding->size() = 1
        and aClassifier.request_provides_nontemplate_fields())/]
 
-[query public request_class_needs_event_defer(aClass : Class) : Boolean 
+[query public request_class_needs_event_defer(aClass : BehavioredClassifier) 
+: Boolean 
 = not aClass.ownedBehavior.eAllContents(Transition)
 ->select(t : Transition | (not t.effect.oclIsUndefined()) and 
           t.effect.oclIsKindOf(OpaqueBehavior)).effect
@@ -387,10 +406,17 @@
     let state_events:OrderedSet(Event) = states
                ->collect(s:State|s.request_vertex_events())->flatten()
                                 ->asOrderedSet() in
-    request_elements_sorted(states->select(s:State|s.region->notEmpty())
+    let reg_events:Set(Event) =
+        states->select(s:State|s.region->notEmpty())
                               .region->flatten()
                               .request_region_events()->flatten()->asSet()
-                            ->addAll(state_events))/]
+                            ->addAll(state_events) in
+    let sm_events:OrderedSet(Event) = 
+        aRegion.containingStateMachine().request_sm_events() in
+    if reg_events->exists(e:Event|e.oclIsUndefined())
+    then sm_events
+    else request_elements_sorted(reg_events)
+    endif /]
 
 [**
  * @brief Returns an OrderedSet of events outgoing from this vertex, even
@@ -398,17 +424,27 @@
 */]
 [query public request_vertex_events(aVertex:Vertex) : OrderedSet(Event) =
     let events:Set(Event) = aVertex.outgoing.trigger->flatten()
-        .event->select(e:Event|not e->oclIsUndefined())
+        .event
         ->union(aVertex.outgoing
                  ->select(t:Transition|t.trigger->isEmpty()).target
                 ->select(v:Vertex|v.request_is_static_junction())
                   .request_vertex_events()->flatten()
         )->asSet() in 
-         request_elements_sorted(events)/]
+    let sorted_events : OrderedSet(Event) = 
+        request_elements_sorted(events->reject(e:Event|e.oclIsUndefined()))
+         ->filter(Event) in
+    if events->exists(e:Event|e.oclIsUndefined()) then 
+        sorted_events->append(null)
+    else sorted_events endif/]
 
 [query public request_state_handles_event(aState:State, anEvent : Event) 
  : Boolean =
     aState.request_vertex_events()->includes(anEvent)/]
+
+[query public request_state_handles_any_event(aState:State) 
+ : Boolean =
+    aState.request_vertex_events()
+                      ->exists(e:Event|e.oclIsUndefined())/]
 
 [query public request_vertex_region(v : Vertex) : Region = 
   v.container/]
@@ -429,8 +465,15 @@
  = request_elements_sorted(sm.eAllContents(Transition)
                       ->select(t : Transition | t.containingStateMachine() = sm)
                       ->collect(t:Transition|t.trigger)->flatten()
+                      ->select(tr:Trigger|not tr.event.oclIsUndefined())
                       ->collect(tr:Trigger|tr.event)->asSet())
                       /]
+
+[query public request_region_any_event_states(r:Region) : OrderedSet(State) = 
+    r.request_region_states()
+         ->select(s:State|r.request_region_events()
+         ->removeAll(s.request_vertex_events())->notEmpty()
+         and s.request_state_handles_any_event())/]
 
 [query public request_sm_context(sm: StateMachine) : 
   BehavioredClassifier = if sm._context.oclIsUndefined() then sm 
@@ -441,16 +484,23 @@
        aState.region->select(r : Region | r.request_region_needs_exit())
              ->notEmpty() /]
 
+[comment Every state has the exit function, since the exit marks its region as
+ exited./]
 [query public request_state_needs_exit(aState : State): Boolean
- = (not aState.oclIsUndefined()) and ((not aState.exit.oclIsUndefined()) 
-    or aState.request_state_needs_region_exit()) /]
+ = not aState.oclIsUndefined() /]
+
+[query public request_state_needs_entry(aState : State): Boolean
+ = (not aState.oclIsUndefined()) 
+   and (aState.request_incoming_transitions()->notEmpty() 
+   or aState.request_is_unexpected_state()
+   or (aState.isComposite and aState.region
+       ->exists(r:Region|r.request_region_states()
+       ->exists(s:State|s.request_state_needs_entry())))) /]
 
 [query public request_region_needs_exit(aRegion : Region): Boolean
- = aRegion.subvertex->selectByKind(State)
-    ->select(st : State | st.request_state_needs_exit())->notEmpty()
-   and (aRegion.stateMachine.oclIsUndefined() 
+ = aRegion.stateMachine.oclIsUndefined()
    or aRegion.stateMachine.connectionPoint
-                ->exists(p:Pseudostate|p.kind=PseudostateKind::exitPoint))/]
+                ->exists(p:Pseudostate|p.kind=PseudostateKind::exitPoint)/]
 
 [**
  * @brief Returns an OrderedSet of states that need to handle an event
@@ -524,7 +574,7 @@ OrderedSet(State)
  * region is the first to enter. By definition these are all regions of the
  * entered states that do not contain any target state.
  */]
-[query public request_regions_init(aTransition:Transition) : 
+[query public request_transition_target_regions_init(aTransition:Transition) : 
 OrderedSet(Region)
  = if aTransition.request_is_transition_local_to_parent() 
   then OrderedSet{aTransition.request_transition_effect_region()}
@@ -660,13 +710,14 @@ OrderedSet(Region)
  * Returns vertex outgoing transitions that handle the given event.
  * The transitions are ordered in the same sequence as they appear in the model.
  */]
-[query public request_outgoing_transitions(aVertex:Vertex, anEvent:Event, 
-                                           guardS : String):
+[query public request_outgoing_transitions(aVertex:Vertex, 
+                                       b_is_completion : Boolean, anEvent:Event, 
+                                       guardS : String):
  OrderedSet(Transition) = 
  let aStateMachine : StateMachine = aVertex.containingStateMachine() in
  aStateMachine.eAllContents(Transition)
  ->select(t:Transition|aVertex.outgoing->includes(t))
- ->select(t:Transition|if anEvent.oclIsUndefined() then
+ ->select(t:Transition|if b_is_completion then
                            t.request_is_completion_transition(guardS)
                        else 
                            t.request_is_event_transition(anEvent, guardS)
@@ -683,7 +734,7 @@ OrderedSet(Region)
                                  and not t.target.request_is_static_junction()) 
                 or (t.target.request_is_static_junction() 
                     and t.request_match_if_no_guard(guardS)
-                    and t.target.request_outgoing_transitions(null, 
+                    and t.target.request_outgoing_transitions(true,null, 
                                t.request_any_guard_if_match(guardS))->notEmpty()
                    )
                                       )
@@ -701,11 +752,11 @@ OrderedSet(Region)
            or (t.target.request_is_static_junction()
                and t.request_match_if_no_guard(guardS)
                and ((t.trigger.event->includes(anEvent) 
-                     and t.target.request_outgoing_transitions(null, 
+                     and t.target.request_outgoing_transitions(true, null, 
                               t.request_any_guard_if_match(guardS))->notEmpty()
                     ) or
                     (t.trigger->isEmpty()
-                     and t.target.request_outgoing_transitions(anEvent, 
+                     and t.target.request_outgoing_transitions(false, anEvent, 
                               t.request_any_guard_if_match(guardS))->notEmpty()
                     )
                    ) 
@@ -720,10 +771,36 @@ OrderedSet(Region)
  : String = if guardS<>'No'  and t.request_matching_guard(guardS) 
                           then '' else guardS endif/]
 
+[query private request_fixed_width_string(i : Integer, maxVal : Integer) 
+  : String =
+  let targetSize : Integer = maxVal.toString().size() in
+  let strVal : String = i.toString() in
+  let currentSize : Integer = strVal.size() in
+  if currentSize >= targetSize then
+    strVal
+  else
+    let diff : Integer = targetSize - currentSize in
+    utils_repeat('0',diff).concat(strVal)
+  endif
+/]
+
+[query public request_tree_path(e : ecore::EObject) : String =
+  if e.eContainer().oclIsUndefined() then
+    if e.oclIsKindOf(Model) then
+        e.oclAsType(Model).qualifiedName
+    else
+        e.eResource()
+        .invoke('org.eclipse.emf.ecore.resource.Resource', 'getURI', Sequence{})
+    endif
+  else
+    e.eContainer().request_tree_path().concat('_').concat(
+      e.eContainer().eContents()->indexOf(e)
+                .request_fixed_width_string(e.eContainer().eContents()->size()))
+  endif
+/]
+
 [query public request_elements_sorted(aSet:Set(Element))
-  :OrderedSet(Element) = aSet->sortedBy(e:Element|
-          if e.eContainer(Model).oclIsUndefined() then 0 
-          else e.eContainer(Model).eAllContents()->indexOf(e) endif)/]
+  :OrderedSet(Element) = aSet->sortedBy(e:Element| e.request_tree_path())/]
 
 [query public request_has_standalone_behaviors(aClassifier:Classifier, 
                                           vis : Set(VisibilityKind)):Boolean =
@@ -773,25 +850,6 @@ let exitState : State = request_transition_exit_state(aTransition) in
    if aTransition.request_is_transition_local_to_parent()  then
       entry_states else entry_states->append(aTransition.target) endif/]
 
-
-[**
- * @brief Returns the list of the regions that should be entered 
- * at the time the transition is fired. 
-*/]
-[query public request_transition_target_regions_init
-                                                        (aTransition:Transition)
- : OrderedSet(Region) = 
- let additional_regions : OrderedSet(Region) = 
-                   aTransition.request_regions_init() in 
- if aTransition.request_is_transition_local_to_parent()
- then additional_regions else
-   let entry_states : OrderedSet(State) = 
-     request_transition_target_vertices(aTransition)
-     ->selectByKind(State) 
-     in
-   additional_regions->select(r:Region|entry_states->includes(r.state)) 
- endif /]
-
 [query public request_transition_dispatch_result(aTransition : Transition)
  : String = 
           if aTransition.kind = TransitionKind::internal then 
@@ -807,6 +865,12 @@ let exitState : State = request_transition_exit_state(aTransition) in
 [query public request_transition_ignored_state(traceabilityContext : OclAny)
  : String = 'SM_EVENT_STATUS_IGNORED'/]
 
+[query public request_transition_default_result(aVertex:Vertex)
+ : String = (if aVertex.oclIsKindOf(State) 
+                and aVertex.oclAsType(State).request_is_unexpected_state()
+           then request_transition_safe_state()
+           else request_transition_ignored_state() endif)/]
+
 [query public request_transition_deferred_state(traceabilityContext : OclAny)
  : String = 'SM_EVENT_STATUS_DEFERRED'/]
 
@@ -815,6 +879,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
 
 [query public request_transition_same_state(traceabilityContext : OclAny)
  : String = 'SM_EVENT_STATUS_SAMESTATE'/]
+
+[query public request_transition_safe_state(traceabilityContext : OclAny)
+ : String = 'SM_EVENT_STATUS_SAFESTATE'/]
 
 [query public request_transition_dispatched_state(traceabilityContext : OclAny)
  : String = 'SM_EVENT_STATUS_DISPATCHED'/]
@@ -861,26 +928,28 @@ let exitState : State = request_transition_exit_state(aTransition) in
  * This is used to optimize the amount of generated code.
 */]
 [query public request_is_always_handled(aVertex : Vertex, 
+                                        b_is_completion : Boolean,
                                         anEvent : Event) : Boolean = 
   let transitions: OrderedSet(Transition) = 
-                aVertex.request_outgoing_transitions(anEvent,'') in
+            aVertex.request_outgoing_transitions(b_is_completion, anEvent,'') in
   let guardTransitions : OrderedSet(Transition) =
-                aVertex.request_outgoing_transitions(anEvent, 'Any') in
+        aVertex.request_outgoing_transitions(b_is_completion, anEvent, 'Any') in
   let elseTransitions: OrderedSet(Transition) = 
-                aVertex.request_outgoing_transitions(anEvent,'Else') in
+        aVertex.request_outgoing_transitions(b_is_completion, anEvent,'Else') in
   transitions->forAll(t:Transition | 
                                  not t.target.request_is_static_junction())
                              and (guardTransitions->size() = 0
                                   or elseTransitions->size() = 1)/]
 
-[query public request_is_event_ignored(aState:State, anEvent:Event):Boolean = 
-    if request_is_always_handled(aState, anEvent) 
+[query public request_is_event_ignored(aState:State, 
+                          b_is_completion:Boolean, anEvent:Event):Boolean = 
+    if request_is_always_handled(aState, b_is_completion, anEvent) 
           and aState.region->request_event_subregions(anEvent)->isEmpty() then
           false
      else true endif/]
 
 [query public request_is_event_internal(aState:State, anEvent:Event):Boolean = 
-    aState.request_outgoing_transitions(anEvent,'')
+    aState.request_outgoing_transitions(false, anEvent,'')
                      ->forAll(t:Transition|t.kind=TransitionKind::internal)
 /]
 [**
@@ -919,3 +988,82 @@ let exitState : State = request_transition_exit_state(aTransition) in
     then (not anEvent.oclAsType(CallEvent).operation.oclIsUndefined())
        and anEvent.oclAsType(CallEvent).operation.ownedParameter->notEmpty()
     else false endif/]
+
+[query public request_state_needs_enable_flag(aState:State) : Boolean
+ = aState.containingStateMachine().request_sm_events()
+      ->exists(e:Event|e.request_event_exits_state_regions(aState))/]
+
+[query public request_event_exits_state_regions(anEvent:Event, aState:State)
+ : Boolean = 
+    (aState.region->request_event_subregions(anEvent)->size() > 1)
+      and aState.containingStateMachine().request_state_machine_transitions()
+          ->exists(t:Transition|
+                   t.source.request_parent_states()->includes(aState) 
+           and ((t.target.request_parent_states()->excludes(aState) 
+                and t.trigger->exists(tr:Trigger|tr.event = anEvent 
+                                        or tr.event.oclIsUndefined()))
+                or t.source.container.request_parent_regions()
+                   ->exists(r:Region|r.subvertex->selectByKind(State)
+                    ->exists(s:State|s.request_is_unexpected_state()
+                            )
+                 )
+                )
+                   )
+/]
+
+[query public request_is_unexpected_state(aState:State) : Boolean
+ = not aState.getAppliedStereotype('CodeSynthesizerProfile::UnexpectedState')
+              .oclIsUndefined()/]
+
+[query public request_has_unexpected_state(aStateMachine:StateMachine) : 
+ Boolean = aStateMachine.request_state_machine_states()
+                          ->exists(s:State|s.request_is_unexpected_state())/]
+
+[**
+ * @brief Checks if the state exit can fail. Only the exit of a state with
+ * subregions can detect an unexpected state configuration.
+ */]
+[query public request_state_exit_can_fail(aState:State) : Boolean
+ = aState.containingStateMachine().request_has_unexpected_state()
+   and aState.request_state_needs_region_exit()/]
+
+[**
+ * @brief Checks if the exit performed by the transition can fail. Local
+ * transitions exit the regions, which can always detect an unexpected state
+ * configuration, other transitions exit the state.
+ */]
+[query public request_transition_exit_can_fail(aTransition:Transition)
+ : Boolean
+ = aTransition.request_transition_needs_exit()
+   and if aTransition.request_transition_is_local()
+       then aTransition.containingStateMachine().request_has_unexpected_state()
+       else aTransition.request_transition_exit_state()
+                                         .request_state_exit_can_fail() endif/]
+
+[query public request_exit_type(aStateMachine:StateMachine) :
+ String = if aStateMachine.request_has_unexpected_state()
+          then 'bool' else 'void' endif/]
+
+[query public request_unexpected_states(aRegion:Region)
+: OrderedSet(State) = aRegion.request_parent_regions()
+     ->append(aRegion)
+     ->select(r:Region|r.request_region_states()->select(s:State| 
+           s.request_is_unexpected_state())->size()=1)->asSequence()
+     ->collect(r:Region | r.request_region_states()->any(s:State|
+          s.request_is_unexpected_state()))->asOrderedSet()/]
+
+[query public request_exit_regions(aState:State) : OrderedSet(Region)
+ = aState.region
+     ->select(r : Region | r.request_region_needs_exit())
+     ->request_regions_sorted()/]
+
+[query public request_transition_has_transit(aTransition:Transition) : Boolean
+ = (not aTransition.effect.oclIsUndefined())
+   or aTransition.request_transition_target_vertices()
+                ->exists(v:Vertex | not v.request_is_static_junction())
+   or aTransition.request_transition_target_regions_init()->notEmpty()/]
+
+[query public request_sm_unexpected_state(aStateMachine:StateMachine) : State
+ = aStateMachine.request_state_machine_states()
+                          ->any(s:State|s.request_is_unexpected_state())/]
+

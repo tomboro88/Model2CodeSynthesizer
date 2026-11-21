@@ -70,6 +70,9 @@
 [query public utils_indent(length:Integer) : String = 
  if length > 0 then ' ' + utils_indent(length-1) else '' endif/]
 
+[query public utils_repeat(aString:String, length:Integer) : String = 
+ if length > 0 then aString + utils_repeat(aString, length-1) else '' endif/]
+
 [query public utils_get_indent_string(traceabilityContext : OclAny) : String
  = let indent_width : Integer = getProperty('indent_width').toInteger() in
    utils_indent(indent_width)/]

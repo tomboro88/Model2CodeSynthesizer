@@ -7,7 +7,12 @@ sm_event_resolve_status(sm_event_status_t const status1,\
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
 
-    if(SM_EVENT_STATUS_CHANGEDSTATE==status1
+    if(SM_EVENT_STATUS_SAFESTATE==status1
+        || SM_EVENT_STATUS_SAFESTATE==status2)
+    {
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
+    else if(SM_EVENT_STATUS_CHANGEDSTATE==status1
         || SM_EVENT_STATUS_CHANGEDSTATE==status2)
     {
         result = SM_EVENT_STATUS_CHANGEDSTATE;

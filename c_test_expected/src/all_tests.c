@@ -22,6 +22,19 @@ void run_all_tests(void)
 	RUN_TEST_GROUP(TkindSm1State6);
 	RUN_TEST_GROUP(TkindSm1State7);
 	RUN_TEST_GROUP(TkindSm1State9);
+	RUN_TEST_GROUP(TkindSm1State11);
+	RUN_TEST_GROUP(TkindSm1State12);
+	RUN_TEST_GROUP(TkindSm1State5State11);
+	RUN_TEST_GROUP(TkindSm1Region1Failure);
+	RUN_TEST_GROUP(TkindSm1Region2Failure);
+	RUN_TEST_GROUP(TkindSm1Failure);
+	RUN_TEST_GROUP(TkindSm1Region3Failure);
+	RUN_TEST_GROUP(TkindSm1Region4Failure);
+	RUN_TEST_GROUP(TkindSm1Region5Failure);
+	RUN_TEST_GROUP(TkindSm1Region6Failure);
+	RUN_TEST_GROUP(TkindSm1Region7Failure);
+	RUN_TEST_GROUP(TkindSm1Region8Failure);
+	RUN_TEST_GROUP(TkindSm1Region9Failure);
 }
 
 int main(int argc, const char* argv[])

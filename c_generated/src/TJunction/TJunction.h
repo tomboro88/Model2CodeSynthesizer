@@ -206,6 +206,26 @@ extern "C" {
     }tjunction_sm1_region4321_t;
     
     /**
+     * @brief The enumeration of all substates of Region4322 Region of sm1
+     * StateMachine.
+     */
+    typedef enum{
+        /**
+         * @brief The default substate of the Region4322 Region of sm1
+         * StateMachine.
+         */
+        TJUNCTION_SM1_INITIAL4322,
+        /**
+         */
+        TJUNCTION_SM1_STATE4323,
+        /**
+         * @brief The number of all substates of Region4322 Region of sm1
+         * StateMachine.
+         */
+        TJUNCTION_SM1_REGION4322_SIZE
+    }tjunction_sm1_region4322_t;
+    
+    /**
      * @brief The enumeration of all substates of Region432 Region of sm1
      * StateMachine.
      */
@@ -253,6 +273,9 @@ extern "C" {
         /**
          */
         tjunction_sm1_region4321_t      region4321;
+        /**
+         */
+        tjunction_sm1_region4322_t      region4322;
         /**
          */
         tjunction_sm1_region432_t       region432;

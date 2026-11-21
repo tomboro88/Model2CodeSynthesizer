@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CodeSynthesizerProfile="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8 CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA">
+  <uml:Model xmi:id="_t1k4EL69EfGXGcHhJ2f0ew" name="tests">
+    <packagedElement xmi:type="uml:Package" xmi:id="_szsLAL7CEfGXGcHhJ2f0ew" name="test_tkind">
+      <packagedElement xmi:type="uml:Class" xmi:id="_LXiyEL7HEfGXGcHhJ2f0ew" name="ctest_fixture">
+        <generalization xmi:type="uml:Generalization" xmi:id="_ardoEL7HEfGXGcHhJ2f0ew">
+          <general xmi:type="uml:Class" href="testdiagrams.uml#_F3pgMNw4Ee-clukbqF5Mtw"/>
+        </generalization>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_ii0u0L8oEfG2Su51-re3Eg" name="ctest_logger" type="_5qLhYL8nEfG2Su51-re3Eg" aggregation="composite" association="_iiszAL8oEfG2Su51-re3Eg"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_ddAmkL9fEfG4Rv7UhG7YhA" name="b_is_completed">
+          <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_J-6hsKkPEfGUW58NsN5Xaw"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_fYW48L9fEfG4Rv7UhG7YhA"/>
+        </ownedAttribute>
+        <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_3646ML7IEfGXGcHhJ2f0ew" name="a_state2_sm">
+          <region xmi:type="uml:Region" xmi:id="_6yuC8L7IEfGXGcHhJ2f0ew" name="Region1">
+            <transition xmi:type="uml:Transition" xmi:id="_mkEHIL9eEfG4Rv7UhG7YhA" source="_l0Gp0L9eEfG4Rv7UhG7YhA" target="_f2GaUL9eEfG4Rv7UhG7YhA"/>
+            <transition xmi:type="uml:Transition" xmi:id="_tY4C0L9eEfG4Rv7UhG7YhA" kind="internal" source="_f2GaUL9eEfG4Rv7UhG7YhA" target="_f2GaUL9eEfG4Rv7UhG7YhA">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_3_vT0L9eEfG4Rv7UhG7YhA">
+                <language>C</language>
+                <body>p_obj->p_context->b_is_completed = false;
+TEST_FAIL_MESSAGE(&quot;Unpredicted event occurred!&quot;);</body>
+              </effect>
+              <trigger xmi:type="uml:Trigger" xmi:id="_pkSewMpSEfGvmdHKClnHFg"/>
+            </transition>
+            <subvertex xmi:type="uml:State" xmi:id="_f2GaUL9eEfG4Rv7UhG7YhA" name="State10">
+              <region xmi:type="uml:Region" xmi:id="_gyOEUL9eEfG4Rv7UhG7YhA" name="Region1">
+                <transition xmi:type="uml:Transition" xmi:id="_hQTj8L9dEfG4Rv7UhG7YhA" source="_4PoAML8tEfG2Su51-re3Eg" target="_fMpDEL9dEfG4Rv7UhG7YhA">
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_0ybfwL9dEfG4Rv7UhG7YhA">
+                    <language>C</language>
+                    <body>TEST_ASSERT_EQUAL_STRING(&quot;State2 to State3\n&quot;, p_str);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_psYYYL9dEfG4Rv7UhG7YhA" event="_ly9tEL8sEfG2Su51-re3Eg"/>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_6QXI4L8tEfG2Su51-re3Eg" source="_-6dUYL7IEfGXGcHhJ2f0ew" target="_4PoAML8tEfG2Su51-re3Eg">
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_Nyk_8L9dEfG4Rv7UhG7YhA">
+                    <language>C</language>
+                    <body>TEST_ASSERT_EQUAL_STRING(&quot;Exit State2\n&quot;, p_str);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_9TkbML8tEfG2Su51-re3Eg" event="_ly9tEL8sEfG2Su51-re3Eg"/>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_DEUswL7JEfGXGcHhJ2f0ew" source="_-a3OUL7IEfGXGcHhJ2f0ew" target="_-6dUYL7IEfGXGcHhJ2f0ew"/>
+                <transition xmi:type="uml:Transition" xmi:id="_Mfd80L9eEfG4Rv7UhG7YhA" source="_fMpDEL9dEfG4Rv7UhG7YhA" target="_K7C8sL9eEfG4Rv7UhG7YhA">
+                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_UvqRYL9eEfG4Rv7UhG7YhA">
+                    <language>C</language>
+                    <body>TEST_ASSERT_EQUAL_STRING( &quot;Enter State3\n&quot;, p_str);</body>
+                  </effect>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_NyzM8L9eEfG4Rv7UhG7YhA" event="_ly9tEL8sEfG2Su51-re3Eg"/>
+                </transition>
+                <subvertex xmi:type="uml:State" xmi:id="_fMpDEL9dEfG4Rv7UhG7YhA" name="effect_bhv"/>
+                <subvertex xmi:type="uml:Pseudostate" xmi:id="_-a3OUL7IEfGXGcHhJ2f0ew" name="Initial1"/>
+                <subvertex xmi:type="uml:State" xmi:id="_4PoAML8tEfG2Su51-re3Eg" name="exit_bhv"/>
+                <subvertex xmi:type="uml:State" xmi:id="_-6dUYL7IEfGXGcHhJ2f0ew" name="init"/>
+                <subvertex xmi:type="uml:State" xmi:id="_K7C8sL9eEfG4Rv7UhG7YhA" name="entry_bhv">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_Pyh-IL9gEfG4Rv7UhG7YhA">
+                    <language>C</language>
+                    <body>p_obj->p_context->b_is_completed = true;</body>
+                  </entry>
+                </subvertex>
+              </region>
+            </subvertex>
+            <subvertex xmi:type="uml:Pseudostate" xmi:id="_l0Gp0L9eEfG4Rv7UhG7YhA" name="Initial2"/>
+          </region>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_acRywL9aEfG4Rv7UhG7YhA" name="drain_events_bhv" specification="_Fp1ekL9aEfG4Rv7UhG7YhA">
+          <language>C</language>
+          <body>bool b_is_event_pending = false;
+
+do{
+    b_is_event_pending = tkind_ctest_fetch_event(p_obj);
+
+    if(b_is_event_pending)
+    {
+        TEST_ASSERT_TRUE(tkind_ctest_dispatch_event(p_obj)
+            &amp;&amp; tkind_ctest_release_event(p_obj));
+    }
+}while(b_is_event_pending);
+
+do{
+    b_is_event_pending = test_tkind_ctest_fixture_fetch_event(p_obj);
+
+    if(b_is_event_pending)
+    {
+        TEST_ASSERT_TRUE(test_tkind_ctest_fixture_dispatch_event(p_obj)
+            &amp;&amp; test_tkind_ctest_fixture_release_event(p_obj));
+    }
+}while(b_is_event_pending);
+
+TEST_ASSERT_TRUE(p_obj->b_is_completed);</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_xquXUL8CEfG2Su51-re3Eg" name="init">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_3PgOgL8CEfG2Su51-re3Eg" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_J-6hsKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_IIalML8rEfG2Su51-re3Eg" name="rec">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_rvPTsL8rEfG2Su51-re3Eg" name="p_str">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_KJDAML8rEfG2Su51-re3Eg" name="recdbl">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_tn6FgL8rEfG2Su51-re3Eg" name="p_str">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_3dlKIL8rEfG2Su51-re3Eg" name="dbl_param">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_3dlKIb8rEfG2Su51-re3Eg" annotatedElement="_3dlKIL8rEfG2Su51-re3Eg">
+              <body>A double parameter that will be logged.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_TOU3kKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_L-KuwL8rEfG2Su51-re3Eg" name="recu16c">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_u-LU4L8rEfG2Su51-re3Eg" name="p_str">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_7_VeEL8rEfG2Su51-re3Eg" name="u16_param" effect="read">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_2RLLwKkOEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_7_cy0L8rEfG2Su51-re3Eg" name="char_param" effect="read">
+            <type xmi:type="uml:PrimitiveType" href="CStandardLibrary.uml#_HN_5QKkPEfGUW58NsN5Xaw"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_Fp1ekL9aEfG4Rv7UhG7YhA" name="drain_events" method="_acRywL9aEfG4Rv7UhG7YhA"/>
+        <nestedClassifier xmi:type="uml:Class" xmi:id="_5qLhYL8nEfG2Su51-re3Eg" name="ctest_logger">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_ii8DkL8oEfG2Su51-re3Eg" name="ctest_fix" type="_LXiyEL7HEfGXGcHhJ2f0ew" association="_iiszAL8oEfG2Su51-re3Eg">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zGaLAL8qEfG2Su51-re3Eg"/>
+          </ownedAttribute>
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_hYWbkL8vEfG2Su51-re3Eg" client="_5qLhYL8nEfG2Su51-re3Eg">
+            <supplier xmi:type="uml:Interface" href="testdiagrams.uml#_Ij1hQBaHEfG70Ybw1j3UxQ"/>
+            <contract xmi:type="uml:Interface" href="testdiagrams.uml#_Ij1hQBaHEfG70Ybw1j3UxQ"/>
+          </interfaceRealization>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_tteCUL8oEfG2Su51-re3Eg" name="rec_bhv" visibility="private">
+            <specification xmi:type="uml:Operation" href="testdiagrams.uml#_YZyGQBaHEfG70Ybw1j3UxQ"/>
+            <language>C</language>
+            <body>test_tkind_ctest_fix_rec(&amp;p_obj->ctest_fix, p_str);</body>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_4oNRkL8oEfG2Su51-re3Eg" name="recdbl_bhv" visibility="private">
+            <specification xmi:type="uml:Operation" href="testdiagrams.uml#_e48OILLfEfG_Uu2-ewdiMw"/>
+            <language>C</language>
+            <body>test_tkind_ctest_fix_recdbl(&amp;p_obj->ctest_fix, p_str, dbl_param);</body>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="___PJgL8oEfG2Su51-re3Eg" name="recu16c_bhv" visibility="private">
+            <specification xmi:type="uml:Operation" href="testdiagrams.uml#_5NDzQLUxEfGjNJ8Dt4HgIw"/>
+            <language>C</language>
+            <body>test_tkind_ctest_fix_recu16c(&amp;p_obj->ctest_fix, p_str, u16_param, char_param);</body>
+          </ownedBehavior>
+        </nestedClassifier>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_ZhFL4L8EEfG2Su51-re3Eg" name="ctest_fixture_init" client="_xquXUL8CEfG2Su51-re3Eg">
+        <supplier xmi:type="uml:Operation" href="testdiagrams.uml#_eZhukJahEfGyIYl3O46cLA"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_i97nkL9WEfG4Rv7UhG7YhA" name="ctest_sut" classifier="_LXiyEL7HEfGXGcHhJ2f0ew"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_iiszAL8oEfG2Su51-re3Eg" visibility="public" memberEnd="_ii0u0L8oEfG2Su51-re3Eg _ii8DkL8oEfG2Su51-re3Eg">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_iizgsL8oEfG2Su51-re3Eg" source="org.eclipse.papyrus">
+          <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_iizgsb8oEfG2Su51-re3Eg" key="nature" value="UML_Nature"/>
+        </eAnnotations>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_ly9tEL8sEfG2Su51-re3Eg" name="rec_call" operation="_IIalML8rEfG2Su51-re3Eg"/>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_rOC1sL8sEfG2Su51-re3Eg" name="recdbl_call" operation="_KJDAML8rEfG2Su51-re3Eg"/>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_4e-gQL8sEfG2Su51-re3Eg" name="recu16c_call" operation="_L-KuwL8rEfG2Su51-re3Eg"/>
+      <packagedElement xmi:type="uml:AnyReceiveEvent" xmi:id="_m3GQgL9hEfG4Rv7UhG7YhA" name="Any"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_-MWtsL7HEfGXGcHhJ2f0ew" name="enterState2" useCase="_kIgu4L9XEfG4Rv7UhG7YhA">
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_lie54L9UEfG4Rv7UhG7YhA" name="setup">
+          <language>C</language>
+          <body>test_tkind_ctest_fixture_init(&amp;ctest_sut);</body>
+        </ownedBehavior>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_kIgu4L9XEfG4Rv7UhG7YhA" name="aInState2" subject="_-MWtsL7HEfGXGcHhJ2f0ew">
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_rtHv0L9XEfG4Rv7UhG7YhA" name="case">
+          <language>C</language>
+          <body>TEST_ASSERT_TRUE(tkind_ctest_a(&amp;ctest_sut.ctest));
+test_tkind_ctest_fixture_drain_events(&amp;ctest_sut);</body>
+        </ownedBehavior>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_t4troL69EfGXGcHhJ2f0ew">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_t41AYL69EfGXGcHhJ2f0ew" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_7Mw5IMKCEfGXJLPamao8cA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rZqy0MKNEfGXJLPamao8cA" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy0cKNEfGXJLPamao8cA" key="Version" value="0.0.9"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy0sKNEfGXJLPamao8cA" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy08KNEfGXJLPamao8cA" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy1MKNEfGXJLPamao8cA" key="Date" value="2026-10-07"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy1cKNEfGXJLPamao8cA" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_7MyHQMKCEfGXJLPamao8cA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="CodeSynthesizer.profile.uml#_inGzQL9nEfG4Rv7UhG7YhA"/>
+    </profileApplication>
+  </uml:Model>
+  <standard:Create xmi:id="_zfwmUL8CEfG2Su51-re3Eg" base_BehavioralFeature="_xquXUL8CEfG2Su51-re3Eg"/>
+  <CodeSynthesizerProfile:StateMachineSetup xmi:id="_B1W9wMKDEfGXJLPamao8cA" base_UseCase="_-MWtsL7HEfGXGcHhJ2f0ew">
+    <state_config xmi:type="uml:State" href="testdiagrams.uml#_9oHWINw7Ee-clukbqF5Mtw"/>
+  </CodeSynthesizerProfile:StateMachineSetup>
+</xmi:XMI>

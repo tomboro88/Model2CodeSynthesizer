@@ -102,6 +102,39 @@ standalone_sm_enter_region1(standalone_sm_t* const p_obj)
     standalone_sm_enter_state2(p_obj);
 }
 
+/**
+ * @brief Exits the State2 state of the sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+standalone_sm_exit_state2(standalone_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = STANDALONE_SM_INITIAL1;
+}
+
+/**
+ * @brief Exits the State4 state of the sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+standalone_sm_exit_state4(standalone_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = STANDALONE_SM_INITIAL1;
+}
+
+/**
+ * @brief Exits the State5 state of the sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+standalone_sm_exit_state5(standalone_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = STANDALONE_SM_INITIAL1;
+}
+
 /*******************************************************************************
  *
  * Public function bodies.
@@ -381,6 +414,7 @@ standalone_sm_dispatch_a_state2(standalone_sm_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
+    standalone_sm_exit_state2(p_obj);
     standalone_sm_enter_state4(p_obj);
 
     return result;
@@ -397,6 +431,7 @@ standalone_sm_dispatch_b_state4(standalone_sm_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
+    standalone_sm_exit_state4(p_obj);
     standalone_sm_enter_state5(p_obj);
 
     return result;

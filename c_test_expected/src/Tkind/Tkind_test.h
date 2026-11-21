@@ -28,11 +28,20 @@ extern tkind_ctest_t tkind_ctest_obj;
 void tkind_test_init_logger_buffer(void);
 void tkind_ctest_logger_expect(bool const b_is_result_ok,
                                const char* const p_str);
+void tkind_ctest_logger_expect_initial(void);
+void tkind_ctest_logger_expect_failure_a(void);
+void tkind_ctest_logger_expect_failure_all(void);
+void tkind_ctest_logger_expect_recovery(void);
+void tkind_ctest_logger_expect_recovery_b(void);
 void tkind_ctest_logger_given(bool const b_is_result_ok);
 void tkind_ctest_logger_dispatch_given(bool const b_is_result_ok);
 void tkind_test_enter_state3(void);
 void tkind_test_enter_state4(void);
 void tkind_test_enter_state7(void);
+void tkind_test_enter_state9(void);
+void tkind_test_enter_state11(void);
+void tkind_test_enter_state12(void);
+void tkind_test_enter_region1_failure(void);
 
 #endif // TKIND_TEST_COMMON_H
 

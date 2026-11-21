@@ -114,6 +114,7 @@ Tkind_sm1_runner(void)
     RUN_TEST_GROUP(Tkind_sm1_State6_State9_State10_State12);    
     RUN_TEST_GROUP(Tkind_sm1_State6_State9_State12_State13);
     RUN_TEST_GROUP(Tkind_sm1_State6_State9_State12_State14);
+    RUN_TEST_GROUP(Tkind_sm1_Failure);
 
     /*
      *Start of user code Tkind_sm1_user_test_runners

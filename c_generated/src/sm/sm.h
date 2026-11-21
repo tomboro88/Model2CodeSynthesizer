@@ -15,7 +15,9 @@ extern "C" {
                                                    change.*/
         SM_EVENT_STATUS_CHANGEDSTATE    = 5u, /**< Event handled, state 
                                                    changed.*/
-        SM_EVENT_STATUS_DISPATCHED      = 6u  /**< Event processed and removed
+        SM_EVENT_STATUS_SAFESTATE       = 6u, /**< Event handled, safe state 
+                                                   entered.*/
+        SM_EVENT_STATUS_DISPATCHED      = 7u  /**< Event processed and removed
                                                    from the event pool.*/
     }sm_event_status_t;
 

@@ -50,10 +50,7 @@ TEST(TkindSm1ZeroInit, InitNullLoggerGivesTrue)
 
 TEST(TkindSm1ZeroInit, InitResultsInInitialTransition)
 {
-    tkind_ctest_logger_expect(true, "Initial1 to State1\n"
-                              "Enter State1\n"
-                              "Initial3 to State2\n"
-                              "Enter State2\n");
+    tkind_ctest_logger_expect_initial();
     tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
                                               &tkind_test_logger));
 }

@@ -19,6 +19,19 @@ target_sources(test_expected
         Tkind/TkindSm1State6_test.c
         Tkind/TkindSm1State7_test.c
         Tkind/TkindSm1State9_test.c
+        Tkind/TkindSm1State11_test.c
+        Tkind/TkindSm1State12_test.c
+        Tkind/TkindSm1State5State11_test.c
+        Tkind/TkindSm1Region1Failure_test.c
+        Tkind/TkindSm1Region2Failure_test.c
+        Tkind/TkindSm1Failure_test.c
+        Tkind/TkindSm1Region3Failure_test.c
+        Tkind/TkindSm1Region4Failure_test.c
+        Tkind/TkindSm1Region5Failure_test.c
+        Tkind/TkindSm1Region6Failure_test.c
+        Tkind/TkindSm1Region7Failure_test.c
+        Tkind/TkindSm1Region8Failure_test.c
+        Tkind/TkindSm1Region9Failure_test.c
         TJunction/TJunction_test.c
 )
 

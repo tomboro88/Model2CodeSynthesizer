@@ -35,6 +35,7 @@ void tkind_cbase1_set_uint_default(tkind_cbase1_t* const p_obj,\
 
 void tkind_ctest_set_uint_incr(tkind_cbase1_t* const p_obj,\
                                uint32_t const param1);
+float tkind_ctest_get_flt_from_uint(tkind_cbase2_t* const p_obj);
 
 /*******************************************************************************
  *
@@ -48,8 +49,6 @@ static float tkind_cbase2_get_flt_dflt(tkind_cbase2_t* const p_obj);
 static void tkind_cbase2_init_df(tkind_cbase2_t* const p_obj);
 
 static void tkind_ctest_start_sm1(tkind_ctest_t* const p_obj);
-
-static float tkind_ctest_get_flt_from_uint(tkind_cbase2_t* const p_obj);
 
 static void tkind_ctest_init_df(tkind_ctest_t* const p_obj);
 
@@ -65,11 +64,14 @@ static void tkind_sm1_rec_log_u16_char(tkind_sm1_t* const p_obj,\
 
 static void tkind_sm1_init_df(tkind_sm1_t* const p_obj);
 
-static void tkind_sm1_exit_region2(tkind_sm1_t* const p_obj);
-static void tkind_sm1_exit_region3(tkind_sm1_t* const p_obj);
-static void tkind_sm1_exit_region4(tkind_sm1_t* const p_obj);
-static void tkind_sm1_exit_region5(tkind_sm1_t* const p_obj);
-static void tkind_sm1_exit_region6(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region2(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region3(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region4(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region5(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region6(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region7(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region8(tkind_sm1_t* const p_obj);
+static bool tkind_sm1_exit_region9(tkind_sm1_t* const p_obj);
 
 static sm_event_status_t tkind_sm1_dispatch_a(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_b(tkind_sm1_t* const p_obj);
@@ -115,8 +117,41 @@ static sm_event_status_t tkind_sm1_dispatch_i_region6(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_k_region6(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_l_region6(tkind_sm1_t* const p_obj);
 
+static sm_event_status_t tkind_sm1_dispatch_a_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_b_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_c_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_d_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_e_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_f_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_g_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_h_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_i_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_j_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_k_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_l_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_m_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_n_region7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_o_region7(tkind_sm1_t* const p_obj);
+
+static sm_event_status_t tkind_sm1_dispatch_a_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_b_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_c_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_d_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_e_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_f_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_g_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_h_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_i_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_j_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_k_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_l_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_m_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_n_region8(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_o_region8(tkind_sm1_t* const p_obj);
+
 static sm_event_status_t tkind_sm1_dispatch_a_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_b_state1(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_b_failure(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_c_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_d_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_e_state1(tkind_sm1_t* const p_obj);
@@ -130,6 +165,8 @@ static sm_event_status_t tkind_sm1_dispatch_l_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_m_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_n_state1(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_o_state1(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_any_failure(tkind_sm1_t* \
+                                                        /**/const p_obj);
 
 static sm_event_status_t tkind_sm1_dispatch_a_state2(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_b_state2(tkind_sm1_t* const p_obj);
@@ -152,6 +189,7 @@ static sm_event_status_t tkind_sm1_dispatch_b_state7(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_b_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_i_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_j_state7(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_j_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_k_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_l_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_m_state8(tkind_sm1_t* const p_obj);
@@ -159,6 +197,28 @@ static sm_event_status_t tkind_sm1_dispatch_m_state8(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_i_state9(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_k_state9(tkind_sm1_t* const p_obj);
 static sm_event_status_t tkind_sm1_dispatch_l_state9(tkind_sm1_t* const p_obj);
+
+static sm_event_status_t tkind_sm1_dispatch_a_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_b_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_c_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_d_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_e_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_f_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_g_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_h_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_i_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_j_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_k_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_l_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_m_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_n_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_o_state10(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_any_state10(tkind_sm1_t* \
+                                                        /**/const p_obj);
+
+static sm_event_status_t tkind_sm1_dispatch_c_state11(tkind_sm1_t* const p_obj);
+static sm_event_status_t tkind_sm1_dispatch_any_state11(tkind_sm1_t* \
+                                                        /**/const p_obj);
 
 static sm_event_status_t tkind_sm1_enter_choice1(tkind_sm1_t* const p_obj);
 
@@ -201,17 +261,17 @@ tkind_ctest_fifo_sizes[TKIND_CTEST_EVENT_COUNT] =
     TKIND_CTEST_I_CNT,
     TKIND_CTEST_O_CNT,
     TKIND_CTEST_B_CNT,
+    TKIND_CTEST_K_CNT,
+    TKIND_CTEST_D_CNT,
     TKIND_CTEST_A_CNT,
     TKIND_CTEST_C_CNT,
     TKIND_CTEST_F_CNT,
     TKIND_CTEST_E_CNT,
-    TKIND_CTEST_D_CNT,
     TKIND_CTEST_N_CNT,
     TKIND_CTEST_H_CNT,
     TKIND_CTEST_G_CNT,
     TKIND_CTEST_J_CNT,
     TKIND_CTEST_M_CNT,
-    TKIND_CTEST_K_CNT,
     TKIND_CTEST_L_CNT
 };
 /*******************************************************************************
@@ -240,8 +300,7 @@ tkind_ctest_cast_from_cbase2(tkind_cbase2_t* const p_cbase2,\
     /* Check if this is really ctest class object 
        by checking the specialized virtual function table which was assigned by
        ctest class constructor.*/
-    if((NULL != pp_ctest) && (NULL != p_cbase2)
-            && (&tkind_ctest_vtable.cbase2 == p_cbase2->p_vtable))
+    if((NULL != pp_ctest) && (NULL != p_cbase2))
     {
         *pp_ctest = (tkind_ctest_t*)(
                          (uintptr_t)p_cbase2 - offsetof(tkind_ctest_t, cbase2));
@@ -388,16 +447,27 @@ static inline void
 tkind_sm1_enter_state13(tkind_sm1_t* const p_obj)
 {
     p_obj->region9 = TKIND_SM1_STATE13;
+    tkind_sm1_rec_log(p_obj, "Enter State13\n");
 }
 
 /**
- * @brief Enters the State14 state of the sm1 state machine.
+ * @brief Enters the Failure state of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
 static inline void
-tkind_sm1_enter_state14(tkind_sm1_t* const p_obj)
+tkind_sm1_enter_failure(tkind_sm1_t* const p_obj)
 {
-    p_obj->region9 = TKIND_SM1_STATE14;
+    p_obj->region2 = TKIND_SM1_INITIAL3;
+    p_obj->region3 = TKIND_SM1_REGION3_INL;
+    p_obj->region4 = TKIND_SM1_REGION4_INL;
+    p_obj->region5 = TKIND_SM1_REGION5_INL;
+    p_obj->region6 = TKIND_SM1_INITIAL4;
+    p_obj->region7 = TKIND_SM1_REGION7_INL;
+    p_obj->region8 = TKIND_SM1_INITIAL8;
+    p_obj->region9 = TKIND_SM1_REGION9_INL;
+    p_obj->b_stays_inside_region1_state1 = false;
+    p_obj->region1 = TKIND_SM1_FAILURE;
+    tkind_sm1_rec_log(p_obj, "Enter Failure\n");
 }
 
 /**
@@ -504,23 +574,43 @@ tkind_sm1_enter_region1(tkind_sm1_t* const p_obj)
  * @brief Exits the State1 state of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static inline void
+static inline bool
 tkind_sm1_exit_state1(tkind_sm1_t* const p_obj)
 {
-    tkind_sm1_exit_region2(p_obj);
-    tkind_sm1_exit_region5(p_obj);
-    tkind_sm1_rec_log(p_obj, "Exit State1\n");
+    p_obj->b_stays_inside_region1_state1 = false;
+    bool b_is_exit_ok = tkind_sm1_exit_region2(p_obj);
+    b_is_exit_ok = b_is_exit_ok && tkind_sm1_exit_region5(p_obj);
+    b_is_exit_ok = b_is_exit_ok && tkind_sm1_exit_region7(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "Exit State1\n");
+    }
+
+    // Mark the state has already exited.
+    p_obj->region1 = TKIND_SM1_INITIAL1;
+
+    return b_is_exit_ok;
 }
 
 /**
  * @brief Exits the State3 state of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static inline void
+static inline bool
 tkind_sm1_exit_state3(tkind_sm1_t* const p_obj)
 {
-    tkind_sm1_exit_region3(p_obj);
-    tkind_sm1_rec_log(p_obj, "Exit State3\n");
+    bool b_is_exit_ok = tkind_sm1_exit_region3(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "Exit State3\n");
+    }
+
+    // Mark the state has already exited.
+    p_obj->region2 = TKIND_SM1_INITIAL3;
+
+    return b_is_exit_ok;
 }
 
 /**
@@ -531,6 +621,8 @@ static inline void
 tkind_sm1_exit_state5(tkind_sm1_t* const p_obj)
 {
     tkind_sm1_rec_log(p_obj, "Exit State5\n");
+    // Mark the state has already exited.
+    p_obj->region3 = TKIND_SM1_REGION3_INL;
 }
 
 /**
@@ -541,17 +633,28 @@ static inline void
 tkind_sm1_exit_state2(tkind_sm1_t* const p_obj)
 {
     tkind_sm1_rec_log(p_obj, "Exit State2\n");
+    // Mark the state has already exited.
+    p_obj->region2 = TKIND_SM1_INITIAL3;
 }
 
 /**
  * @brief Exits the State4 state of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static inline void
+static inline bool
 tkind_sm1_exit_state4(tkind_sm1_t* const p_obj)
 {
-    tkind_sm1_exit_region4(p_obj);
-    tkind_sm1_rec_log(p_obj, "Exit State4\n");
+    bool b_is_exit_ok = tkind_sm1_exit_region4(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "Exit State4\n");
+    }
+
+    // Mark the state has already exited.
+    p_obj->region2 = TKIND_SM1_INITIAL3;
+
+    return b_is_exit_ok;
 }
 
 /**
@@ -562,6 +665,8 @@ static inline void
 tkind_sm1_exit_state6(tkind_sm1_t* const p_obj)
 {
     tkind_sm1_rec_log(p_obj, "Exit State6\n");
+    // Mark the state has already exited.
+    p_obj->region4 = TKIND_SM1_REGION4_INL;
 }
 
 /**
@@ -572,17 +677,28 @@ static inline void
 tkind_sm1_exit_state7(tkind_sm1_t* const p_obj)
 {
     tkind_sm1_rec_log(p_obj, "Exit State7\n");
+    // Mark the state has already exited.
+    p_obj->region5 = TKIND_SM1_REGION5_INL;
 }
 
 /**
  * @brief Exits the State8 state of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static inline void
+static inline bool
 tkind_sm1_exit_state8(tkind_sm1_t* const p_obj)
 {
-    tkind_sm1_exit_region6(p_obj);
-    tkind_sm1_rec_log(p_obj, "Exit State8\n");
+    bool b_is_exit_ok = tkind_sm1_exit_region6(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "Exit State8\n");
+    }
+
+    // Mark the state has already exited.
+    p_obj->region5 = TKIND_SM1_REGION5_INL;
+
+    return b_is_exit_ok;
 }
 
 /**
@@ -593,6 +709,78 @@ static inline void
 tkind_sm1_exit_state9(tkind_sm1_t* const p_obj)
 {
     tkind_sm1_rec_log(p_obj, "Exit State9\n");
+    // Mark the state has already exited.
+    p_obj->region6 = TKIND_SM1_INITIAL4;
+}
+
+/**
+ * @brief Exits the State10 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline bool
+tkind_sm1_exit_state10(tkind_sm1_t* const p_obj)
+{
+    bool b_is_exit_ok = tkind_sm1_exit_region8(p_obj);
+    b_is_exit_ok = b_is_exit_ok && tkind_sm1_exit_region9(p_obj);
+    // Mark the state has already exited.
+    p_obj->region7 = TKIND_SM1_REGION7_INL;
+
+    return b_is_exit_ok;
+}
+
+/**
+ * @brief Exits the State11 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_exit_state11(tkind_sm1_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region8 = TKIND_SM1_INITIAL8;
+}
+
+/**
+ * @brief Exits the State12 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_exit_state12(tkind_sm1_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region8 = TKIND_SM1_INITIAL8;
+}
+
+/**
+ * @brief Exits the State13 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_exit_state13(tkind_sm1_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region9 = TKIND_SM1_REGION9_INL;
+}
+
+/**
+ * @brief Exits the State14 state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_exit_state14(tkind_sm1_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region9 = TKIND_SM1_REGION9_INL;
+}
+
+/**
+ * @brief Exits the Failure state of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+tkind_sm1_exit_failure(tkind_sm1_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = TKIND_SM1_INITIAL1;
 }
 
 /*******************************************************************************
@@ -740,6 +928,18 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.b_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
+                        TKIND_CTEST_K_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_K].p_next_events
+                       = p_obj->event_pool.k_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_D].fifo),
+                        TKIND_CTEST_D_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_D].p_next_events
+                       = p_obj->event_pool.d_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
                         TKIND_CTEST_A_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
@@ -762,12 +962,6 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                         TKIND_CTEST_E_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_E].p_next_events
                        = p_obj->event_pool.e_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_D].fifo),
-                        TKIND_CTEST_D_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_D].p_next_events
-                       = p_obj->event_pool.d_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_N].fifo),
@@ -798,12 +992,6 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                         TKIND_CTEST_M_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_M].p_next_events
                        = p_obj->event_pool.m_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
-                        TKIND_CTEST_K_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_K].p_next_events
-                       = p_obj->event_pool.k_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_L].fifo),
@@ -1189,6 +1377,12 @@ tkind_ctest_dispatch_event(tkind_ctest_t* const p_obj)
             case TKIND_CTEST_B:
                 temp_status = tkind_sm1_dispatch_b(&p_obj->sm1);
                 break;
+            case TKIND_CTEST_K:
+                temp_status = tkind_sm1_dispatch_k(&p_obj->sm1);
+                break;
+            case TKIND_CTEST_D:
+                temp_status = tkind_sm1_dispatch_d(&p_obj->sm1);
+                break;
             case TKIND_CTEST_A:
                 temp_status = tkind_sm1_dispatch_a(&p_obj->sm1);
                 break;
@@ -1200,9 +1394,6 @@ tkind_ctest_dispatch_event(tkind_ctest_t* const p_obj)
                 break;
             case TKIND_CTEST_E:
                 temp_status = tkind_sm1_dispatch_e(&p_obj->sm1);
-                break;
-            case TKIND_CTEST_D:
-                temp_status = tkind_sm1_dispatch_d(&p_obj->sm1);
                 break;
             case TKIND_CTEST_N:
                 temp_status = tkind_sm1_dispatch_n(&p_obj->sm1);
@@ -1218,9 +1409,6 @@ tkind_ctest_dispatch_event(tkind_ctest_t* const p_obj)
                 break;
             case TKIND_CTEST_M:
                 temp_status = tkind_sm1_dispatch_m(&p_obj->sm1);
-                break;
-            case TKIND_CTEST_K:
-                temp_status = tkind_sm1_dispatch_k(&p_obj->sm1);
                 break;
             case TKIND_CTEST_L:
                 temp_status = tkind_sm1_dispatch_l(&p_obj->sm1);
@@ -1375,7 +1563,7 @@ tkind_ctest_set_uint_incr(tkind_cbase1_t* const p_obj, uint32_t const param1)
  * @param [in] p_obj The pointer to the self object.
  * @return 
  */
-static float
+float
 tkind_ctest_get_flt_from_uint(tkind_cbase2_t* const p_obj)
 {
     float result = 0.0f;
@@ -1444,109 +1632,207 @@ tkind_sm1_rec_log_u16_char(tkind_sm1_t* const p_obj, const char* const p_str,\
  * @brief Exits the Region2 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static void
+static bool
 tkind_sm1_exit_region2(tkind_sm1_t* const p_obj)
 {
+    bool b_exit_ok = true;
+
     switch(p_obj->region2)
     {
         case TKIND_SM1_STATE3:
-            tkind_sm1_exit_state3(p_obj);
+            b_exit_ok = tkind_sm1_exit_state3(p_obj);
             break;
         case TKIND_SM1_STATE2:
             tkind_sm1_exit_state2(p_obj);
             break;
         case TKIND_SM1_STATE4:
-            tkind_sm1_exit_state4(p_obj);
+            b_exit_ok = tkind_sm1_exit_state4(p_obj);
+            break;
+        case TKIND_SM1_INITIAL3:
             break;
         default:
+            b_exit_ok = false;
             break;
     }
 
-    // Mark the region is already exited.
-    p_obj->region2 = TKIND_SM1_INITIAL3;
+    return b_exit_ok;
 }
 
 /**
  * @brief Exits the Region3 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static void
+static bool
 tkind_sm1_exit_region3(tkind_sm1_t* const p_obj)
 {
+    bool b_exit_ok = true;
+
     switch(p_obj->region3)
     {
         case TKIND_SM1_STATE5:
             tkind_sm1_exit_state5(p_obj);
             break;
+        case TKIND_SM1_REGION3_INL:
+            break;
         default:
+            b_exit_ok = false;
             break;
     }
 
-    // Mark the region is already exited.
-    p_obj->region3 = TKIND_SM1_REGION3_INL;
+    return b_exit_ok;
 }
 
 /**
  * @brief Exits the Region4 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static void
+static bool
 tkind_sm1_exit_region4(tkind_sm1_t* const p_obj)
 {
+    bool b_exit_ok = true;
+
     switch(p_obj->region4)
     {
         case TKIND_SM1_STATE6:
             tkind_sm1_exit_state6(p_obj);
             break;
+        case TKIND_SM1_REGION4_INL:
+            break;
         default:
+            b_exit_ok = false;
             break;
     }
 
-    // Mark the region is already exited.
-    p_obj->region4 = TKIND_SM1_REGION4_INL;
+    return b_exit_ok;
 }
 
 /**
  * @brief Exits the Region5 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static void
+static bool
 tkind_sm1_exit_region5(tkind_sm1_t* const p_obj)
 {
+    bool b_exit_ok = true;
+
     switch(p_obj->region5)
     {
         case TKIND_SM1_STATE7:
             tkind_sm1_exit_state7(p_obj);
             break;
         case TKIND_SM1_STATE8:
-            tkind_sm1_exit_state8(p_obj);
+            b_exit_ok = tkind_sm1_exit_state8(p_obj);
+            break;
+        case TKIND_SM1_REGION5_INL:
             break;
         default:
+            b_exit_ok = false;
             break;
     }
 
-    // Mark the region is already exited.
-    p_obj->region5 = TKIND_SM1_REGION5_INL;
+    return b_exit_ok;
 }
 
 /**
  * @brief Exits the Region6 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
  */
-static void
+static bool
 tkind_sm1_exit_region6(tkind_sm1_t* const p_obj)
 {
+    bool b_exit_ok = true;
+
     switch(p_obj->region6)
     {
         case TKIND_SM1_STATE9:
             tkind_sm1_exit_state9(p_obj);
             break;
+        case TKIND_SM1_INITIAL4:
+            break;
         default:
+            b_exit_ok = false;
             break;
     }
 
-    // Mark the region is already exited.
-    p_obj->region6 = TKIND_SM1_INITIAL4;
+    return b_exit_ok;
+}
+
+/**
+ * @brief Exits the Region7 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static bool
+tkind_sm1_exit_region7(tkind_sm1_t* const p_obj)
+{
+    bool b_exit_ok = true;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            b_exit_ok = tkind_sm1_exit_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            b_exit_ok = false;
+            break;
+    }
+
+    return b_exit_ok;
+}
+
+/**
+ * @brief Exits the Region8 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static bool
+tkind_sm1_exit_region8(tkind_sm1_t* const p_obj)
+{
+    bool b_exit_ok = true;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            tkind_sm1_exit_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            tkind_sm1_exit_state12(p_obj);
+            break;
+        case TKIND_SM1_INITIAL8:
+            break;
+        default:
+            b_exit_ok = false;
+            break;
+    }
+
+    return b_exit_ok;
+}
+
+/**
+ * @brief Exits the Region9 region of the sm1 state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static bool
+tkind_sm1_exit_region9(tkind_sm1_t* const p_obj)
+{
+    bool b_exit_ok = true;
+
+    switch(p_obj->region9)
+    {
+        case TKIND_SM1_STATE13:
+            tkind_sm1_exit_state13(p_obj);
+            break;
+        case TKIND_SM1_STATE14:
+            tkind_sm1_exit_state14(p_obj);
+            break;
+        case TKIND_SM1_REGION9_INL:
+            break;
+        default:
+            b_exit_ok = false;
+            break;
+    }
+
+    return b_exit_ok;
 }
 
 /**
@@ -1564,7 +1850,12 @@ tkind_sm1_dispatch_a(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_a_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1586,7 +1877,12 @@ tkind_sm1_dispatch_b(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_b_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_b_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1608,7 +1904,12 @@ tkind_sm1_dispatch_c(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_c_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1630,7 +1931,12 @@ tkind_sm1_dispatch_d(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_d_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1652,7 +1958,12 @@ tkind_sm1_dispatch_e(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_e_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1674,7 +1985,12 @@ tkind_sm1_dispatch_f(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_f_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1696,7 +2012,12 @@ tkind_sm1_dispatch_g(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_g_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1718,7 +2039,12 @@ tkind_sm1_dispatch_h(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_h_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1740,7 +2066,12 @@ tkind_sm1_dispatch_i(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_i_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1762,7 +2093,12 @@ tkind_sm1_dispatch_j(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_j_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1784,7 +2120,12 @@ tkind_sm1_dispatch_k(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_k_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1806,7 +2147,12 @@ tkind_sm1_dispatch_l(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_l_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1828,7 +2174,12 @@ tkind_sm1_dispatch_m(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_m_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1850,7 +2201,12 @@ tkind_sm1_dispatch_n(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_n_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1872,7 +2228,12 @@ tkind_sm1_dispatch_o(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE1:
             result = tkind_sm1_dispatch_o_state1(p_obj);
             break;
+        case TKIND_SM1_FAILURE:
+            result = tkind_sm1_dispatch_any_failure(p_obj);
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1892,10 +2253,16 @@ tkind_sm1_dispatch_a_region2(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region2)
     {
+        case TKIND_SM1_STATE3:
+            break;
         case TKIND_SM1_STATE2:
             result = tkind_sm1_dispatch_a_state2(p_obj);
             break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1915,10 +2282,16 @@ tkind_sm1_dispatch_b_region2(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region2)
     {
+        case TKIND_SM1_STATE3:
+            break;
         case TKIND_SM1_STATE2:
             result = tkind_sm1_dispatch_b_state2(p_obj);
             break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1941,7 +2314,13 @@ tkind_sm1_dispatch_c_region2(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE3:
             result = tkind_sm1_dispatch_c_state3(p_obj);
             break;
+        case TKIND_SM1_STATE2:
+            break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1964,7 +2343,13 @@ tkind_sm1_dispatch_d_region2(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE3:
             result = tkind_sm1_dispatch_d_state3(p_obj);
             break;
+        case TKIND_SM1_STATE2:
+            break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -1987,7 +2372,13 @@ tkind_sm1_dispatch_e_region2(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE3:
             result = tkind_sm1_dispatch_e_state3(p_obj);
             break;
+        case TKIND_SM1_STATE2:
+            break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2007,10 +2398,16 @@ tkind_sm1_dispatch_f_region2(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region2)
     {
+        case TKIND_SM1_STATE3:
+            break;
+        case TKIND_SM1_STATE2:
+            break;
         case TKIND_SM1_STATE4:
             result = tkind_sm1_dispatch_f_state4(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2030,10 +2427,16 @@ tkind_sm1_dispatch_g_region2(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region2)
     {
+        case TKIND_SM1_STATE3:
+            break;
+        case TKIND_SM1_STATE2:
+            break;
         case TKIND_SM1_STATE4:
             result = tkind_sm1_dispatch_g_state4(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2053,10 +2456,16 @@ tkind_sm1_dispatch_h_region2(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region2)
     {
+        case TKIND_SM1_STATE3:
+            break;
+        case TKIND_SM1_STATE2:
+            break;
         case TKIND_SM1_STATE4:
             result = tkind_sm1_dispatch_h_state4(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2079,7 +2488,13 @@ tkind_sm1_dispatch_n_region2(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE3:
             result = tkind_sm1_dispatch_n_state3(p_obj);
             break;
+        case TKIND_SM1_STATE2:
+            break;
+        case TKIND_SM1_STATE4:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2102,7 +2517,11 @@ tkind_sm1_dispatch_d_region3(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE5:
             result = tkind_sm1_dispatch_d_state5(p_obj);
             break;
+        case TKIND_SM1_REGION3_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2125,7 +2544,11 @@ tkind_sm1_dispatch_e_region3(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE5:
             result = tkind_sm1_dispatch_e_state5(p_obj);
             break;
+        case TKIND_SM1_REGION3_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2148,7 +2571,11 @@ tkind_sm1_dispatch_n_region3(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE5:
             result = tkind_sm1_dispatch_n_state5(p_obj);
             break;
+        case TKIND_SM1_REGION3_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2171,7 +2598,11 @@ tkind_sm1_dispatch_g_region4(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE6:
             result = tkind_sm1_dispatch_g_state6(p_obj);
             break;
+        case TKIND_SM1_REGION4_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2194,7 +2625,11 @@ tkind_sm1_dispatch_h_region4(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE6:
             result = tkind_sm1_dispatch_h_state6(p_obj);
             break;
+        case TKIND_SM1_REGION4_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2220,7 +2655,11 @@ tkind_sm1_dispatch_b_region5(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE8:
             result = tkind_sm1_dispatch_b_state8(p_obj);
             break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2240,10 +2679,16 @@ tkind_sm1_dispatch_i_region5(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region5)
     {
+        case TKIND_SM1_STATE7:
+            break;
         case TKIND_SM1_STATE8:
             result = tkind_sm1_dispatch_i_state8(p_obj);
             break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2266,7 +2711,14 @@ tkind_sm1_dispatch_j_region5(tkind_sm1_t* const p_obj)
         case TKIND_SM1_STATE7:
             result = tkind_sm1_dispatch_j_state7(p_obj);
             break;
+        case TKIND_SM1_STATE8:
+            result = tkind_sm1_dispatch_j_state8(p_obj);
+            break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2286,10 +2738,16 @@ tkind_sm1_dispatch_k_region5(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region5)
     {
+        case TKIND_SM1_STATE7:
+            break;
         case TKIND_SM1_STATE8:
             result = tkind_sm1_dispatch_k_state8(p_obj);
             break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2309,10 +2767,16 @@ tkind_sm1_dispatch_l_region5(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region5)
     {
+        case TKIND_SM1_STATE7:
+            break;
         case TKIND_SM1_STATE8:
             result = tkind_sm1_dispatch_l_state8(p_obj);
             break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2332,10 +2796,16 @@ tkind_sm1_dispatch_m_region5(tkind_sm1_t* const p_obj)
 
     switch(p_obj->region5)
     {
+        case TKIND_SM1_STATE7:
+            break;
         case TKIND_SM1_STATE8:
             result = tkind_sm1_dispatch_m_state8(p_obj);
             break;
+        case TKIND_SM1_REGION5_INL:
+            break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2359,6 +2829,8 @@ tkind_sm1_dispatch_i_region6(tkind_sm1_t* const p_obj)
             result = tkind_sm1_dispatch_i_state9(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2382,6 +2854,8 @@ tkind_sm1_dispatch_k_region6(tkind_sm1_t* const p_obj)
             result = tkind_sm1_dispatch_k_state9(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2405,6 +2879,818 @@ tkind_sm1_dispatch_l_region6(tkind_sm1_t* const p_obj)
             result = tkind_sm1_dispatch_l_state9(p_obj);
             break;
         default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements a event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_a_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_a_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements b event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_b_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements c event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_c_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_c_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements d event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_d_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_d_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements e event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_e_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_e_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements f event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_f_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_f_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements g event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_g_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_g_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements h event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_h_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_h_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements i event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_i_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_i_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements j event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_j_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_j_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements k event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_k_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_k_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements l event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_l_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_l_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements m event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_m_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_m_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements n event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_n_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_n_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements o event handling by the Region7 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_o_region7(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region7)
+    {
+        case TKIND_SM1_STATE10:
+            result = tkind_sm1_dispatch_o_state10(p_obj);
+            break;
+        case TKIND_SM1_REGION7_INL:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements a event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_a_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements b event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements c event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_c_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_c_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements d event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_d_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements e event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_e_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements f event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_f_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements g event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_g_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements h event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_h_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements i event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_i_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements j event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_j_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements k event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_k_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements l event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_l_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements m event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_m_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements n event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_n_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements o event handling by the Region8 region of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_o_region8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    switch(p_obj->region8)
+    {
+        case TKIND_SM1_STATE11:
+            result = tkind_sm1_dispatch_any_state11(p_obj);
+            break;
+        case TKIND_SM1_STATE12:
+            break;
+        default:
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
             break;
     }
 
@@ -2421,8 +3707,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_a_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_a_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_a_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_a_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2438,17 +3733,56 @@ tkind_sm1_dispatch_b_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
     sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
     temp_status = tkind_sm1_dispatch_b_region2(p_obj);
     result = sm_event_resolve_status(result, temp_status);
 
-    temp_status = tkind_sm1_dispatch_b_region5(p_obj);
-    result = sm_event_resolve_status(result, temp_status);
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_b_region5(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_b_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     if(SM_EVENT_STATUS_IGNORED == result)
     {
         tkind_sm1_rec_log(p_obj, "Internal transition in State1 on event b\n");
         result = SM_EVENT_STATUS_SAMESTATE;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements b event handling by the Failure state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_failure(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_SAFESTATE;
+
+    if(p_obj->b_test_condition)
+    {
+        tkind_sm1_exit_failure(p_obj);
+        tkind_sm1_rec_log(p_obj, "b triggered UnexpectedState to State1.\n");
+        tkind_sm1_enter_state1(p_obj);
+        tkind_sm1_enter_region2(p_obj);
+        tkind_sm1_enter_region5(p_obj);
+        tkind_sm1_enter_region7(p_obj);
+        result = SM_EVENT_STATUS_CHANGEDSTATE;
+    }
+    else
+    {
+        result = SM_EVENT_STATUS_SAFESTATE;
     }
 
     return result;
@@ -2464,8 +3798,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_c_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_c_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_c_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_c_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2480,8 +3823,36 @@ static sm_event_status_t
 tkind_sm1_dispatch_d_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_d_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_d_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_d_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        bool b_is_exit_ok = tkind_sm1_exit_region7(p_obj);
+        
+        if(b_is_exit_ok)
+        {
+            tkind_sm1_rec_log(p_obj, "Local State1 to State13.\n");
+            tkind_sm1_enter_state10(p_obj);
+            tkind_sm1_enter_region8(p_obj);
+            tkind_sm1_enter_state13(p_obj);
+            result = SM_EVENT_STATUS_CHANGEDSTATE;
+        }
+        else
+        {
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+        }
+    }
 
     return result;
 }
@@ -2496,8 +3867,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_e_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_e_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_e_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_e_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2512,8 +3892,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_f_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_f_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_f_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_f_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2528,8 +3917,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_g_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_g_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_g_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_g_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2544,8 +3942,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_h_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_h_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_h_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_h_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2560,18 +3967,36 @@ static sm_event_status_t
 tkind_sm1_dispatch_i_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_i_region5(p_obj);
+    temp_status = tkind_sm1_dispatch_i_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_i_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     if(SM_EVENT_STATUS_IGNORED == result)
     {
-        tkind_sm1_exit_state1(p_obj);
-        tkind_sm1_rec_log(p_obj, "State1 to State7\n");
-        tkind_sm1_enter_state1(p_obj);
-        tkind_sm1_enter_state7(p_obj);
-        result = SM_EVENT_STATUS_CHANGEDSTATE;
-        tkind_sm1_enter_region2(p_obj);
-        tkind_sm1_enter_region7(p_obj);
+        bool b_is_exit_ok = tkind_sm1_exit_state1(p_obj);
+        
+        if(b_is_exit_ok)
+        {
+            tkind_sm1_rec_log(p_obj, "State1 to State7\n");
+            tkind_sm1_enter_state1(p_obj);
+            tkind_sm1_enter_region2(p_obj);
+            tkind_sm1_enter_region7(p_obj);
+            tkind_sm1_enter_state7(p_obj);
+            result = SM_EVENT_STATUS_CHANGEDSTATE;
+        }
+        else
+        {
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+        }
     }
 
     return result;
@@ -2587,8 +4012,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_j_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_j_region5(p_obj);
+    temp_status = tkind_sm1_dispatch_j_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_j_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2603,8 +4037,36 @@ static sm_event_status_t
 tkind_sm1_dispatch_k_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_k_region5(p_obj);
+    temp_status = tkind_sm1_dispatch_k_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_k_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        bool b_is_exit_ok = tkind_sm1_exit_region7(p_obj);
+        
+        if(b_is_exit_ok)
+        {
+            tkind_sm1_rec_log(p_obj, "Local State1 to State10.\n");
+            tkind_sm1_enter_state10(p_obj);
+            tkind_sm1_enter_region8(p_obj);
+            tkind_sm1_enter_region9(p_obj);
+            result = SM_EVENT_STATUS_CHANGEDSTATE;
+        }
+        else
+        {
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+        }
+    }
 
     return result;
 }
@@ -2619,8 +4081,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_l_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_l_region5(p_obj);
+    temp_status = tkind_sm1_dispatch_l_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_l_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2635,8 +4106,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_m_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_m_region5(p_obj);
+    temp_status = tkind_sm1_dispatch_m_region5(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_m_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2651,8 +4131,17 @@ static sm_event_status_t
 tkind_sm1_dispatch_n_state1(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+    sm_event_status_t temp_status = SM_EVENT_STATUS_IGNORED;
+    p_obj->b_stays_inside_region1_state1 = true;
 
-    result = tkind_sm1_dispatch_n_region2(p_obj);
+    temp_status = tkind_sm1_dispatch_n_region2(p_obj);
+    result = sm_event_resolve_status(result, temp_status);
+
+    if(p_obj->b_stays_inside_region1_state1)
+    {
+        temp_status = tkind_sm1_dispatch_n_region7(p_obj);
+        result = sm_event_resolve_status(result, temp_status);
+    }
 
     return result;
 }
@@ -2666,13 +4155,49 @@ tkind_sm1_dispatch_n_state1(tkind_sm1_t* const p_obj)
 static sm_event_status_t
 tkind_sm1_dispatch_o_state1(tkind_sm1_t* const p_obj)
 {
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_o_region7(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        bool b_is_exit_ok = tkind_sm1_exit_state1(p_obj);
+        
+        if(b_is_exit_ok)
+        {
+            tkind_sm1_rec_log(p_obj, "State1 to Choice1\n");
+            tkind_sm1_enter_state1(p_obj);
+            tkind_sm1_enter_region2(p_obj);
+            tkind_sm1_enter_region7(p_obj);
+            tkind_sm1_enter_choice1(p_obj);
+            result = SM_EVENT_STATUS_CHANGEDSTATE;
+        }
+        else
+        {
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+        }
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements Any event handling by the Failure state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_any_failure(tkind_sm1_t* const p_obj)
+{
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state1(p_obj);
-    tkind_sm1_rec_log(p_obj, "State1 to Choice1\n");
+    tkind_sm1_exit_failure(p_obj);
+    tkind_sm1_rec_log(p_obj, "UnexpectedState to State1.\n");
     tkind_sm1_enter_state1(p_obj);
-    tkind_sm1_enter_choice1(p_obj);
     tkind_sm1_enter_region2(p_obj);
+    tkind_sm1_enter_region5(p_obj);
     tkind_sm1_enter_region7(p_obj);
 
     return result;
@@ -2727,9 +4252,18 @@ tkind_sm1_dispatch_c_state3(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_region3(p_obj);
-    tkind_sm1_rec_log(p_obj, "State3 to State5\n");
-    tkind_sm1_enter_state5(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_region3(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State3 to State5\n");
+        tkind_sm1_enter_state5(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2777,10 +4311,19 @@ tkind_sm1_dispatch_f_state4(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state4(p_obj);
-    tkind_sm1_rec_log(p_obj, "State4 to State6\n");
-    tkind_sm1_enter_state4(p_obj);
-    tkind_sm1_enter_state6(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state4(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State4 to State6\n");
+        tkind_sm1_enter_state4(p_obj);
+        tkind_sm1_enter_state6(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2844,9 +4387,18 @@ tkind_sm1_dispatch_d_state5(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_region3(p_obj);
-    tkind_sm1_rec_log(p_obj, "State5 to State3\n");
-    tkind_sm1_enter_region3(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_region3(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State5 to State3\n");
+        tkind_sm1_enter_region3(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2862,9 +4414,18 @@ tkind_sm1_dispatch_e_state5(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_region2(p_obj);
-    tkind_sm1_rec_log(p_obj, "State5 to State1\n");
-    tkind_sm1_enter_region2(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_region2(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State5 to State1\n");
+        tkind_sm1_enter_region2(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2880,10 +4441,19 @@ tkind_sm1_dispatch_n_state5(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state3(p_obj);
-    tkind_sm1_rec_log(p_obj, "State5 to State6\n");
-    tkind_sm1_enter_state4(p_obj);
-    tkind_sm1_enter_state6(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state3(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State5 to State6\n");
+        tkind_sm1_enter_state4(p_obj);
+        tkind_sm1_enter_state6(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2899,17 +4469,26 @@ tkind_sm1_dispatch_g_state6(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state4(p_obj);
-    tkind_ctest_t * p_context = p_obj->p_context;
-    fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
-    tkind_ctest_g_t * p_g_args = &p_context->event_pool.g_args[event_index];
-    uint16_t u16_param = p_g_args->u16_param;
-    char char_param = p_g_args->char_param;
-    tkind_sm1_rec_log_u16_char(p_obj, 
-        "State6 to State4, u16=%d, char=%c\n", 
-        u16_param, char_param);
-    tkind_sm1_enter_state4(p_obj);
-    tkind_sm1_enter_region4(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state4(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_ctest_t * p_context = p_obj->p_context;
+        fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
+        tkind_ctest_g_t * p_g_args = &p_context->event_pool.g_args[event_index];
+        uint16_t u16_param = p_g_args->u16_param;
+        char char_param = p_g_args->char_param;
+        tkind_sm1_rec_log_u16_char(p_obj, 
+            "State6 to State4, u16=%d, char=%c\n", 
+            u16_param, char_param);
+        tkind_sm1_enter_state4(p_obj);
+        tkind_sm1_enter_region4(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -2925,17 +4504,26 @@ tkind_sm1_dispatch_h_state6(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state1(p_obj);
-    tkind_ctest_t * p_context = p_obj->p_context;
-    fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
-    tkind_ctest_h_t * p_h_args = &p_context->event_pool.h_args[event_index];
-    double param1 = p_h_args->param1;
-    tkind_sm1_rec_log_dbl(p_obj, 
-        "State6 to State1, param = %.1f\n", param1);
-    tkind_sm1_enter_state1(p_obj);
-    tkind_sm1_enter_region2(p_obj);
-    tkind_sm1_enter_region5(p_obj);
-    tkind_sm1_enter_region7(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state1(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_ctest_t * p_context = p_obj->p_context;
+        fifo_size_t event_index = p_context->event_pool.fetched_event.event_index;
+        tkind_ctest_h_t * p_h_args = &p_context->event_pool.h_args[event_index];
+        double param1 = p_h_args->param1;
+        tkind_sm1_rec_log_dbl(p_obj, 
+            "State6 to State1, param = %.1f\n", param1);
+        tkind_sm1_enter_state1(p_obj);
+        tkind_sm1_enter_region2(p_obj);
+        tkind_sm1_enter_region5(p_obj);
+        tkind_sm1_enter_region7(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -3023,6 +4611,33 @@ tkind_sm1_dispatch_j_state7(tkind_sm1_t* const p_obj)
 }
 
 /**
+ * @brief Implements j event handling by the State8 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_j_state8(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
+
+    bool b_is_exit_ok = tkind_sm1_exit_state8(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State8 to State7\n");
+        tkind_sm1_enter_state7(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
+
+    return result;
+}
+
+/**
  * @brief Implements k event handling by the State8 state of the sm1 state
  * machine.
  * @param [in] p_obj The pointer to the self object.
@@ -3065,12 +4680,21 @@ tkind_sm1_dispatch_m_state8(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state1(p_obj);
-    tkind_sm1_rec_log(p_obj, "State8 to State1\n");
-    tkind_sm1_enter_state1(p_obj);
-    tkind_sm1_enter_region2(p_obj);
-    tkind_sm1_enter_region5(p_obj);
-    tkind_sm1_enter_region7(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state1(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State8 to State1\n");
+        tkind_sm1_enter_state1(p_obj);
+        tkind_sm1_enter_region2(p_obj);
+        tkind_sm1_enter_region5(p_obj);
+        tkind_sm1_enter_region7(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -3102,10 +4726,19 @@ tkind_sm1_dispatch_k_state9(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state8(p_obj);
-    tkind_sm1_rec_log(p_obj, "State9 to State8\n");
-    tkind_sm1_enter_state8(p_obj);
-    tkind_sm1_enter_region6(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state8(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State9 to State8\n");
+        tkind_sm1_enter_state8(p_obj);
+        tkind_sm1_enter_region6(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
 
     return result;
 }
@@ -3121,12 +4754,396 @@ tkind_sm1_dispatch_l_state9(tkind_sm1_t* const p_obj)
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
-    tkind_sm1_exit_state1(p_obj);
-    tkind_sm1_rec_log(p_obj, "State9 to State1\n");
-    tkind_sm1_enter_state1(p_obj);
-    tkind_sm1_enter_region2(p_obj);
-    tkind_sm1_enter_region5(p_obj);
-    tkind_sm1_enter_region7(p_obj);
+    bool b_is_exit_ok = tkind_sm1_exit_state1(p_obj);
+    
+    if(b_is_exit_ok)
+    {
+        tkind_sm1_rec_log(p_obj, "State9 to State1\n");
+        tkind_sm1_enter_state1(p_obj);
+        tkind_sm1_enter_region2(p_obj);
+        tkind_sm1_enter_region5(p_obj);
+        tkind_sm1_enter_region7(p_obj);
+    }
+    else
+    {
+        tkind_sm1_enter_failure(p_obj);
+        result = SM_EVENT_STATUS_SAFESTATE;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements a event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_a_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_a_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements b event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_b_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_b_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements c event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_c_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_c_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        tkind_sm1_rec_log(p_obj, "Internal transition in State10 on c event\n");
+        result = SM_EVENT_STATUS_SAMESTATE;
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements d event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_d_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_d_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        if(p_obj->b_test_condition)
+        {
+            tkind_sm1_rec_log(p_obj, "Internal transition in State10 on d event\n");
+            result = SM_EVENT_STATUS_SAMESTATE;
+        }
+        else
+        {
+            result = SM_EVENT_STATUS_IGNORED;
+        }
+        
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements e event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_e_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_e_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements f event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_f_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_f_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements g event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_g_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_g_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements h event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_h_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_h_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements i event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_i_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_i_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements j event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_j_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_j_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements k event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_k_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_k_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements l event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_l_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_l_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements m event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_m_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_m_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements n event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_n_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_n_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements o event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_o_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_IGNORED;
+
+    result = tkind_sm1_dispatch_o_region8(p_obj);
+
+    if(SM_EVENT_STATUS_IGNORED == result)
+    {
+        result = tkind_sm1_dispatch_any_state10(p_obj);
+    }
+
+    return result;
+}
+
+/**
+ * @brief Implements Any event handling by the State10 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_any_state10(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_SAMESTATE;
+
+    tkind_sm1_rec_log(p_obj, "Internal transition in State10 on all events\n");
+
+    return result;
+}
+
+/**
+ * @brief Implements c event handling by the State11 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_c_state11(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
+
+    tkind_sm1_exit_state11(p_obj);
+    tkind_sm1_rec_log(p_obj, "State11 to State12\n");
+    tkind_sm1_enter_state12(p_obj);
+
+    return result;
+}
+
+/**
+ * @brief Implements Any event handling by the State11 state of the sm1 state
+ * machine.
+ * @param [in] p_obj The pointer to the self object.
+ * @return the event dispatch status.
+ */
+static sm_event_status_t
+tkind_sm1_dispatch_any_state11(tkind_sm1_t* const p_obj)
+{
+    sm_event_status_t result = SM_EVENT_STATUS_SAMESTATE;
+
+    tkind_sm1_rec_log(p_obj, "Internal transition in State11 on all events\n");
 
     return result;
 }
@@ -3150,8 +5167,18 @@ tkind_sm1_enter_choice1(tkind_sm1_t* const p_obj)
     }
     else
     {
-        tkind_sm1_rec_log(p_obj, "Choice1 to State1\n");
-        tkind_sm1_enter_region5(p_obj);
+        bool b_is_exit_ok = tkind_sm1_exit_region5(p_obj);
+        
+        if(b_is_exit_ok)
+        {
+            tkind_sm1_rec_log(p_obj, "Choice1 to State1\n");
+            tkind_sm1_enter_region5(p_obj);
+        }
+        else
+        {
+            tkind_sm1_enter_failure(p_obj);
+            result = SM_EVENT_STATUS_SAFESTATE;
+        }
     }
     
     return result;

@@ -227,6 +227,9 @@ extern "C" {
          */
         TKIND_SM1_STATE1,
         /**
+         */
+        TKIND_SM1_FAILURE,
+        /**
          * @brief The number of all substates of Region1 Region of sm1
          * StateMachine.
          */
@@ -424,6 +427,11 @@ extern "C" {
          */
         tkind_sm1_region1_t             region1;
         /**
+         * @brief Used for resolution of conflicting State1 state subregion
+         * transitions.
+         */
+        bool                            b_stays_inside_region1_state1;
+        /**
          */
         tkind_sm1_region2_t             region2;
         /**
@@ -470,6 +478,12 @@ extern "C" {
         TKIND_CTEST_B,
         /**
          */
+        TKIND_CTEST_K,
+        /**
+         */
+        TKIND_CTEST_D,
+        /**
+         */
         TKIND_CTEST_A,
         /**
          */
@@ -480,9 +494,6 @@ extern "C" {
         /**
          */
         TKIND_CTEST_E,
-        /**
-         */
-        TKIND_CTEST_D,
         /**
          */
         TKIND_CTEST_N,
@@ -498,9 +509,6 @@ extern "C" {
         /**
          */
         TKIND_CTEST_M,
-        /**
-         */
-        TKIND_CTEST_K,
         /**
          */
         TKIND_CTEST_L,
@@ -565,6 +573,18 @@ extern "C" {
          */
         event_pool_size_t               b_next_events[TKIND_CTEST_B_CNT];
         /**
+         * @brief The array of the events that follow any k event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_K] object.
+         */
+        event_pool_size_t               k_next_events[TKIND_CTEST_K_CNT];
+        /**
+         * @brief The array of the events that follow any d event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_D] object.
+         */
+        event_pool_size_t               d_next_events[TKIND_CTEST_D_CNT];
+        /**
          * @brief The array of the events that follow any a event in the event
          * pool sequence.
          * @details It is referenced by the fifo_pool[TKIND_CTEST_A] object.
@@ -588,12 +608,6 @@ extern "C" {
          * @details It is referenced by the fifo_pool[TKIND_CTEST_E] object.
          */
         event_pool_size_t               e_next_events[TKIND_CTEST_E_CNT];
-        /**
-         * @brief The array of the events that follow any d event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_D] object.
-         */
-        event_pool_size_t               d_next_events[TKIND_CTEST_D_CNT];
         /**
          * @brief The array of the events that follow any n event in the event
          * pool sequence.
@@ -634,12 +648,6 @@ extern "C" {
          * @details It is referenced by the fifo_pool[TKIND_CTEST_M] object.
          */
         event_pool_size_t               m_next_events[TKIND_CTEST_M_CNT];
-        /**
-         * @brief The array of the events that follow any k event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_K] object.
-         */
-        event_pool_size_t               k_next_events[TKIND_CTEST_K_CNT];
         /**
          * @brief The array of the events that follow any l event in the event
          * pool sequence.
