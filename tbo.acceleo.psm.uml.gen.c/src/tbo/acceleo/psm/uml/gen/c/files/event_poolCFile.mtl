@@ -5,6 +5,7 @@
 [module event_poolCFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
 [import tbo::acceleo::psm::uml::gen::c::common::documentation /]
+[import tbo::acceleo::psm::uml::gen::c::request::request /]
 
 [**
  * The template for c file of the event pool handling library.
@@ -26,6 +27,10 @@
  * the program to normal state) from being enqueued. In case all event types
  * of a single state machine hold no additional data, this module contains all
  * logic that is enough to implement a complete event pool for it.
+[if (request_include_generated_note())]
+ *
+[documentation_generated_note(0)/]
+[/if]
  */
 
 /*******************************************************************************

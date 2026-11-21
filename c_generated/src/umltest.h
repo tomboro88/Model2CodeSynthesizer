@@ -4,6 +4,8 @@
  * @brief Top level module of the model.
  * @details Contains two example subpackages: Tkind and TJunction.
  * 
+ * @note Automatically generated code by Model2CodeSynthesizer
+ * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef UMLTEST_H

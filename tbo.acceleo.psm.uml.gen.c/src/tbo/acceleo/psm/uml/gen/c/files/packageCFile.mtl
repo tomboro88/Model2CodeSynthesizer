@@ -30,11 +30,14 @@
    non_public_bodies_visibility : Set(VisibilityKind) = 
                                         Set{VisibilityKind::_package,
                                             VisibilityKind::private,
-                                            VisibilityKind::protected};}]
+                                            VisibilityKind::protected};
+   generated_note : String = if request_include_generated_note()
+       then utils_newline() + request_generated_note() else '' endif}]
 
 [file (get_package_c_qualified_path(aPackage), false, 'UTF-8')]
-[documentationCFile('The ' + aPackage.name + ' package source file.' 
- + utils_newline())/]
+[documentationCFile('The ' + aPackage.name + ' package source file.'
+ + utils_newline()
+ + generated_note)/]
 
 /*******************************************************************************
  *

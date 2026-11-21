@@ -5,6 +5,7 @@
 [module fifoHFile('http://www.eclipse.org/uml2/5.0.0/UML')]
 
 [import tbo::acceleo::psm::uml::gen::c::common::documentation /]
+[import tbo::acceleo::psm::uml::gen::c::request::request /]
 
 [**
  * The template for header file of the fifo package.
@@ -26,6 +27,9 @@
  *     fifo_t fifo_obj;
  * };
  *
+[if (request_include_generated_note())]
+[documentation_generated_note(0)/]
+[/if]
  */
 
 #ifndef FIFO_H

@@ -1013,6 +1013,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
  '@note Automatically generated code by Model2CodeSynthesizer' 
  + ' (github.com/tomboro88/Model2CodeSynthesizer).'/]
 
+[query public request_include_generated_note(traceabilityContext:OclAny)
+ : Boolean = getProperty('include_generated_note').toBoolean()/]
+
 [query public request_is_call_event_with_params(anEvent:Event) : Boolean = 
     if anEvent.oclIsKindOf(CallEvent) 
     then (not anEvent.oclAsType(CallEvent).operation.oclIsUndefined())

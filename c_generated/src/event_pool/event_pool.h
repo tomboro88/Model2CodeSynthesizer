@@ -3,6 +3,9 @@
  *
  * @brief Header a generic module used to manage multiple event
  * queues holding data of different types, as if they were in one queue.
+ *
+ * @note Automatically generated code by Model2CodeSynthesizer
+ * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef EVENT_POOL_H_

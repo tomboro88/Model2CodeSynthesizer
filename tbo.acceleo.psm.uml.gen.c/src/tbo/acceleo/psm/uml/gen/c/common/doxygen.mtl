@@ -200,6 +200,9 @@
 [if (elementComments.size()>0)]
 [elementComments/][doxygen_line_prefix('')/]
 [/if]
+[if (request_include_generated_note())]
+[doxygen_doc_string(request_generated_note(), line_width)/]
+[/if]
 [/template]
 
 [**
