@@ -4,8 +4,6 @@
  * @brief Package with state machines with callevents being processed
  * synchronously with the operation calls.
  * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef SYNC_H

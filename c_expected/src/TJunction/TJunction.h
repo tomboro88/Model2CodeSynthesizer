@@ -8,8 +8,6 @@
  * used for static evaluation of a sequence of guard conditions before any
  * transition is started.
  * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef TJUNCTION_H

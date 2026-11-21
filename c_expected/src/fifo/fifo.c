@@ -3,9 +3,6 @@
  * @brief An implementation of a FIFO queue based on array indexes.
  * @details The module only computes the indexes of the tail and head elements
  * in an array of a given size.
- * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 /*******************************************************************************

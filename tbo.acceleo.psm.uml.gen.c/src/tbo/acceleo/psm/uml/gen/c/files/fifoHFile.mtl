@@ -26,7 +26,6 @@
  *     fifo_t fifo_obj;
  * };
  *
-[documentation_generated_note(0)/]
  */
 
 #ifndef FIFO_H

@@ -4,8 +4,6 @@
  * A Package containing test diagrams for different kinds of transitions:
  * internal, external and local.
  * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef TKIND_H

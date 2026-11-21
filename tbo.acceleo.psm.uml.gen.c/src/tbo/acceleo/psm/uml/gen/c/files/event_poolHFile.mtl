@@ -18,8 +18,6 @@
  *
  * @brief Header a generic module used to manage multiple event
  * queues holding data of different types, as if they were in one queue.
- *
-[documentation_generated_note(0)/]
  */
 
 #ifndef EVENT_POOL_H_

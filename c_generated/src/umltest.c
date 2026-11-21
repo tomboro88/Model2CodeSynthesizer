@@ -3,8 +3,6 @@
  * 
  * @brief The umltest package source file.
  * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 /*******************************************************************************

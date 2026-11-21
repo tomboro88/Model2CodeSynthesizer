@@ -4,8 +4,6 @@
  * @brief Package with standalone state machine not having it's parent context
  * class.
  * 
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef STANDALONE_H

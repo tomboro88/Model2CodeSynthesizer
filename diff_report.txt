@@ -48,17 +48,15 @@
 [32m+[m[32m)[m
 [1mdiff --git a/c_generated/src/SafeSm/SafeSm.c b/c_generated/src/SafeSm/SafeSm.c[m
 [1mnew file mode 100644[m
-[1mindex 0000000..61d6667[m
+[1mindex 0000000..40f13ab[m
 [1m--- /dev/null[m
 [1m+++ b/c_generated/src/SafeSm/SafeSm.c[m
-[36m@@ -0,0 +1,788 @@[m
+[36m@@ -0,0 +1,786 @@[m
 [32m+[m[32m/**[m
 [32m+[m[32m * @file[m[41m [m
 [32m+[m[32m *[m[41m [m
 [32m+[m[32m * @brief The SafeSm package source file.[m
 [32m+[m[32m *[m[41m [m
-[32m+[m[32m * @note Automatically generated code by Model2CodeSynthesizer[m
-[32m+[m[32m * (github.com/tomboro88/Model2CodeSynthesizer).[m
 [32m+[m[32m */[m
 [32m+[m
 [32m+[m[32m/*******************************************************************************[m
@@ -842,15 +840,13 @@
 [32m+[m[32m/*** end of file ***/[m
 [1mdiff --git a/c_generated/src/SafeSm/SafeSm.h b/c_generated/src/SafeSm/SafeSm.h[m
 [1mnew file mode 100644[m
-[1mindex 0000000..d46eb01[m
+[1mindex 0000000..150030e[m
 [1m--- /dev/null[m
 [1m+++ b/c_generated/src/SafeSm/SafeSm.h[m
-[36m@@ -0,0 +1,202 @@[m
+[36m@@ -0,0 +1,200 @@[m
 [32m+[m[32m/**[m
 [32m+[m[32m * @file[m[41m [m
 [32m+[m[32m *[m[41m [m
-[32m+[m[32m * @note Automatically generated code by Model2CodeSynthesizer[m
-[32m+[m[32m * (github.com/tomboro88/Model2CodeSynthesizer).[m
 [32m+[m[32m */[m
 [32m+[m
 [32m+[m[32m#ifndef SAFESM_H[m

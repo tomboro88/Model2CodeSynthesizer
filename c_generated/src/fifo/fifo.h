@@ -12,8 +12,6 @@
  *     fifo_t fifo_obj;
  * };
  *
- * @note Automatically generated code by Model2CodeSynthesizer
- * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 #ifndef FIFO_H

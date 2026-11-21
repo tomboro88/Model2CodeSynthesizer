@@ -34,8 +34,7 @@
 
 [file (get_package_c_qualified_path(aPackage), false, 'UTF-8')]
 [documentationCFile('The ' + aPackage.name + ' package source file.' 
- + utils_newline() + utils_newline() 
- + request_generated_note())/]
+ + utils_newline())/]
 
 /*******************************************************************************
  *
