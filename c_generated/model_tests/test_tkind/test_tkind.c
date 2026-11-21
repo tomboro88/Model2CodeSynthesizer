@@ -40,6 +40,8 @@ extern float tkind_ctest_get_flt_from_uint(tkind_cbase2_t* const p_obj);
  * Private function prototypes.
  *
  ******************************************************************************/
+static void test_tkind_a_state2_sm_exit_region1(test_tkind_a_state2_sm_t* \
+                                                /**/const p_obj);
 
 static sm_event_status_t test_tkind_a_state2_sm_dispatch_rec_call\
        (test_tkind_a_state2_sm_t* const p_obj);
@@ -181,6 +183,62 @@ test_tkind_a_state2_sm_enter_region1(test_tkind_a_state2_sm_t* const p_obj)
     p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL2;
     test_tkind_a_state2_sm_enter_state10(p_obj);
     test_tkind_a_state2_sm_enter_region1(p_obj);
+}
+
+/**
+ * @brief Exits the State10 state of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+test_tkind_a_state2_sm_exit_state10(test_tkind_a_state2_sm_t* const p_obj)
+{
+    test_tkind_a_state2_sm_exit_region1(p_obj);
+    // Mark the state has already exited.
+    p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL2;
+}
+
+/**
+ * @brief Exits the effect_bhv state of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+test_tkind_a_state2_sm_exit_effect_bhv(test_tkind_a_state2_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL1;
+}
+
+/**
+ * @brief Exits the exit_bhv state of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+test_tkind_a_state2_sm_exit_exit_bhv(test_tkind_a_state2_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL1;
+}
+
+/**
+ * @brief Exits the init state of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+test_tkind_a_state2_sm_exit_init(test_tkind_a_state2_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL1;
+}
+
+/**
+ * @brief Exits the entry_bhv state of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static inline void
+test_tkind_a_state2_sm_exit_entry_bhv(test_tkind_a_state2_sm_t* const p_obj)
+{
+    // Mark the state has already exited.
+    p_obj->region1 = TEST_TKIND_A_STATE2_SM_INITIAL1;
 }
 
 /*******************************************************************************
@@ -435,6 +493,32 @@ test_tkind_ctest_fixture_release_event(test_tkind_ctest_fixture_t* const p_obj)
  *
  ******************************************************************************/
 /**
+ * @brief Exits the Region1 region of the a_state2_sm state machine.
+ * @param [in] p_obj The pointer to the self object.
+ */
+static void
+test_tkind_a_state2_sm_exit_region1(test_tkind_a_state2_sm_t* const p_obj)
+{
+    switch(p_obj->region1)
+    {
+        case TEST_TKIND_A_STATE2_SM_EFFECT_BHV:
+            test_tkind_a_state2_sm_exit_effect_bhv(p_obj);
+            break;
+        case TEST_TKIND_A_STATE2_SM_EXIT_BHV:
+            test_tkind_a_state2_sm_exit_exit_bhv(p_obj);
+            break;
+        case TEST_TKIND_A_STATE2_SM_INIT:
+            test_tkind_a_state2_sm_exit_init(p_obj);
+            break;
+        case TEST_TKIND_A_STATE2_SM_ENTRY_BHV:
+            test_tkind_a_state2_sm_exit_entry_bhv(p_obj);
+            break;
+        default:
+            break;
+    }
+}
+
+/**
  * @brief Implements rec_call event handling by the a_state2_sm state machine.
  * @param [in] p_obj The pointer to the self object.
  * return the event dispatch status.
@@ -478,8 +562,6 @@ test_tkind_a_state2_sm_dispatch_rec_call_region1(test_tkind_a_state2_sm_t* \
             break;
         case TEST_TKIND_A_STATE2_SM_INIT:
             result = test_tkind_a_state2_sm_dispatch_rec_call_init(p_obj);
-            break;
-        case TEST_TKIND_A_STATE2_SM_ENTRY_BHV:
             break;
         default:
             break;
@@ -540,6 +622,7 @@ test_tkind_a_state2_sm_dispatch_rec_call_effect_bhv(test_tkind_a_state2_sm_t* \
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
+    test_tkind_a_state2_sm_exit_effect_bhv(p_obj);
     TEST_ASSERT_EQUAL_STRING( "Enter State3\n", p_str);
     test_tkind_a_state2_sm_enter_entry_bhv(p_obj);
 
@@ -558,6 +641,7 @@ test_tkind_a_state2_sm_dispatch_rec_call_exit_bhv(test_tkind_a_state2_sm_t* \
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
+    test_tkind_a_state2_sm_exit_exit_bhv(p_obj);
     TEST_ASSERT_EQUAL_STRING("State2 to State3\n", p_str);
     test_tkind_a_state2_sm_enter_effect_bhv(p_obj);
 
@@ -576,6 +660,7 @@ test_tkind_a_state2_sm_dispatch_rec_call_init(test_tkind_a_state2_sm_t* \
 {
     sm_event_status_t result = SM_EVENT_STATUS_CHANGEDSTATE;
 
+    test_tkind_a_state2_sm_exit_init(p_obj);
     TEST_ASSERT_EQUAL_STRING("Exit State2\n", p_str);
     test_tkind_a_state2_sm_enter_exit_bhv(p_obj);
 

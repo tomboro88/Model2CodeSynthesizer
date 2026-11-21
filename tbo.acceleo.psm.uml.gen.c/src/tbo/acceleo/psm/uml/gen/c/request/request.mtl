@@ -365,7 +365,8 @@
 [query public request_event_needs_defer(aClass : Class, evt : Event) : Boolean 
 = not aClass.ownedBehavior.eAllContents(Transition)
 ->select(t : Transition | (not t.effect.oclIsUndefined()) and 
-    t.effect.oclIsKindOf(OpaqueBehavior) and (t.trigger.event->includes(evt))
+    t.effect.oclIsKindOf(OpaqueBehavior)
+    and (t.trigger->exists(tr:Trigger|tr.request_trigger_matches(evt)))
           and (let ob : OpaqueBehavior = t.effect.oclAsType(OpaqueBehavior) in
                ob._body->size() = 1 and ob._body->first() = 'defer')
   )->isEmpty()/]
@@ -413,7 +414,7 @@
                             ->addAll(state_events) in
     let sm_events:OrderedSet(Event) = 
         aRegion.containingStateMachine().request_sm_events() in
-    if reg_events->exists(e:Event|e.oclIsUndefined())
+    if reg_events->exists(e:Event|e.oclIsKindOf(AnyReceiveEvent))
     then sm_events
     else request_elements_sorted(reg_events)
     endif /]
@@ -433,20 +434,32 @@
     let sorted_events : OrderedSet(Event) = 
         request_elements_sorted(events->reject(e:Event|e.oclIsUndefined()))
          ->filter(Event) in
-    if events->exists(e:Event|e.oclIsUndefined()) then 
-        sorted_events->append(null)
-    else sorted_events endif/]
+    sorted_events/]
 
 [query public request_state_handles_event(aState:State, anEvent : Event) 
  : Boolean =
     aState.request_vertex_events()->includes(anEvent)/]
 
-[query public request_state_handles_any_event(aState:State) 
+[query public request_vertex_handles_any_event(aVertex:Vertex)
  : Boolean =
-    aState.request_vertex_events()
-                      ->exists(e:Event|e.oclIsUndefined())/]
+    aVertex.request_vertex_events()
+                      ->exists(e:Event|e.oclIsKindOf(AnyReceiveEvent))/]
 
-[query public request_vertex_region(v : Vertex) : Region = 
+[query public request_vertex_any_event(aVertex:Vertex) : Event =
+    aVertex.request_vertex_events()
+                ->any(e:Event|e.oclIsKindOf(AnyReceiveEvent))/]
+
+[**
+ * @brief Checks if the trigger accepts the given event. An AnyReceiveEvent
+ * matches every trigger with an AnyReceiveEvent, regardless of which
+ * AnyReceiveEvent element of the model it is.
+ */]
+[query public request_trigger_matches(tr:Trigger, anEvent:Event) : Boolean =
+    if anEvent.oclIsKindOf(AnyReceiveEvent)
+    then tr.event.oclIsKindOf(AnyReceiveEvent)
+    else tr.event = anEvent endif/]
+
+[query public request_vertex_region(v : Vertex) : Region =
   v.container/]
 
 [**
@@ -456,16 +469,19 @@
 [query public request_vertex_regions(v : Vertex) : OrderedSet(Region) = 
   v.container.request_parent_regions()->append(v.container)/]
 
-[query public request_classifier_events(bc : BehavioredClassifier): OrderedSet(Event)
- = bc.eAllContents(Trigger)
-                          ->select(t : Trigger | (not t.event.oclIsUndefined()))
-                          .event->asOrderedSet()/]
+[query public request_classifier_events(bc : BehavioredClassifier): 
+OrderedSet(Event)
+ = request_elements_sorted(bc.eAllContents(Trigger)
+                      ->select(t : Trigger | (not (t.event.oclIsUndefined() 
+                                      or t.event.oclIsKindOf(AnyReceiveEvent))))
+                          .event->asSet())/]
 
 [query public request_sm_events(sm : StateMachine): OrderedSet(Event)
  = request_elements_sorted(sm.eAllContents(Transition)
                       ->select(t : Transition | t.containingStateMachine() = sm)
                       ->collect(t:Transition|t.trigger)->flatten()
-                      ->select(tr:Trigger|not tr.event.oclIsUndefined())
+                      ->select(tr:Trigger|not (tr.event.oclIsUndefined() 
+                                     or tr.event.oclIsKindOf(AnyReceiveEvent)))
                       ->collect(tr:Trigger|tr.event)->asSet())
                       /]
 
@@ -473,7 +489,7 @@
     r.request_region_states()
          ->select(s:State|r.request_region_events()
          ->removeAll(s.request_vertex_events())->notEmpty()
-         and s.request_state_handles_any_event())/]
+         and s.request_vertex_handles_any_event())/]
 
 [query public request_sm_context(sm: StateMachine) : 
   BehavioredClassifier = if sm._context.oclIsUndefined() then sm 
@@ -624,6 +640,17 @@ OrderedSet(Region)
     ->asOrderedSet()/]
 
 [**
+ * @brief Returns the transitions of the state machine that have a trigger
+ * without an event. Such a trigger is not valid in UML. A transition triggered
+ * by any event must use an AnyReceiveEvent.
+ */]
+[query public request_sm_eventless_trigger_transitions(sm:StateMachine):
+  OrderedSet(Transition) =
+ sm.request_state_machine_transitions()
+    ->select(t:Transition|
+             t.trigger->exists(tr:Trigger|tr.event.oclIsUndefined()))/]
+
+[**
  *@brief Returns the region that should handle the effect behavior of the 
  *       transition. This is the topmost region that will be reached
  *       during transition traversal.
@@ -686,7 +713,8 @@ OrderedSet(Region)
               anEvent:Event):
   OrderedSet(Transition) = 
   transitions->select(t:Transition|t.trigger->notEmpty() 
-               and t.trigger->collect(tr:Trigger|tr.event)->includes(anEvent))/]
+               and t.trigger->exists(tr:Trigger|
+                                     tr.request_trigger_matches(anEvent)))/]
 
 [query public request_is_top_level_region(aRegion : Region)
  : Boolean =
@@ -746,12 +774,14 @@ OrderedSet(Region)
 */]
 [query public request_is_event_transition(t:Transition, anEvent: Event, 
                                           guardS : String)
- : Boolean = (t.trigger.event->includes(anEvent)
+ : Boolean = (t.trigger->exists(tr:Trigger|
+                                     tr.request_trigger_matches(anEvent))
               and t.request_matching_guard(guardS) 
               and not t.target.request_is_static_junction())
            or (t.target.request_is_static_junction()
                and t.request_match_if_no_guard(guardS)
-               and ((t.trigger.event->includes(anEvent) 
+               and ((t.trigger->exists(tr:Trigger|
+                                       tr.request_trigger_matches(anEvent))
                      and t.target.request_outgoing_transitions(true, null, 
                               t.request_any_guard_if_match(guardS))->notEmpty()
                     ) or
@@ -1000,8 +1030,9 @@ let exitState : State = request_transition_exit_state(aTransition) in
           ->exists(t:Transition|
                    t.source.request_parent_states()->includes(aState) 
            and ((t.target.request_parent_states()->excludes(aState) 
-                and t.trigger->exists(tr:Trigger|tr.event = anEvent 
-                                        or tr.event.oclIsUndefined()))
+                and t.trigger->exists(tr:Trigger|
+                                   tr.request_trigger_matches(anEvent)
+                                   or tr.event.oclIsKindOf(AnyReceiveEvent)))
                 or t.source.container.request_parent_regions()
                    ->exists(r:Region|r.subvertex->selectByKind(State)
                     ->exists(s:State|s.request_is_unexpected_state()

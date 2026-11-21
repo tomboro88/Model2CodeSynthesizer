@@ -469,63 +469,54 @@ extern "C" {
     {
         /**
          */
-        TKIND_CTEST_I,
-        /**
-         */
-        TKIND_CTEST_O,
+        TKIND_CTEST_A,
         /**
          */
         TKIND_CTEST_B,
         /**
          */
-        TKIND_CTEST_K,
+        TKIND_CTEST_C,
         /**
          */
         TKIND_CTEST_D,
         /**
          */
-        TKIND_CTEST_A,
-        /**
-         */
-        TKIND_CTEST_C,
+        TKIND_CTEST_E,
         /**
          */
         TKIND_CTEST_F,
         /**
          */
-        TKIND_CTEST_E,
-        /**
-         */
-        TKIND_CTEST_N,
+        TKIND_CTEST_G,
         /**
          */
         TKIND_CTEST_H,
         /**
          */
-        TKIND_CTEST_G,
+        TKIND_CTEST_I,
         /**
          */
         TKIND_CTEST_J,
         /**
          */
-        TKIND_CTEST_M,
+        TKIND_CTEST_K,
         /**
          */
         TKIND_CTEST_L,
+        /**
+         */
+        TKIND_CTEST_M,
+        /**
+         */
+        TKIND_CTEST_N,
+        /**
+         */
+        TKIND_CTEST_O,
         /**
          * @brief The number of all events handled by ctest Class.
          */
         TKIND_CTEST_EVENT_COUNT
     };
-    
-    /**
-     * @brief The type used to store the parameters passed to the h call event.
-     */
-    typedef struct{
-        /**
-         */
-        double                          param1;
-    }tkind_ctest_h_t;
     
     /**
      * @brief The type used to store the parameters passed to the g call event.
@@ -538,6 +529,15 @@ extern "C" {
          */
         char                            char_param;
     }tkind_ctest_g_t;
+    
+    /**
+     * @brief The type used to store the parameters passed to the h call event.
+     */
+    typedef struct{
+        /**
+         */
+        double                          param1;
+    }tkind_ctest_h_t;
     
     /**
      * @brief The type used to store the event pool of all events accepted by
@@ -555,17 +555,11 @@ extern "C" {
          */
         event_pool_fifo_t               fifo_pool[TKIND_CTEST_EVENT_COUNT];
         /**
-         * @brief The array of the events that follow any i event in the event
+         * @brief The array of the events that follow any a event in the event
          * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_I] object.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_A] object.
          */
-        event_pool_size_t               i_next_events[TKIND_CTEST_I_CNT];
-        /**
-         * @brief The array of the events that follow any o event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_O] object.
-         */
-        event_pool_size_t               o_next_events[TKIND_CTEST_O_CNT];
+        event_pool_size_t               a_next_events[TKIND_CTEST_A_CNT];
         /**
          * @brief The array of the events that follow any b event in the event
          * pool sequence.
@@ -573,11 +567,11 @@ extern "C" {
          */
         event_pool_size_t               b_next_events[TKIND_CTEST_B_CNT];
         /**
-         * @brief The array of the events that follow any k event in the event
+         * @brief The array of the events that follow any c event in the event
          * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_K] object.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_C] object.
          */
-        event_pool_size_t               k_next_events[TKIND_CTEST_K_CNT];
+        event_pool_size_t               c_next_events[TKIND_CTEST_C_CNT];
         /**
          * @brief The array of the events that follow any d event in the event
          * pool sequence.
@@ -585,46 +579,17 @@ extern "C" {
          */
         event_pool_size_t               d_next_events[TKIND_CTEST_D_CNT];
         /**
-         * @brief The array of the events that follow any a event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_A] object.
-         */
-        event_pool_size_t               a_next_events[TKIND_CTEST_A_CNT];
-        /**
-         * @brief The array of the events that follow any c event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_C] object.
-         */
-        event_pool_size_t               c_next_events[TKIND_CTEST_C_CNT];
-        /**
-         * @brief The array of the events that follow any f event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_F] object.
-         */
-        event_pool_size_t               f_next_events[TKIND_CTEST_F_CNT];
-        /**
          * @brief The array of the events that follow any e event in the event
          * pool sequence.
          * @details It is referenced by the fifo_pool[TKIND_CTEST_E] object.
          */
         event_pool_size_t               e_next_events[TKIND_CTEST_E_CNT];
         /**
-         * @brief The array of the events that follow any n event in the event
+         * @brief The array of the events that follow any f event in the event
          * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_N] object.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_F] object.
          */
-        event_pool_size_t               n_next_events[TKIND_CTEST_N_CNT];
-        /**
-         * @brief The array of the events that follow any h event in the event
-         * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_H] object.
-         */
-        event_pool_size_t               h_next_events[TKIND_CTEST_H_CNT];
-        /**
-         * @brief The array of the arguments passed to the corresponding h event
-         * in the event pool sequence.
-         */
-        tkind_ctest_h_t                 h_args[TKIND_CTEST_H_CNT];
+        event_pool_size_t               f_next_events[TKIND_CTEST_F_CNT];
         /**
          * @brief The array of the events that follow any g event in the event
          * pool sequence.
@@ -637,11 +602,40 @@ extern "C" {
          */
         tkind_ctest_g_t                 g_args[TKIND_CTEST_G_CNT];
         /**
+         * @brief The array of the events that follow any h event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_H] object.
+         */
+        event_pool_size_t               h_next_events[TKIND_CTEST_H_CNT];
+        /**
+         * @brief The array of the arguments passed to the corresponding h event
+         * in the event pool sequence.
+         */
+        tkind_ctest_h_t                 h_args[TKIND_CTEST_H_CNT];
+        /**
+         * @brief The array of the events that follow any i event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_I] object.
+         */
+        event_pool_size_t               i_next_events[TKIND_CTEST_I_CNT];
+        /**
          * @brief The array of the events that follow any j event in the event
          * pool sequence.
          * @details It is referenced by the fifo_pool[TKIND_CTEST_J] object.
          */
         event_pool_size_t               j_next_events[TKIND_CTEST_J_CNT];
+        /**
+         * @brief The array of the events that follow any k event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_K] object.
+         */
+        event_pool_size_t               k_next_events[TKIND_CTEST_K_CNT];
+        /**
+         * @brief The array of the events that follow any l event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_L] object.
+         */
+        event_pool_size_t               l_next_events[TKIND_CTEST_L_CNT];
         /**
          * @brief The array of the events that follow any m event in the event
          * pool sequence.
@@ -649,11 +643,17 @@ extern "C" {
          */
         event_pool_size_t               m_next_events[TKIND_CTEST_M_CNT];
         /**
-         * @brief The array of the events that follow any l event in the event
+         * @brief The array of the events that follow any n event in the event
          * pool sequence.
-         * @details It is referenced by the fifo_pool[TKIND_CTEST_L] object.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_N] object.
          */
-        event_pool_size_t               l_next_events[TKIND_CTEST_L_CNT];
+        event_pool_size_t               n_next_events[TKIND_CTEST_N_CNT];
+        /**
+         * @brief The array of the events that follow any o event in the event
+         * pool sequence.
+         * @details It is referenced by the fifo_pool[TKIND_CTEST_O] object.
+         */
+        event_pool_size_t               o_next_events[TKIND_CTEST_O_CNT];
         /**
          * @brief The marker that stores the processing status of the event at
          * the 'first' position.

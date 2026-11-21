@@ -147,7 +147,7 @@ tkind_ctest_start_sm1(p_obj);</body>
                 <language>C</language>
                 <body>tkind_sm1_rec_log(p_obj, &quot;UnexpectedState to State1.\n&quot;);</body>
               </effect>
-              <trigger xmi:type="uml:Trigger" xmi:id="_I-xPcMKOEfGXJLPamao8cA" name=""/>
+              <trigger xmi:type="uml:Trigger" xmi:id="_I-xPcMKOEfGXJLPamao8cA" name="" event="_-pHlAOWREfGcpcne-VvXGQ"/>
             </transition>
             <transition xmi:type="uml:Transition" xmi:id="_QWV3AMRcEfGc4MApn3V7Mg" guard="_ayzCwM9oEfGYIbEdbMhW2Q" source="_5rNl0MKNEfGXJLPamao8cA" target="_xRPncNw4Ee-clukbqF5Mtw">
               <ownedRule xmi:type="uml:Constraint" xmi:id="_ayzCwM9oEfGYIbEdbMhW2Q">
@@ -479,7 +479,7 @@ tkind_ctest_start_sm1(p_obj);</body>
                     <language>C</language>
                     <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State10 on all events\n&quot;);</body>
                   </effect>
-                  <trigger xmi:type="uml:Trigger" xmi:id="_cCWRAMWiEfGHDNhoQlt3uA"/>
+                  <trigger xmi:type="uml:Trigger" xmi:id="_cCWRAMWiEfGHDNhoQlt3uA" event="_-pHlAOWREfGcpcne-VvXGQ"/>
                 </transition>
                 <transition xmi:type="uml:Transition" xmi:id="_s02LwMXMEfGd7vNS87mWiA" kind="internal" source="_iWbaULqCEfGvPeTCLG8jqw" target="_iWbaULqCEfGvPeTCLG8jqw">
                   <effect xmi:type="uml:OpaqueBehavior" xmi:id="_1q18EMXMEfGd7vNS87mWiA">
@@ -509,7 +509,7 @@ tkind_ctest_start_sm1(p_obj);</body>
                         <language>C</language>
                         <body>tkind_sm1_rec_log(p_obj, &quot;Internal transition in State11 on all events\n&quot;);</body>
                       </effect>
-                      <trigger xmi:type="uml:Trigger" xmi:id="_0_Et8MWaEfGHDNhoQlt3uA"/>
+                      <trigger xmi:type="uml:Trigger" xmi:id="_0_Et8MWaEfGHDNhoQlt3uA" event="_-pHlAOWREfGcpcne-VvXGQ"/>
                     </transition>
                     <transition xmi:type="uml:Transition" xmi:id="_ncpxIMWiEfGHDNhoQlt3uA" source="_mWDRkLqCEfGvPeTCLG8jqw" target="_nLGDMLqCEfGvPeTCLG8jqw">
                       <effect xmi:type="uml:OpaqueBehavior" xmi:id="_z6M28MWiEfGHDNhoQlt3uA">
@@ -704,6 +704,7 @@ This is important for critical events, that are sent only occasionally, and cann
       <packagedElement xmi:type="uml:Usage" xmi:id="_YwafsLOaEfGlgZuRKdbkDA" client="_mqb9kEsuEfGsnfpIT_qm-w" supplier="_WLBt0LFVEfGnzrnt2Y_6jw"/>
       <packagedElement xmi:type="uml:Usage" xmi:id="_xrNdULUvEfGjNJ8Dt4HgIw" client="_R9-ngEssEfGsnfpIT_qm-w" supplier="_fpzpcLImEfGmUaMA1853Zw"/>
       <packagedElement xmi:type="uml:Usage" xmi:id="_1mp_MLUvEfGjNJ8Dt4HgIw" client="_R9-ngEssEfGsnfpIT_qm-w" supplier="_kpIDILImEfGmUaMA1853Zw"/>
+      <packagedElement xmi:type="uml:AnyReceiveEvent" xmi:id="_-pHlAOWREfGcpcne-VvXGQ" name="Any"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_tzRuEAHPEfCgXv5ODs4Seg" name="TJunction">
       <ownedComment xmi:type="uml:Comment" xmi:id="_krpNQKU4EfCJwtlh12_YdQ" annotatedElement="_tzRuEAHPEfCgXv5ODs4Seg">
@@ -972,14 +973,14 @@ This is important for critical events, that are sent only occasionally, and cann
                 <body>(void)p_obj;
 printf(&quot;State17 any event internal transition&quot;);</body>
               </effect>
-              <trigger xmi:type="uml:Trigger" xmi:id="_Wsq98McwEfGncOpCbOYlDQ"/>
+              <trigger xmi:type="uml:Trigger" xmi:id="_Wsq98McwEfGncOpCbOYlDQ" event="_egci8OWSEfGcpcne-VvXGQ"/>
             </transition>
             <transition xmi:type="uml:Transition" xmi:id="_6hxT0MdCEfGncOpCbOYlDQ" source="__1fWUAHPEfCgXv5ODs4Seg" target="_-JOBwAHPEfCgXv5ODs4Seg">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_JcSLUMdDEfGncOpCbOYlDQ">
                 <language>C</language>
                 <body>printf(&quot;Junction2 to State1 on any event\n&quot;);</body>
               </effect>
-              <trigger xmi:type="uml:Trigger" xmi:id="_7jz_oMdCEfGncOpCbOYlDQ"/>
+              <trigger xmi:type="uml:Trigger" xmi:id="_7jz_oMdCEfGncOpCbOYlDQ" event="_egci8OWSEfGcpcne-VvXGQ"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="_-JOBwAHPEfCgXv5ODs4Seg" name="State1">
               <exit xmi:type="uml:OpaqueBehavior" xmi:id="_uHz5MLkiEfC-keoHQ33Mgw">
@@ -1237,6 +1238,7 @@ tjunction_jtest_invoke_sm1(p_obj);</body>
           <body>@brief The size of the A event queue. Specified manually in the UML model.</body>
         </ownedComment>
       </packagedElement>
+      <packagedElement xmi:type="uml:AnyReceiveEvent" xmi:id="_egci8OWSEfGcpcne-VvXGQ" name="Any"/>
     </packagedElement>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_XDi8sKU0EfCJFuHNEOD_Ew" name="float"/>
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_ZIVe8KU0EfCJFuHNEOD_Ew" name="bool"/>

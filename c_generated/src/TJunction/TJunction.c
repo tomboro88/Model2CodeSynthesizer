@@ -2379,7 +2379,7 @@ tjunction_sm1_enter_junction2_c_1(tjunction_sm1_t* const p_obj,\
 }
 /**
  * @brief Implements entry of the Junction2 junction Pseudostate of the sm1
- * state machine.
+ * state machine at the Any event.
  * @details Transition sequence: State1, Junction2.
  * @param [in] p_obj The pointer to the self object.
  * @param [out] p_result The pointer to the transition execution result object.

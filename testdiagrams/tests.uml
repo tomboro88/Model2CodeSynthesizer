@@ -20,7 +20,7 @@
                 <body>p_obj->p_context->b_is_completed = false;
 TEST_FAIL_MESSAGE(&quot;Unpredicted event occurred!&quot;);</body>
               </effect>
-              <trigger xmi:type="uml:Trigger" xmi:id="_pkSewMpSEfGvmdHKClnHFg"/>
+              <trigger xmi:type="uml:Trigger" xmi:id="_pkSewMpSEfGvmdHKClnHFg" event="_m3GQgL9hEfG4Rv7UhG7YhA"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="_f2GaUL9eEfG4Rv7UhG7YhA" name="State10">
               <region xmi:type="uml:Region" xmi:id="_gyOEUL9eEfG4Rv7UhG7YhA" name="Region1">

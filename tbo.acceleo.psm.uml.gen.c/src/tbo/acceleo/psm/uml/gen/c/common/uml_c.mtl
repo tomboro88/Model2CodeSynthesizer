@@ -658,7 +658,8 @@ endif
                                       .eContainer(Package).name + '_'
                + aSeq->last().containingStateMachine().name + '_enter_'
                + aSeq->last().target.name 
-               + if b_is_for_event then if anEvent.oclIsUndefined() then '_any' 
+               + if b_is_for_event then
+                    if anEvent.oclIsKindOf(AnyReceiveEvent) then '_any'
                     else '_' + anEvent.name endif
                  else '' endif
                + aSeq->uml_c_getjunction_entry_id()).toLower() 
@@ -2449,7 +2450,7 @@ static [uml_c_get_event_status_type()/]
                    ->select(aState:State|
                          aRegion.request_region_event_states(anEvent)
                          ->includes(aState)
-                         or aState.request_state_handles_any_event()) endif)
+                         or aState.request_vertex_handles_any_event()) endif)
      separator(utils_newline()) after(utils_newline())]
 [spaces/][spaces/]case [s.uml_c_get_state_full_name()/]:
 [if (aRegion.request_region_event_states(anEvent)->includes(s))]
@@ -2457,7 +2458,7 @@ static [uml_c_get_event_status_type()/]
          s.uml_c_get_state_event_dispatch(anEvent),
          Sequence{ utils_get_self_name()}, 
          indentation+(spaces.size()*3) + assign_result.size() + 1)/];
-[elseif (s.request_state_handles_any_event())]
+[elseif (s.request_vertex_handles_any_event())]
 [spaces/][spaces/][spaces/][assign_result/][uml_c_format_param_list(
          s.uml_c_get_state_event_dispatch_any(),
          Sequence{ utils_get_self_name()}, 
@@ -2566,7 +2567,8 @@ static [uml_c_get_event_status_type()/]
 [for (aState : State | aRegion.request_region_any_event_states())]
 [uml_c_format_param_list('static ' + uml_c_get_event_status_type() + ' ' 
                          + aState.uml_c_get_state_event_dispatch_any(),
-        aState.uml_c_get_state_event_dispatch_params(null), indentation+1)/];
+        aState.uml_c_get_state_event_dispatch_params(
+                             aState.request_vertex_any_event()), indentation+1)/];
 [/for]
 [/for]
 [/template]
@@ -2590,9 +2592,15 @@ static const [uml_c_get_fifo_size_type()/]
  * Implements a dispatch function of each event for each state for which the 
  * event should be handled. 
  */]
-[template public uml_c_implement_state_dispatch(sm : StateMachine, 
+[template public uml_c_implement_state_dispatch(sm : StateMachine,
                                           indentation : Integer)]
-[for (aRegion : Region | sm.request_all_regions()) 
+[for (t : Transition | sm.request_sm_eventless_trigger_transitions())
+     after(utils_newline())]
+#error The transition from [t.source.name/] to [t.target.name/] in the \
+       [sm.name/] state machine has a trigger without an event. Use an \
+       AnyReceiveEvent for any event. Please check your model.
+[/for]
+[for (aRegion : Region | sm.request_all_regions())
      separator(utils_newline())
      ?(not aRegion.request_region_events()->isEmpty())]
 [for (anEvent : Event | aRegion.request_region_events()
@@ -2605,7 +2613,8 @@ static const [uml_c_get_fifo_size_type()/]
 [/for]
 [for (aState : State | aRegion.request_region_any_event_states())
      before(utils_newline())]
-[uml_c_implement_state_event_dispatch(sm, null, aState, indentation)/]
+[uml_c_implement_state_event_dispatch(sm, aState.request_vertex_any_event(),
+                                      aState, indentation)/]
 [/for]
 [/for]
 [/template]
@@ -2619,9 +2628,9 @@ static const [uml_c_get_fifo_size_type()/]
                                           indentation : Integer)
  {
   event_name : String = 
-      if anEvent.oclIsUndefined() then 'Any' else anEvent.name endif;
-  event_dispatch_name : String = 
-      if anEvent.oclIsUndefined() 
+      if anEvent.oclIsKindOf(AnyReceiveEvent) then 'Any' else anEvent.name endif;
+  event_dispatch_name : String =
+      if anEvent.oclIsKindOf(AnyReceiveEvent)
       then aState.uml_c_get_state_event_dispatch_any()
       else aState.uml_c_get_state_event_dispatch(anEvent) endif;
   event_dispatch_params : Sequence(String) = 
@@ -2705,8 +2714,8 @@ static [uml_c_get_event_status_type()/]
                                         indentation+spaces.size()).trim()/]
 
 [/if]
-[elseif (not anEvent.oclIsUndefined() 
-                                  and aState.request_state_handles_any_event()
+[elseif (not anEvent.oclIsKindOf(AnyReceiveEvent)
+                                  and aState.request_vertex_handles_any_event()
          and (event_regions->size() > 0))]
 [debug_marker('uml_c_implement_state_dispatch 3')
 /][spaces/]if([request_transition_default_result(aState)
@@ -3364,14 +3373,15 @@ else aSeq->first().source endif.request_incoming_transitions())
  is required./]
 [if (aJunction.request_vertex_events()->notEmpty())]
 [for (anEvent : Event | aJunction.request_vertex_events()
-                                           ->reject(e:Event|e.oclIsUndefined()))
+                            ->reject(e:Event|e.oclIsKindOf(AnyReceiveEvent)))
      separator(if b_include_body then utils_newline() else '' endif)]
 [uml_c_insert_junction_func(aJunction, aSeq->prepend(aTransition), true,
                                anEvent, b_include_body, indentation)/]
 [/for]
-[if (aJunction.request_vertex_events()->includes(null))]
+[if (aJunction.request_vertex_handles_any_event())]
 [uml_c_insert_junction_func(aJunction, aSeq->prepend(aTransition), true,
-                               null, b_include_body, indentation)/]
+                               aJunction.request_vertex_any_event(),
+                               b_include_body, indentation)/]
 [/if]
 [/if]
 [if (aJunction.request_outgoing_transitions(true, null, '')->notEmpty() )]

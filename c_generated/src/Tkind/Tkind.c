@@ -258,21 +258,21 @@ static const tkind_ctest_vt_t tkind_ctest_vtable =
 static const fifo_size_t
 tkind_ctest_fifo_sizes[TKIND_CTEST_EVENT_COUNT] =
 {
-    TKIND_CTEST_I_CNT,
-    TKIND_CTEST_O_CNT,
-    TKIND_CTEST_B_CNT,
-    TKIND_CTEST_K_CNT,
-    TKIND_CTEST_D_CNT,
     TKIND_CTEST_A_CNT,
+    TKIND_CTEST_B_CNT,
     TKIND_CTEST_C_CNT,
-    TKIND_CTEST_F_CNT,
+    TKIND_CTEST_D_CNT,
     TKIND_CTEST_E_CNT,
-    TKIND_CTEST_N_CNT,
-    TKIND_CTEST_H_CNT,
+    TKIND_CTEST_F_CNT,
     TKIND_CTEST_G_CNT,
+    TKIND_CTEST_H_CNT,
+    TKIND_CTEST_I_CNT,
     TKIND_CTEST_J_CNT,
+    TKIND_CTEST_K_CNT,
+    TKIND_CTEST_L_CNT,
     TKIND_CTEST_M_CNT,
-    TKIND_CTEST_L_CNT
+    TKIND_CTEST_N_CNT,
+    TKIND_CTEST_O_CNT
 };
 /*******************************************************************************
  *
@@ -910,16 +910,10 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
         /* First it is necessary to initialize fifo objects for each event
          * separately.*/
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_I].fifo),
-                        TKIND_CTEST_I_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_I].p_next_events
-                       = p_obj->event_pool.i_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_O].fifo),
-                        TKIND_CTEST_O_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_O].p_next_events
-                       = p_obj->event_pool.o_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
+                        TKIND_CTEST_A_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
+                       = p_obj->event_pool.a_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_B].fifo),
@@ -928,10 +922,10 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.b_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
-                        TKIND_CTEST_K_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_K].p_next_events
-                       = p_obj->event_pool.k_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_C].fifo),
+                        TKIND_CTEST_C_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_C].p_next_events
+                       = p_obj->event_pool.c_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_D].fifo),
@@ -940,16 +934,10 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.d_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_A].fifo),
-                        TKIND_CTEST_A_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_A].p_next_events
-                       = p_obj->event_pool.a_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_C].fifo),
-                        TKIND_CTEST_C_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_C].p_next_events
-                       = p_obj->event_pool.c_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_E].fifo),
+                        TKIND_CTEST_E_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_E].p_next_events
+                       = p_obj->event_pool.e_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_F].fifo),
@@ -958,16 +946,10 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.f_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_E].fifo),
-                        TKIND_CTEST_E_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_E].p_next_events
-                       = p_obj->event_pool.e_next_events;
-        
-        b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_N].fifo),
-                        TKIND_CTEST_N_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_N].p_next_events
-                       = p_obj->event_pool.n_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_G].fifo),
+                        TKIND_CTEST_G_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_G].p_next_events
+                       = p_obj->event_pool.g_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_H].fifo),
@@ -976,10 +958,10 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.h_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_G].fifo),
-                        TKIND_CTEST_G_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_G].p_next_events
-                       = p_obj->event_pool.g_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_I].fifo),
+                        TKIND_CTEST_I_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_I].p_next_events
+                       = p_obj->event_pool.i_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_J].fifo),
@@ -988,16 +970,34 @@ tkind_ctest_init(tkind_ctest_t* const p_obj, plogger_logger_t* const p_logger)
                        = p_obj->event_pool.j_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
-                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_M].fifo),
-                        TKIND_CTEST_M_CNT, 0u, 0u);
-        p_obj->event_pool.fifo_pool[TKIND_CTEST_M].p_next_events
-                       = p_obj->event_pool.m_next_events;
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_K].fifo),
+                        TKIND_CTEST_K_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_K].p_next_events
+                       = p_obj->event_pool.k_next_events;
         
         b_is_created = b_is_created && fifo_initialize(
                         (&p_obj->event_pool.fifo_pool[TKIND_CTEST_L].fifo),
                         TKIND_CTEST_L_CNT, 0u, 0u);
         p_obj->event_pool.fifo_pool[TKIND_CTEST_L].p_next_events
                        = p_obj->event_pool.l_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_M].fifo),
+                        TKIND_CTEST_M_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_M].p_next_events
+                       = p_obj->event_pool.m_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_N].fifo),
+                        TKIND_CTEST_N_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_N].p_next_events
+                       = p_obj->event_pool.n_next_events;
+        
+        b_is_created = b_is_created && fifo_initialize(
+                        (&p_obj->event_pool.fifo_pool[TKIND_CTEST_O].fifo),
+                        TKIND_CTEST_O_CNT, 0u, 0u);
+        p_obj->event_pool.fifo_pool[TKIND_CTEST_O].p_next_events
+                       = p_obj->event_pool.o_next_events;
         
         p_obj->event_pool.event_proc_status = SM_EVENT_STATUS_DISPATCHED;
         p_obj->event_pool.fetched_event =
@@ -1368,50 +1368,50 @@ tkind_ctest_dispatch_event(tkind_ctest_t* const p_obj)
 
         switch(p_obj->event_pool.fetched_event.event_type)
         {
-            case TKIND_CTEST_I:
-                temp_status = tkind_sm1_dispatch_i(&p_obj->sm1);
-                break;
-            case TKIND_CTEST_O:
-                temp_status = tkind_sm1_dispatch_o(&p_obj->sm1);
+            case TKIND_CTEST_A:
+                temp_status = tkind_sm1_dispatch_a(&p_obj->sm1);
                 break;
             case TKIND_CTEST_B:
                 temp_status = tkind_sm1_dispatch_b(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_K:
-                temp_status = tkind_sm1_dispatch_k(&p_obj->sm1);
+            case TKIND_CTEST_C:
+                temp_status = tkind_sm1_dispatch_c(&p_obj->sm1);
                 break;
             case TKIND_CTEST_D:
                 temp_status = tkind_sm1_dispatch_d(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_A:
-                temp_status = tkind_sm1_dispatch_a(&p_obj->sm1);
-                break;
-            case TKIND_CTEST_C:
-                temp_status = tkind_sm1_dispatch_c(&p_obj->sm1);
+            case TKIND_CTEST_E:
+                temp_status = tkind_sm1_dispatch_e(&p_obj->sm1);
                 break;
             case TKIND_CTEST_F:
                 temp_status = tkind_sm1_dispatch_f(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_E:
-                temp_status = tkind_sm1_dispatch_e(&p_obj->sm1);
-                break;
-            case TKIND_CTEST_N:
-                temp_status = tkind_sm1_dispatch_n(&p_obj->sm1);
+            case TKIND_CTEST_G:
+                temp_status = tkind_sm1_dispatch_g(&p_obj->sm1);
                 break;
             case TKIND_CTEST_H:
                 temp_status = tkind_sm1_dispatch_h(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_G:
-                temp_status = tkind_sm1_dispatch_g(&p_obj->sm1);
+            case TKIND_CTEST_I:
+                temp_status = tkind_sm1_dispatch_i(&p_obj->sm1);
                 break;
             case TKIND_CTEST_J:
                 temp_status = tkind_sm1_dispatch_j(&p_obj->sm1);
                 break;
-            case TKIND_CTEST_M:
-                temp_status = tkind_sm1_dispatch_m(&p_obj->sm1);
+            case TKIND_CTEST_K:
+                temp_status = tkind_sm1_dispatch_k(&p_obj->sm1);
                 break;
             case TKIND_CTEST_L:
                 temp_status = tkind_sm1_dispatch_l(&p_obj->sm1);
+                break;
+            case TKIND_CTEST_M:
+                temp_status = tkind_sm1_dispatch_m(&p_obj->sm1);
+                break;
+            case TKIND_CTEST_N:
+                temp_status = tkind_sm1_dispatch_n(&p_obj->sm1);
+                break;
+            case TKIND_CTEST_O:
+                temp_status = tkind_sm1_dispatch_o(&p_obj->sm1);
                 break;
             default:
                 break;

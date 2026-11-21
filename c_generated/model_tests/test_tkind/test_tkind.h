@@ -69,6 +69,8 @@ extern "C" {
         TEST_TKIND_A_STATE2_SM_REGION1_SIZE
     }test_tkind_a_state2_sm_region1_t;
     
+    #error The a_state2_sm state machine contains more than one region named \
+           Region1. Please check your model.
     /**
      * @brief The enumeration of all substates of Region1 Region of a_state2_sm
      * StateMachine.
