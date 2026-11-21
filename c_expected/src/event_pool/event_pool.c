@@ -11,6 +11,9 @@
  * the program to normal state) from being enqueued. In case all event types
  * of a single state machine hold no additional data, this module contains all
  * logic that is enough to implement a complete event pool for it.
+ *
+ * @note Automatically generated code by Model2CodeSynthesizer
+ * (github.com/tomboro88/Model2CodeSynthesizer).
  */
 
 /*******************************************************************************
