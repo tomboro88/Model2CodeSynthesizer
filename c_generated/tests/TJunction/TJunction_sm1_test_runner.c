@@ -28,10 +28,10 @@ TJunction_sm1_runner(void)
     RUN_TEST_GROUP(TJunction_sm1_State36_2_State36_4);
     RUN_TEST_GROUP(TJunction_sm1_State431_State433);
     RUN_TEST_GROUP(TJunction_sm1_State431_State434);
-    RUN_TEST_GROUP(TJunction_sm1_State4321_State433);
-    RUN_TEST_GROUP(TJunction_sm1_State4321_State434);
-    RUN_TEST_GROUP(TJunction_sm1_State4322_State433);
-    RUN_TEST_GROUP(TJunction_sm1_State4322_State434);
+    RUN_TEST_GROUP(TJunction_sm1_State4321_State4323_State433);
+    RUN_TEST_GROUP(TJunction_sm1_State4321_State4323_State434);
+    RUN_TEST_GROUP(TJunction_sm1_State4322_State4323_State433);
+    RUN_TEST_GROUP(TJunction_sm1_State4322_State4323_State434);
 
     /*
      *Start of user code TJunction_sm1_user_test_runners

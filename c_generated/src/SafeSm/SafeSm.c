@@ -32,6 +32,13 @@
  * Private function prototypes.
  *
  ******************************************************************************/
+static void safesm_sm1_rec_log(safesm_sm1_t* const p_obj,\
+                               const char* const p_str);
+static void safesm_sm1_rec_log_u16_char(safesm_sm1_t* const p_obj,\
+                                        const char* const p_str,\
+                                        uint16_t const u16_param,\
+                                        char const char_param);
+
 static bool safesm_sm1_exit_region2(safesm_sm1_t* const p_obj);
 static bool safesm_sm1_exit_region4(safesm_sm1_t* const p_obj);
 static bool safesm_sm1_exit_region3(safesm_sm1_t* const p_obj);
@@ -95,6 +102,7 @@ safesm_sm1_enter_safestate(safesm_sm1_t* const p_obj)
     p_obj->region4 = SAFESM_SM1_INITIAL3;
     p_obj->region3 = SAFESM_SM1_REGION3_INL;
     p_obj->region1 = SAFESM_SM1_SAFESTATE;
+    safesm_sm1_rec_log(p_obj, "Enter SafeState\n");
 }
 
 /**
@@ -135,6 +143,7 @@ static inline void
 safesm_sm1_enter_state3(safesm_sm1_t* const p_obj)
 {
     p_obj->region1 = SAFESM_SM1_STATE3;
+    safesm_sm1_rec_log(p_obj, "Enter State3\n");
 }
 
 /**
@@ -155,6 +164,7 @@ static inline void
 safesm_sm1_enter_region4(safesm_sm1_t* const p_obj)
 {
     p_obj->region4 = SAFESM_SM1_INITIAL3;
+    safesm_sm1_rec_log(p_obj, "Initial3 to State5\n");
     safesm_sm1_enter_state5(p_obj);
 }
 
@@ -166,6 +176,7 @@ static inline void
 safesm_sm1_enter_region2(safesm_sm1_t* const p_obj)
 {
     p_obj->region2 = SAFESM_SM1_INITIAL2;
+    safesm_sm1_rec_log(p_obj, "Initial2 to State2\n");
     safesm_sm1_enter_state2(p_obj);
     safesm_sm1_enter_region4(p_obj);
 }
@@ -188,6 +199,7 @@ static inline void
 safesm_sm1_enter_region1(safesm_sm1_t* const p_obj)
 {
     p_obj->region1 = SAFESM_SM1_INITIAL1;
+    safesm_sm1_rec_log(p_obj, "Initial1 to State1\n");
     safesm_sm1_enter_state1(p_obj);
     safesm_sm1_enter_region2(p_obj);
 }
@@ -211,6 +223,12 @@ static inline bool
 safesm_sm1_exit_state1(safesm_sm1_t* const p_obj)
 {
     bool b_is_exit_ok = safesm_sm1_exit_region2(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        safesm_sm1_rec_log(p_obj, "Exit State1\n");
+    }
+
     // Mark the state has already exited.
     p_obj->region1 = SAFESM_SM1_INITIAL1;
 
@@ -225,6 +243,12 @@ static inline bool
 safesm_sm1_exit_state2(safesm_sm1_t* const p_obj)
 {
     bool b_is_exit_ok = safesm_sm1_exit_region4(p_obj);
+
+    if(b_is_exit_ok)
+    {
+        safesm_sm1_rec_log(p_obj, "Exit State2\n");
+    }
+
     // Mark the state has already exited.
     p_obj->region2 = SAFESM_SM1_INITIAL2;
 
@@ -238,6 +262,7 @@ safesm_sm1_exit_state2(safesm_sm1_t* const p_obj)
 static inline void
 safesm_sm1_exit_state5(safesm_sm1_t* const p_obj)
 {
+    safesm_sm1_rec_log(p_obj, "Exit State5\n");
     // Mark the state has already exited.
     p_obj->region4 = SAFESM_SM1_INITIAL3;
 }
@@ -274,16 +299,24 @@ safesm_sm1_exit_state4(safesm_sm1_t* const p_obj)
  ******************************************************************************/
 /**
  * @param [in] p_obj The pointer to the self object.
+ * @param [in] u16_param Parameter used for checking of proper operation of
+ *     event pool with only one event type.
  */
 bool
-safesm_sm1_a(safesm_sm1_t* const p_obj)
+safesm_sm1_a(safesm_sm1_t* const p_obj, uint16_t const u16_param)
 {
     bool b_is_added = false;
     
     if(NULL != p_obj)
     {
+        fifo_size_t tail = p_obj->event_pool.fifo_pool[SAFESM_SM1_A].fifo.tail;
         b_is_added = event_pool_enqueue(&p_obj->event_pool.manager,
                                         (event_pool_size_t) SAFESM_SM1_A);
+        if(b_is_added)
+        {
+            safesm_sm1_a_t * p_a_args = &p_obj->event_pool.a_args[tail];
+            p_a_args->u16_param = u16_param;
+        }
     }
     
     return b_is_added;
@@ -292,10 +325,11 @@ safesm_sm1_a(safesm_sm1_t* const p_obj)
 /**
  * @brief The initialization function of the standalone StateMachine sm.
  * @param [in] p_obj The pointer to the self object.
+ * @param [in,out] p_logger_obj The pointer to a logger object.
  * @return 
  */
 bool
-safesm_sm1_init(safesm_sm1_t* const p_obj)
+safesm_sm1_init(safesm_sm1_t* const p_obj, plogger_logger_t* const p_logger_obj)
 {
     bool b_is_created = false;
 
@@ -324,6 +358,8 @@ safesm_sm1_init(safesm_sm1_t* const p_obj)
                                                  safesm_sm1_fifo_sizes,\
                                                  SAFESM_SM1_EVENT_COUNT);
         
+        p_obj->p_logger = p_logger_obj;
+
         p_obj->region1                   = SAFESM_SM1_INITIAL1;
         p_obj->region2                   = SAFESM_SM1_INITIAL2;
         p_obj->region4                   = SAFESM_SM1_INITIAL3;
@@ -460,6 +496,29 @@ safesm_sm1_release_event(safesm_sm1_t* const p_obj)
  * Non-public function bodies.
  *
  ******************************************************************************/
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str 
+ */
+static void
+safesm_sm1_rec_log(safesm_sm1_t* const p_obj, const char* const p_str)
+{
+    plogger_logger_record(p_obj->p_logger, p_str);
+}
+
+/**
+ * @param [in] p_obj The pointer to the self object.
+ * @param [in] p_str 
+ * @param [in] u16_param 
+ * @param [in] char_param 
+ */
+static void
+safesm_sm1_rec_log_u16_char(safesm_sm1_t* const p_obj, const char* const p_str,\
+                            uint16_t const u16_param, char const char_param)
+{
+    plogger_logger_record_u16_char(p_obj->p_logger, p_str, u16_param, char_param);
+}
+
 /**
  * @brief Exits the Region2 region of the sm1 state machine.
  * @param [in] p_obj The pointer to the self object.
@@ -758,21 +817,26 @@ safesm_sm1_enter_junction2_7_4_5_2(safesm_sm1_t* const p_obj,\
     bool b_is_handled = true;
 
     safesm_sm1_exit_state5(p_obj);
-    printf("State5 to Junction5\n");
+    safesm_sm1_rec_log(p_obj, "State5 to Junction5\n");
     bool b_is_exit_ok = safesm_sm1_exit_state2(p_obj);
     
     if(b_is_exit_ok)
     {
-        printf("Junction5 to Junction3\n");
+        safesm_sm1_rec_log(p_obj, "Junction5 to Junction3\n");
         b_is_exit_ok = b_is_exit_ok && safesm_sm1_exit_state1(p_obj);
     }
     
     if(b_is_exit_ok)
     {
-        printf("Junction3 to Junction4\n");
-        printf("Junction4 to Junction2\n");
+        fifo_size_t event_index = p_obj->event_pool.fetched_event.event_index;
+        safesm_sm1_a_t * p_a_args = &p_obj->event_pool.a_args[event_index];
+        uint16_t u16_param = p_a_args->u16_param;
+        safesm_sm1_rec_log_u16_char(p_obj,
+            "Junction3 to Junction4, u16=%d, char=%c\n",
+            u16_param, 'a');
+        safesm_sm1_rec_log(p_obj, "Junction4 to Junction2\n");
         safesm_sm1_enter_state3(p_obj);
-        printf("Junction2 to State4\n");
+        safesm_sm1_rec_log(p_obj, "Junction2 to State4\n");
         safesm_sm1_enter_state4(p_obj);
         *p_result = SM_EVENT_STATUS_CHANGEDSTATE;
     }

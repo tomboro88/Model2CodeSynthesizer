@@ -55,7 +55,8 @@ static bool event_pool_dequeue_first(event_pool_t* const p_obj);
  * @param p_queues The pointer to an array of initialized event_pool_fifo_t
  * objects.
  * @param p_sizes The pointer to an array of queue sizes of each event type.
- * @param fifo_count Specifies the size of p_queues and p_sizes arrays.
+ * @param fifo_count Specifies the size of p_queues and p_sizes arrays. It must
+ * be at least 1.
  * @return true if valid object was created.
  */
 bool
@@ -70,7 +71,7 @@ event_pool_initialize(event_pool_t* const p_obj,
     {
 
     }
-    else if((NULL != p_queues) && (NULL != p_sizes) && (fifo_count > 1u))
+    else if((NULL != p_queues) && (NULL != p_sizes) && (fifo_count > 0u))
     {
         bool b_are_sizes_ok = true;
 

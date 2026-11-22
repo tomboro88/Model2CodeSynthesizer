@@ -25,9 +25,9 @@ void tkind_test_enter_region8_failure(void)
 
 TEST_SETUP(TkindSm1Region8Failure)
 {
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
     tkind_test_enter_region8_failure();
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
 }
 
 TEST_TEAR_DOWN(TkindSm1Region8Failure)
@@ -39,37 +39,37 @@ TEST_TEAR_DOWN(TkindSm1Region8Failure)
 TEST(TkindSm1Region8Failure, InitResultsInInitialTransition)
 {
     tkind_ctest_logger_expect_initial();
-    tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
-                                              &tkind_test_logger));
+    plogger_test_given(tkind_ctest_init(&tkind_ctest_obj,
+                                        &plogger_test_logger));
 }
 
 /* --------------------------------- Events -------------------------------- */
 
 TEST(TkindSm1Region8Failure, DispatchA)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
-                                    "State2 to State3\n"
-                                    "Enter State3\n"
-                                    "Enter Failure\n");
+    plogger_test_expect(true, "Exit State2\n"
+                              "State2 to State3\n"
+                              "Enter State3\n"
+                              "Enter Failure\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_a(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region8Failure, DispatchBGuardFalse)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
-                                    "State2 to State4\n"
-                                    "Enter State4\n"
-                                    "Enter Failure\n");
+    plogger_test_expect(true, "Exit State2\n"
+                              "State2 to State4\n"
+                              "Enter State4\n"
+                              "Enter Failure\n");
     tkind_ctest_obj.sm1.b_test_condition = false;
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region8Failure, DispatchBGuardTrue)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
-                                    "State2 to State4\n"
-                                    "Enter State4\n"
-                                    "Enter Failure\n");
+    plogger_test_expect(true, "Exit State2\n"
+                              "State2 to State4\n"
+                              "Enter State4\n"
+                              "Enter Failure\n");
     tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
@@ -164,20 +164,20 @@ TEST(TkindSm1Region8Failure, DispatchOWithTrueChoice1)
 /* ------------------------------ Queue errors ------------------------------ */
 TEST(TkindSm1Region8Failure, FetchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region8Failure, DispatchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region8Failure, ReleaseReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_release_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_release_event(&tkind_ctest_obj));
 }
 
 /*==============================TEST_GROUP_RUNNER=============================*/

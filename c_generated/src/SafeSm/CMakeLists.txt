@@ -17,6 +17,11 @@ target_link_libraries(SafeSm
 )
 
 target_link_libraries(SafeSm
+    PUBLIC
+        plogger
+)
+
+target_link_libraries(SafeSm
     PRIVATE
         coverage_compile
 )

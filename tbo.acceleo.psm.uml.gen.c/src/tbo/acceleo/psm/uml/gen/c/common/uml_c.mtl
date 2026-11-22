@@ -1526,12 +1526,7 @@ return b_is_added;
 [utils_indent(indent_width*2)
                     /][uml_c_event_pool_init(bc, indentation + indent_width*2)/]
 [/if]
-[if (bc.oclIsKindOf(StateMachine))]
-[utils_indent(indent_width*2)
-       /][uml_c_implement_behavior(bc.oclAsType(StateMachine), 'C', 
-                                           indentation + behavior_indent)/]
 [/if]
-[/if]   
 [ let  b:Behavior = 
                 anOperation.method->any(b:Behavior|not b.oclIsUndefined())  ]
 [if ( 1 = anOperation.method->size() )]
@@ -1548,6 +1543,16 @@ return b_is_added;
 [/if]
 [/let]
 [if (b_is_constructor)]
+[comment The state machine starts after the user constructor code, so the code
+         can prepare the data used by the initial transition behaviors./]
+[if (bc.oclIsKindOf(StateMachine))]
+[if (1 = anOperation.method->size())]
+
+[/if]
+[utils_indent(indent_width*2)
+       /][uml_c_implement_behavior(bc.oclAsType(StateMachine), 'C',
+                                           indentation + behavior_indent)/]
+[/if]
 [utils_indent(indent_width)/]}
 
 [utils_indent(indent_width)/]return b_is_created;
@@ -3008,14 +3013,22 @@ else
                                     .packagedElement->selectByKind(CallEvent)
                                    ->select(e:CallEvent|e.operation=p.operation))->flatten()->asSet())
                                       ->filter(CallEvent);
+ b_has_context : Boolean =
+          not aTransition.containingStateMachine()._context.oclIsUndefined();
+ fetched_event : String = if b_has_context then uml_c_context_fetched_event()
+                          else uml_c_self_fetched_event() endif;
+ event_pool : String = if b_has_context then uml_c_context_event_pool()
+                       else uml_c_self_event_pool() endif;
 }]
 [debug_marker('uml_c_implement_transition_effect 1')
 /][if (neededEvents->notEmpty())]
+[if (b_has_context)]
 [aTransition.effect._context.uml_c_get_type_name()/] * p_context = [uml_c_self_context()/];
-[uml_c_get_fifo_size_type()/] event_index = [uml_c_context_fetched_event()/].event_index;
+[/if]
+[uml_c_get_fifo_size_type()/] event_index = [fetched_event/].event_index;
 [for(aCallEvent:CallEvent|neededEvents)]
 [aCallEvent.operation.featuringClassifier->any(true).uml_c_get_event_typedef(aCallEvent)
-/] * ['p_' + uml_c_get_event_args_name(aCallEvent)/] = &[uml_c_context_event_pool()
+/] * ['p_' + uml_c_get_event_args_name(aCallEvent)/] = &[event_pool
                               /].[uml_c_get_event_args_name(aCallEvent)/]['[event_index]'/];
 [for (aParam:Parameter|aCallEvent.operation.ownedParameter
                        ->select(p:Parameter|neededParams->includes(p)))]

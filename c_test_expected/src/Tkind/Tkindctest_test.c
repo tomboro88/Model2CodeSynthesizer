@@ -51,10 +51,10 @@ TEST_GROUP(Tkindctest);
 
 TEST_SETUP(Tkindctest)
 {
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
     tkind_ctest_obj.cbase1.Property1 = TKIND_CBASE1_TEST_PROP1_DEFAULT;
     tkind_ctest_obj.cbase2.Property1 = TKIND_CBASE2_TEST_PROP1_DEFAULT;
-    tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger);
+    tkind_ctest_init(&tkind_ctest_obj, &plogger_test_logger);
 }
 
 TEST_TEAR_DOWN(Tkindctest)
@@ -64,12 +64,12 @@ TEST_TEAR_DOWN(Tkindctest)
 
 TEST(Tkindctest, InitReturnsTrue)
 {
-    TEST_ASSERT_TRUE(tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger));
+    TEST_ASSERT_TRUE(tkind_ctest_init(&tkind_ctest_obj, &plogger_test_logger));
 }
 
 TEST(Tkindctest, InitCtestNullPtrReturnsFalse)
 {
-    TEST_ASSERT_FALSE(tkind_ctest_init(NULL, &tkind_test_logger));
+    TEST_ASSERT_FALSE(tkind_ctest_init(NULL, &plogger_test_logger));
 }
 
 TEST(Tkindctest, InitLoggerNullPtrReturnsTrue)

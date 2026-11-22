@@ -281,18 +281,12 @@ TEST(event_pool, init_fail_when_nullptr)
                                                    ));
 }
 
-TEST(event_pool, init_fail_when_count_lt_2)
+TEST(event_pool, init_fail_when_count_lt_1)
 {
     TEST_ASSERT_FALSE(event_pool_initialize(&event_pool,
                                                    fifo_pool,
                                                    concept_fifo_sizes,
                                                    0u
-                                                   ));
-
-    TEST_ASSERT_FALSE(event_pool_initialize(&event_pool,
-                                                   fifo_pool,
-                                                   concept_fifo_sizes,
-                                                   1u
                                                    ));
 }
 
@@ -364,16 +358,6 @@ TEST(event_pool, enqueue_fail_after_init_fail3)
                                                    fifo_pool,
                                                    concept_fifo_sizes,
                                                    0u
-                                                   ));
-    event_pool_test_enqueue_fail();
-}
-
-TEST(event_pool, enqueue_fail_after_init_fail4)
-{
-    TEST_ASSERT_FALSE(event_pool_initialize(&event_pool,
-                                                   fifo_pool,
-                                                   concept_fifo_sizes,
-                                                   1u
                                                    ));
     event_pool_test_enqueue_fail();
 }

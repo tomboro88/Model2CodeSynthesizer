@@ -1385,48 +1385,125 @@ return EXIT_SUCCESS;</body>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_L5fgcOBkEfGoWdtPcu4jOQ" name="SafeSm">
       <packagedElement xmi:type="uml:StateMachine" xmi:id="_Ozo9YOBkEfGoWdtPcu4jOQ" name="sm1">
-        <ownedOperation xmi:type="uml:Operation" xmi:id="_BlGDAOBlEfGoWdtPcu4jOQ" name="a"/>
-        <ownedOperation xmi:type="uml:Operation" xmi:id="_PxX7gOBlEfGoWdtPcu4jOQ" name="init">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_-dRz4OX-EfGUSNbTUubFSQ" name="p_logger" type="_Ij1hQBaHEfG70Ybw1j3UxQ" isReadOnly="true" aggregation="shared">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dSQVQOYFEfGUSNbTUubFSQ"/>
+        </ownedAttribute>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CoaiIOYAEfGUSNbTUubFSQ" name="init_bhv" specification="_PxX7gOBlEfGoWdtPcu4jOQ">
+          <language>C</language>
+          <body>p_obj->p_logger = p_logger_obj;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_G2IqUOYBEfGUSNbTUubFSQ" name="rec_log_bhv" visibility="private" specification="_1eEyUOYAEfGUSNbTUubFSQ">
+          <language>C</language>
+          <body>plogger_logger_record(p_obj->p_logger, p_str);</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_QACH4OYeEfGUSNbTUubFSQ" name="rec_log_u16_char_bhv" specification="_tZVZoOYdEfGUSNbTUubFSQ">
+          <language>C</language>
+          <body>plogger_logger_record_u16_char(p_obj->p_logger, p_str, u16_param, char_param);</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_BlGDAOBlEfGoWdtPcu4jOQ" name="a">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_hnRWQOYcEfGUSNbTUubFSQ" name="u16_param" type="_cuxaIKU0EfCJFuHNEOD_Ew" effect="read">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_2BYC8OYcEfGUSNbTUubFSQ" annotatedElement="_hnRWQOYcEfGUSNbTUubFSQ">
+              <body>Parameter used for checking of proper operation of event pool with only one event type.</body>
+            </ownedComment>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_PxX7gOBlEfGoWdtPcu4jOQ" name="init" method="_CoaiIOYAEfGUSNbTUubFSQ">
           <ownedComment xmi:type="uml:Comment" xmi:id="_PxX7geBlEfGoWdtPcu4jOQ" annotatedElement="_PxX7gOBlEfGoWdtPcu4jOQ">
             <body>@brief The initialization function of the standalone StateMachine sm.</body>
           </ownedComment>
           <ownedParameter xmi:type="uml:Parameter" xmi:id="_PxX7guBlEfGoWdtPcu4jOQ" type="_ZIVe8KU0EfCJFuHNEOD_Ew" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_wnMYYOX_EfGUSNbTUubFSQ" name="p_logger_obj" type="_Ij1hQBaHEfG70Ybw1j3UxQ" direction="inout" effect="update">
+            <ownedComment xmi:type="uml:Comment" xmi:id="_6SZ_0OYHEfGUSNbTUubFSQ" annotatedElement="_wnMYYOX_EfGUSNbTUubFSQ">
+              <body>The pointer to a logger object.</body>
+            </ownedComment>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_11kBEOYHEfGUSNbTUubFSQ"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_110fwOYHEfGUSNbTUubFSQ" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_1eEyUOYAEfGUSNbTUubFSQ" name="rec_log" visibility="private" method="_G2IqUOYBEfGUSNbTUubFSQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_7ZdLoOYAEfGUSNbTUubFSQ" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9Uc4sOYAEfGUSNbTUubFSQ"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9U0sIOYAEfGUSNbTUubFSQ" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_tZVZoOYdEfGUSNbTUubFSQ" name="rec_log_u16_char" visibility="private" method="_QACH4OYeEfGUSNbTUubFSQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_0ZBIkOYdEfGUSNbTUubFSQ" name="p_str" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_AsmaEOYeEfGUSNbTUubFSQ"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_As5VAOYeEfGUSNbTUubFSQ" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="__zb9cOYdEfGUSNbTUubFSQ" name="u16_param" type="_cuxaIKU0EfCJFuHNEOD_Ew" effect="read"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWVCsOYeEfGUSNbTUubFSQ" name="char_param" type="_aw4KEKU0EfCJFuHNEOD_Ew" effect="read"/>
         </ownedOperation>
         <region xmi:type="uml:Region" xmi:id="_Q9p94OBkEfGoWdtPcu4jOQ" name="Region1">
-          <transition xmi:type="uml:Transition" xmi:id="_o6Qg8OBkEfGoWdtPcu4jOQ" source="_cn5-gOBkEfGoWdtPcu4jOQ" target="_aFOmYOBkEfGoWdtPcu4jOQ"/>
+          <transition xmi:type="uml:Transition" xmi:id="_o6Qg8OBkEfGoWdtPcu4jOQ" source="_cn5-gOBkEfGoWdtPcu4jOQ" target="_aFOmYOBkEfGoWdtPcu4jOQ">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_jgfEAOYDEfGUSNbTUubFSQ">
+              <language>C</language>
+              <body>safesm_sm1_rec_log(p_obj, &quot;Initial1 to State1\n&quot;);</body>
+            </effect>
+          </transition>
           <transition xmi:type="uml:Transition" xmi:id="_ul2KwOBkEfGoWdtPcu4jOQ" source="_fqdJgOBkEfGoWdtPcu4jOQ" target="_tbQm8OBkEfGoWdtPcu4jOQ">
             <effect xmi:type="uml:OpaqueBehavior" xmi:id="_4M0PkOBlEfGoWdtPcu4jOQ">
               <language>C</language>
-              <body>printf(&quot;Junction4 to Junction2\n&quot;);</body>
+              <body>safesm_sm1_rec_log(p_obj, &quot;Junction4 to Junction2\n&quot;);</body>
             </effect>
           </transition>
-          <subvertex xmi:type="uml:State" xmi:id="_SufCUOBkEfGoWdtPcu4jOQ" name="SafeState"/>
+          <subvertex xmi:type="uml:State" xmi:id="_SufCUOBkEfGoWdtPcu4jOQ" name="SafeState">
+            <entry xmi:type="uml:OpaqueBehavior" xmi:id="_byRbIOYDEfGUSNbTUubFSQ">
+              <language>C</language>
+              <body>safesm_sm1_rec_log(p_obj, &quot;Enter SafeState\n&quot;);</body>
+            </entry>
+          </subvertex>
           <subvertex xmi:type="uml:State" xmi:id="_aFOmYOBkEfGoWdtPcu4jOQ" name="State1">
+            <exit xmi:type="uml:OpaqueBehavior" xmi:id="_0L21IOYDEfGUSNbTUubFSQ">
+              <language>C</language>
+              <body>safesm_sm1_rec_log(p_obj, &quot;Exit State1\n&quot;);</body>
+            </exit>
             <region xmi:type="uml:Region" xmi:id="_a9tGgOBkEfGoWdtPcu4jOQ" name="Region2">
-              <transition xmi:type="uml:Transition" xmi:id="_p5JLEOBkEfGoWdtPcu4jOQ" source="_dW2vMOBkEfGoWdtPcu4jOQ" target="_biICMOBkEfGoWdtPcu4jOQ"/>
+              <transition xmi:type="uml:Transition" xmi:id="_p5JLEOBkEfGoWdtPcu4jOQ" source="_dW2vMOBkEfGoWdtPcu4jOQ" target="_biICMOBkEfGoWdtPcu4jOQ">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_oj6hoOYDEfGUSNbTUubFSQ">
+                  <language>C</language>
+                  <body>safesm_sm1_rec_log(p_obj, &quot;Initial2 to State2\n&quot;);</body>
+                </effect>
+              </transition>
               <transition xmi:type="uml:Transition" xmi:id="_qkEXYOBkEfGoWdtPcu4jOQ" source="_niGRYOD3EfGmD5f5V-FuhA" target="_fCDswOBkEfGoWdtPcu4jOQ">
                 <effect xmi:type="uml:OpaqueBehavior" xmi:id="_rq8DYOBlEfGoWdtPcu4jOQ">
                   <language>C</language>
-                  <body>printf(&quot;Junction5 to Junction3\n&quot;);</body>
+                  <body>safesm_sm1_rec_log(p_obj, &quot;Junction5 to Junction3\n&quot;);</body>
                 </effect>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_rS5MQOBkEfGoWdtPcu4jOQ" source="_fCDswOBkEfGoWdtPcu4jOQ" target="_fqdJgOBkEfGoWdtPcu4jOQ">
                 <effect xmi:type="uml:OpaqueBehavior" xmi:id="_xE7m4OBlEfGoWdtPcu4jOQ">
                   <language>C</language>
-                  <body>printf(&quot;Junction3 to Junction4\n&quot;);</body>
+                  <body>safesm_sm1_rec_log_u16_char(p_obj,
+    &quot;Junction3 to Junction4, u16=%d, char=%c\n&quot;,
+    u16_param, 'a');</body>
                 </effect>
                 <trigger xmi:type="uml:Trigger" xmi:id="_CXko0OBlEfGoWdtPcu4jOQ" event="_CEbqYOBlEfGoWdtPcu4jOQ"/>
               </transition>
               <subvertex xmi:type="uml:State" xmi:id="_biICMOBkEfGoWdtPcu4jOQ" name="State2">
+                <exit xmi:type="uml:OpaqueBehavior" xmi:id="_32D2AOYDEfGUSNbTUubFSQ">
+                  <language>C</language>
+                  <body>safesm_sm1_rec_log(p_obj, &quot;Exit State2\n&quot;);</body>
+                </exit>
                 <region xmi:type="uml:Region" xmi:id="_cpfwIOD3EfGmD5f5V-FuhA" name="Region4">
-                  <transition xmi:type="uml:Transition" xmi:id="_mtF8AOD3EfGmD5f5V-FuhA" source="_jDuooOD3EfGmD5f5V-FuhA" target="_cptLgOD3EfGmD5f5V-FuhA"/>
+                  <transition xmi:type="uml:Transition" xmi:id="_mtF8AOD3EfGmD5f5V-FuhA" source="_jDuooOD3EfGmD5f5V-FuhA" target="_cptLgOD3EfGmD5f5V-FuhA">
+                    <effect xmi:type="uml:OpaqueBehavior" xmi:id="_tSw2YOYDEfGUSNbTUubFSQ">
+                      <language>C</language>
+                      <body>safesm_sm1_rec_log(p_obj, &quot;Initial3 to State5\n&quot;);</body>
+                    </effect>
+                  </transition>
                   <transition xmi:type="uml:Transition" xmi:id="_radDAOD3EfGmD5f5V-FuhA" source="_cptLgOD3EfGmD5f5V-FuhA" target="_niGRYOD3EfGmD5f5V-FuhA">
                     <effect xmi:type="uml:OpaqueBehavior" xmi:id="_0ffU4OD3EfGmD5f5V-FuhA">
                       <language>C</language>
-                      <body>printf(&quot;State5 to Junction5\n&quot;);</body>
+                      <body>safesm_sm1_rec_log(p_obj, &quot;State5 to Junction5\n&quot;);</body>
                     </effect>
                   </transition>
-                  <subvertex xmi:type="uml:State" xmi:id="_cptLgOD3EfGmD5f5V-FuhA" name="State5"/>
+                  <subvertex xmi:type="uml:State" xmi:id="_cptLgOD3EfGmD5f5V-FuhA" name="State5">
+                    <exit xmi:type="uml:OpaqueBehavior" xmi:id="_65g_8OYDEfGUSNbTUubFSQ">
+                      <language>C</language>
+                      <body>safesm_sm1_rec_log(p_obj, &quot;Exit State5\n&quot;);</body>
+                    </exit>
+                  </subvertex>
                   <subvertex xmi:type="uml:Pseudostate" xmi:id="_jDuooOD3EfGmD5f5V-FuhA" name="Initial3"/>
                   <subvertex xmi:type="uml:Pseudostate" xmi:id="_niGRYOD3EfGmD5f5V-FuhA" name="Junction5" kind="junction"/>
                 </region>
@@ -1438,11 +1515,15 @@ return EXIT_SUCCESS;</body>
           <subvertex xmi:type="uml:Pseudostate" xmi:id="_cn5-gOBkEfGoWdtPcu4jOQ" name="Initial1"/>
           <subvertex xmi:type="uml:Pseudostate" xmi:id="_fqdJgOBkEfGoWdtPcu4jOQ" name="Junction4" kind="junction"/>
           <subvertex xmi:type="uml:State" xmi:id="_ihu4oOBkEfGoWdtPcu4jOQ" name="State3">
+            <entry xmi:type="uml:OpaqueBehavior" xmi:id="_B_aEkOYEEfGUSNbTUubFSQ">
+              <language>C</language>
+              <body>safesm_sm1_rec_log(p_obj, &quot;Enter State3\n&quot;);</body>
+            </entry>
             <region xmi:type="uml:Region" xmi:id="_k4Ym8OBkEfGoWdtPcu4jOQ" name="Region3">
               <transition xmi:type="uml:Transition" xmi:id="_vn2aUOBkEfGoWdtPcu4jOQ" source="_tbQm8OBkEfGoWdtPcu4jOQ" target="_r5w_AOBkEfGoWdtPcu4jOQ">
                 <effect xmi:type="uml:OpaqueBehavior" xmi:id="_-BDfEOBlEfGoWdtPcu4jOQ">
                   <language>C</language>
-                  <body>printf(&quot;Junction2 to State4\n&quot;);</body>
+                  <body>safesm_sm1_rec_log(p_obj, &quot;Junction2 to State4\n&quot;);</body>
                 </effect>
               </transition>
               <subvertex xmi:type="uml:State" xmi:id="_r5w_AOBkEfGoWdtPcu4jOQ" name="State4"/>
@@ -1452,6 +1533,7 @@ return EXIT_SUCCESS;</body>
         </region>
       </packagedElement>
       <packagedElement xmi:type="uml:CallEvent" xmi:id="_CEbqYOBlEfGoWdtPcu4jOQ" name="a" operation="_BlGDAOBlEfGoWdtPcu4jOQ"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_bhnfQOYfEfGUSNbTUubFSQ" client="_xE7m4OBlEfGoWdtPcu4jOQ" supplier="_hnRWQOYcEfGUSNbTUubFSQ"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_mGU6IOXdEfGGX8SKypoZcw" name="Components">
       <packagedElement xmi:type="uml:Interface" xmi:id="_zr5_AOXdEfGGX8SKypoZcw" name="IRequired">

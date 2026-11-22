@@ -15,10 +15,12 @@ extern "C" {
 //Start of user code includes top
 //End of user code
 #    include "../umltest.h"
+#    include <plogger.h>
 #    include <sm.h>
 #    include <event_pool.h>
 #    include <stddef.h>
 #    include <stdbool.h>
+#    include <stdint.h>
 //Start of user code includes bottom
 //End of user code
 
@@ -134,6 +136,17 @@ extern "C" {
     };
     
     /**
+     * @brief The type used to store the parameters passed to the a call event.
+     */
+    typedef struct{
+        /**
+         * Parameter used for checking of proper operation of event pool with
+         * only one event type.
+         */
+        uint16_t                        u16_param;
+    }safesm_sm1_a_t;
+    
+    /**
      * @brief The type used to store the event pool of all events accepted by
      * the sm1 class.
      */
@@ -154,6 +167,11 @@ extern "C" {
          * @details It is referenced by the fifo_pool[SAFESM_SM1_A] object.
          */
         event_pool_size_t               a_next_events[SAFESM_SM1_A_CNT];
+        /**
+         * @brief The array of the arguments passed to the corresponding a event
+         * in the event pool sequence.
+         */
+        safesm_sm1_a_t                  a_args[SAFESM_SM1_A_CNT];
         /**
          * @brief The marker that stores the processing status of the event at
          * the 'first' position.
@@ -190,10 +208,14 @@ extern "C" {
          * sm1 class.
          */
         safesm_sm1_event_pool_t         event_pool;
+        /**
+         */
+        plogger_logger_t*               p_logger;
     };
 
-    bool safesm_sm1_a(safesm_sm1_t* const p_obj);
-    bool safesm_sm1_init(safesm_sm1_t* const p_obj);
+    bool safesm_sm1_a(safesm_sm1_t* const p_obj, uint16_t const u16_param);
+    bool safesm_sm1_init(safesm_sm1_t* const p_obj,\
+                         plogger_logger_t* const p_logger_obj);
     bool safesm_sm1_fetch_event(safesm_sm1_t* const p_obj);
     bool safesm_sm1_dispatch_event(safesm_sm1_t* const p_obj);
     bool safesm_sm1_release_event(safesm_sm1_t* const p_obj);

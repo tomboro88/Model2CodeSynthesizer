@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CodeSynthesizerProfile="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CodeSynthesizerProfile/_yPhJ8MKFEfGXJLPamao8cA/8 CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CodeSynthesizerProfile="http:///schemas/CodeSynthesizerProfile/_EUxmAOXvEfGGX8SKypoZcw/9" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CodeSynthesizerProfile/_EUxmAOXvEfGGX8SKypoZcw/9 CodeSynthesizer.profile.uml#_EUy0IOXvEfGGX8SKypoZcw">
   <uml:Model xmi:id="_t1k4EL69EfGXGcHhJ2f0ew" name="tests">
     <packagedElement xmi:type="uml:Package" xmi:id="_szsLAL7CEfGXGcHhJ2f0ew" name="test_tkind">
       <packagedElement xmi:type="uml:Class" xmi:id="_LXiyEL7HEfGXGcHhJ2f0ew" name="ctest_fixture">
@@ -179,15 +179,15 @@ test_tkind_ctest_fixture_drain_events(&amp;ctest_sut);</body>
       <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
     </profileApplication>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_7Mw5IMKCEfGXJLPamao8cA">
-      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rZqy0MKNEfGXJLPamao8cA" source="PapyrusVersion">
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy0cKNEfGXJLPamao8cA" key="Version" value="0.0.9"/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy0sKNEfGXJLPamao8cA" key="Comment" value=""/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy08KNEfGXJLPamao8cA" key="Copyright" value=""/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy1MKNEfGXJLPamao8cA" key="Date" value="2026-10-07"/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rZqy1cKNEfGXJLPamao8cA" key="Author" value=""/>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_PiOhoOYKEfGUSNbTUubFSQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_PiOhoeYKEfGUSNbTUubFSQ" key="Version" value="0.0.10"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_PiOhouYKEfGUSNbTUubFSQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_PiOho-YKEfGUSNbTUubFSQ" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_PiOhpOYKEfGUSNbTUubFSQ" key="Date" value="2026-11-21"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_PiOhpeYKEfGUSNbTUubFSQ" key="Author" value=""/>
       </eAnnotations>
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_7MyHQMKCEfGXJLPamao8cA" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="CodeSynthesizer.profile.uml#_yPhxAMKFEfGXJLPamao8cA"/>
+        <references xmi:type="ecore:EPackage" href="CodeSynthesizer.profile.uml#_EUy0IOXvEfGGX8SKypoZcw"/>
       </eAnnotations>
       <appliedProfile xmi:type="uml:Profile" href="CodeSynthesizer.profile.uml#_inGzQL9nEfG4Rv7UhG7YhA"/>
     </profileApplication>

@@ -14,6 +14,7 @@
 
 #include <unity_fixture.h>
 #include <Tkind.h>
+#include "../plogger/plogger_test.h"
 #include <string.h>
 #include <stddef.h>
 
@@ -21,19 +22,14 @@
 #define TKIND_CBASE2_TEST_PROP1_DEFAULT (-3.14f)
 
 /* Common data declarations (extern) */
-extern plogger_logger_t tkind_test_logger;
 extern tkind_ctest_t tkind_ctest_obj;
 
 /* Helper functions. */
-void tkind_test_init_logger_buffer(void);
-void tkind_ctest_logger_expect(bool const b_is_result_ok,
-                               const char* const p_str);
 void tkind_ctest_logger_expect_initial(void);
 void tkind_ctest_logger_expect_failure_a(void);
 void tkind_ctest_logger_expect_failure_all(void);
 void tkind_ctest_logger_expect_recovery(void);
 void tkind_ctest_logger_expect_recovery_b(void);
-void tkind_ctest_logger_given(bool const b_is_result_ok);
 void tkind_ctest_logger_dispatch_given(bool const b_is_result_ok);
 void tkind_test_enter_state3(void);
 void tkind_test_enter_state4(void);

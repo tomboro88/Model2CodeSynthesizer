@@ -7,6 +7,8 @@ target_sources(test_expected
         fifo/fifo_test_runner.c
         event_pool/event_pool_test.c
         event_pool/event_pool_test_runner.c
+        event_pool/event_pool_single_test.c
+        plogger/plogger_test.c
         Tkind/Tkind_test.c
         Tkind/Tkindcbase1_test.c
         Tkind/Tkindcbase2_test.c
@@ -33,6 +35,14 @@ target_sources(test_expected
         Tkind/TkindSm1Region8Failure_test.c
         Tkind/TkindSm1Region9Failure_test.c
         TJunction/TJunction_test.c
+        SafeSm/SafeSm_test.c
+        SafeSm/SafeSmSm1State1_test.c
+        SafeSm/SafeSmSm1State3_test.c
+        SafeSm/SafeSmSm1SafeState_test.c
+        SafeSm/SafeSmSm1Region1Failure_test.c
+        SafeSm/SafeSmSm1Region2Failure_test.c
+        SafeSm/SafeSmSm1Region4Failure_test.c
+        SafeSm/SafeSmSm1Region3Failure_test.c
 )
 
 target_link_libraries(test_expected
@@ -42,6 +52,8 @@ target_link_libraries(test_expected
         event_pool
         Tkind
         TJunction
+        SafeSm
+        plogger
 )
 
 target_link_libraries(test_expected

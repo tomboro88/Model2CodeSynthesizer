@@ -25,9 +25,9 @@ void tkind_test_enter_region3_failure(void)
 
 TEST_SETUP(TkindSm1Region3Failure)
 {
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
     tkind_test_enter_region3_failure();
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
 }
 
 TEST_TEAR_DOWN(TkindSm1Region3Failure)
@@ -39,30 +39,30 @@ TEST_TEAR_DOWN(TkindSm1Region3Failure)
 TEST(TkindSm1Region3Failure, InitResultsInInitialTransition)
 {
     tkind_ctest_logger_expect_initial();
-    tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
-                                              &tkind_test_logger));
+    plogger_test_given(tkind_ctest_init(&tkind_ctest_obj,
+                                        &plogger_test_logger));
 }
 
 /* --------------------------------- Events -------------------------------- */
 
 TEST(TkindSm1Region3Failure, DispatchA)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_a(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchBGuardFalse)
 {
-    tkind_ctest_logger_expect(true, "Internal transition in State1"
-                                    " on event b\n");
+    plogger_test_expect(true, "Internal transition in State1"
+                              " on event b\n");
     tkind_ctest_obj.sm1.b_test_condition = false;
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchBGuardTrue)
 {
-    tkind_ctest_logger_expect(true, "Internal transition in State1"
-                                    " on event b\n");
+    plogger_test_expect(true, "Internal transition in State1"
+                              " on event b\n");
     tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
 }
@@ -88,19 +88,19 @@ TEST(TkindSm1Region3Failure, DispatchE)
 
 TEST(TkindSm1Region3Failure, DispatchF)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_f(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchG)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1Region3Failure, DispatchH)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj, 16));
 }
 
@@ -112,25 +112,25 @@ TEST(TkindSm1Region3Failure, DispatchI)
 
 TEST(TkindSm1Region3Failure, DispatchJ)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_j(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchK)
 {
-    tkind_ctest_logger_expect(true, "Local State1 to State10.\n");
+    plogger_test_expect(true, "Local State1 to State10.\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_k(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchL)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_l(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchM)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_m(&tkind_ctest_obj));
 }
 
@@ -157,20 +157,20 @@ TEST(TkindSm1Region3Failure, DispatchOWithTrueChoice1)
 /* ------------------------------ Queue errors ------------------------------ */
 TEST(TkindSm1Region3Failure, FetchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, DispatchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1Region3Failure, ReleaseReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_release_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_release_event(&tkind_ctest_obj));
 }
 
 /*==============================TEST_GROUP_RUNNER=============================*/

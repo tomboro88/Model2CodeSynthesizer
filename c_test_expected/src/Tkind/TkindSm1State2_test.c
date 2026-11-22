@@ -35,9 +35,9 @@ TEST_GROUP(TkindSm1State2);
 
 TEST_SETUP(TkindSm1State2)
 {
-    tkind_test_init_logger_buffer();
-    tkind_ctest_init(&tkind_ctest_obj, &tkind_test_logger);
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
+    tkind_ctest_init(&tkind_ctest_obj, &plogger_test_logger);
+    plogger_test_init_buffer();
 }
 
 TEST_TEAR_DOWN(TkindSm1State2)
@@ -48,8 +48,8 @@ TEST_TEAR_DOWN(TkindSm1State2)
 TEST(TkindSm1State2, InitResultsInInitialTransition)
 {
     tkind_ctest_logger_expect_initial();
-    tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
-                             &tkind_test_logger));
+    plogger_test_given(tkind_ctest_init(&tkind_ctest_obj,
+                                        &plogger_test_logger));
 }
 
 TEST(TkindSm1State2, enqueue_dequeue_full)
@@ -148,7 +148,7 @@ TEST(TkindSm1State2, enqueue_dequeue_full)
 
         for(fifo_size_t j = 0u; j<TKIND_CTEST_EVENT_COUNT_SUM; ++j)
         {
-            tkind_test_init_logger_buffer();
+            plogger_test_init_buffer();
             TEST_ASSERT_TRUE(tkind_ctest_fetch_event(&tkind_ctest_obj)
                             && tkind_ctest_dispatch_event(&tkind_ctest_obj)
                             && tkind_ctest_release_event(&tkind_ctest_obj));
@@ -160,7 +160,7 @@ TEST(TkindSm1State2, enqueue_dequeue_full)
 
 TEST(TkindSm1State2, DispatchA)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
+    plogger_test_expect(true, "Exit State2\n"
                               "State2 to State3\n"
                               "Enter State3\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_a(&tkind_ctest_obj));
@@ -168,7 +168,7 @@ TEST(TkindSm1State2, DispatchA)
 
 TEST(TkindSm1State2, DispatchB)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
+    plogger_test_expect(true, "Exit State2\n"
                               "State2 to State4\n"
                               "Enter State4\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_b(&tkind_ctest_obj));
@@ -176,105 +176,105 @@ TEST(TkindSm1State2, DispatchB)
 
 TEST(TkindSm1State2, DispatchC)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_c(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchD)
 {
-    tkind_ctest_logger_expect(true, "Local State1 to State13.\n"
-                                    "Enter State13\n");
+    plogger_test_expect(true, "Local State1 to State13.\n"
+                              "Enter State13\n");
     tkind_ctest_obj.sm1.b_test_condition = true;
     tkind_ctest_logger_dispatch_given(tkind_ctest_d(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchE)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_e(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchF)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_f(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchG)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1State2, DispatchH)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_h(&tkind_ctest_obj, 16));
 }
 
 TEST(TkindSm1State2, DispatchI)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
+    plogger_test_expect(true, "Exit State2\n"
                               "Exit State1\n"
                               "State1 to State7\n"
                               "Enter State1\n"
-							  "Initial3 to State2\n"
-							  "Enter State2\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n"
                               "Enter State7\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_i(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchJ)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_j(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchK)
 {
-    tkind_ctest_logger_expect(true, "Local State1 to State10.\n");
+    plogger_test_expect(true, "Local State1 to State10.\n");
     tkind_ctest_logger_dispatch_given(tkind_ctest_k(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchL)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_l(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchM)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_m(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchN)
 {
-    tkind_ctest_logger_expect(true, NULL);
+    plogger_test_expect(true, NULL);
     tkind_ctest_logger_dispatch_given(tkind_ctest_n(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchOWithFalseChoice1)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
-                                    "Exit State1\n"
-                                    "State1 to Choice1\n"
-                                    "Enter State1\n"
-                                    "Initial3 to State2\n"
-                                    "Enter State2\n"
-                                    "Choice1 to State1\n");
+    plogger_test_expect(true, "Exit State2\n"
+                              "Exit State1\n"
+                              "State1 to Choice1\n"
+                              "Enter State1\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n"
+                              "Choice1 to State1\n");
     tkind_ctest_obj.sm1.b_test_condition = false;
     tkind_ctest_logger_dispatch_given(tkind_ctest_o(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchOWithTrueChoice1)
 {
-    tkind_ctest_logger_expect(true, "Exit State2\n"
+    plogger_test_expect(true, "Exit State2\n"
                               "Exit State1\n"
                               "State1 to Choice1\n"
                               "Enter State1\n"
-    		                  "Initial3 to State2\n"
-    						  "Enter State2\n"
+                              "Initial3 to State2\n"
+                              "Enter State2\n"
                               "Choice1 to State8\n"
                               "Enter State8\n"
                               "Initial4 to State9\n"
@@ -285,20 +285,20 @@ TEST(TkindSm1State2, DispatchOWithTrueChoice1)
 
 TEST(TkindSm1State2, FetchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, DispatchReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1State2, ReleaseReturnsFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_release_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_release_event(&tkind_ctest_obj));
 }
 
 

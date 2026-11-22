@@ -20,7 +20,7 @@ TEST_GROUP(TkindSm1ZeroInit);
 
 TEST_SETUP(TkindSm1ZeroInit)
 {
-    tkind_test_init_logger_buffer();
+    plogger_test_init_buffer();
     tkind_ctest_obj = (tkind_ctest_t) {0};
 }
 
@@ -32,243 +32,243 @@ TEST_TEAR_DOWN(TkindSm1ZeroInit)
 /*================================TEST_CASES==================================*/
 TEST(TkindSm1ZeroInit, InitNullArgsGiveFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_init(NULL, NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_init(NULL, NULL));
 }
 
 TEST(TkindSm1ZeroInit, InitNullPtrGivesFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_init(NULL, &tkind_test_logger));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_init(NULL, &plogger_test_logger));
 }
 
 TEST(TkindSm1ZeroInit, InitNullLoggerGivesTrue)
 {
-    tkind_ctest_logger_expect(true, NULL);
-    tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj, NULL));
+    plogger_test_expect(true, NULL);
+    plogger_test_given(tkind_ctest_init(&tkind_ctest_obj, NULL));
 }
 
 TEST(TkindSm1ZeroInit, InitResultsInInitialTransition)
 {
     tkind_ctest_logger_expect_initial();
-    tkind_ctest_logger_given(tkind_ctest_init(&tkind_ctest_obj,
-                                              &tkind_test_logger));
+    plogger_test_given(tkind_ctest_init(&tkind_ctest_obj,
+                                        &plogger_test_logger));
 }
 
 TEST(TkindSm1ZeroInit, ANullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_a(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_a(NULL));
 }
 
 TEST(TkindSm1ZeroInit, AResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_a(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_a(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, BNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_b(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_b(NULL));
 }
 
 TEST(TkindSm1ZeroInit, BResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_b(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_b(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, CNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_c(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_c(NULL));
 }
 
 TEST(TkindSm1ZeroInit, CResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_c(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_c(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, DNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_d(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_d(NULL));
 }
 
 TEST(TkindSm1ZeroInit, DResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_d(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_d(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, ENullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_e(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_e(NULL));
 }
 
 TEST(TkindSm1ZeroInit, EResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_e(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_e(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, FNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_f(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_f(NULL));
 }
 
 TEST(TkindSm1ZeroInit, FResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_f(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_f(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, GNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_g(NULL, 25, 'a'));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_g(NULL, 25, 'a'));
 }
 
 TEST(TkindSm1ZeroInit, GResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_g(&tkind_ctest_obj, 25, 'a'));
 }
 
 TEST(TkindSm1ZeroInit, HNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_h(NULL, 16));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_h(NULL, 16));
 }
 
 TEST(TkindSm1ZeroInit, HResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_h(&tkind_ctest_obj,16));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_h(&tkind_ctest_obj,16));
 }
 
 TEST(TkindSm1ZeroInit, INullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_i(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_i(NULL));
 }
 
 TEST(TkindSm1ZeroInit, IResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_i(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_i(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, JNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_j(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_j(NULL));
 }
 
 TEST(TkindSm1ZeroInit, JResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_j(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_j(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, KNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_k(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_k(NULL));
 }
 
 TEST(TkindSm1ZeroInit, KResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_k(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_k(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, LNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_l(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_l(NULL));
 }
 
 TEST(TkindSm1ZeroInit, LResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_l(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_l(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, MNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_m(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_m(NULL));
 }
 
 TEST(TkindSm1ZeroInit, MResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_m(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_m(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, NNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_n(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_n(NULL));
 }
 
 TEST(TkindSm1ZeroInit, NResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_n(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_n(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, ONullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_o(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_o(NULL));
 }
 
 TEST(TkindSm1ZeroInit, OResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_o(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_o(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, FetchNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_fetch_event(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_fetch_event(NULL));
 }
 
 TEST(TkindSm1ZeroInit, FetchResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_fetch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, DispatchNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_dispatch_event(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_dispatch_event(NULL));
 }
 
 TEST(TkindSm1ZeroInit, DispatchResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_dispatch_event(&tkind_ctest_obj));
 }
 
 TEST(TkindSm1ZeroInit, ReleaseNullPtrResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_release_event(NULL));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_release_event(NULL));
 }
 
 TEST(TkindSm1ZeroInit, ReleaseResultsInFalse)
 {
-    tkind_ctest_logger_expect(false, NULL);
-    tkind_ctest_logger_given(tkind_ctest_release_event(&tkind_ctest_obj));
+    plogger_test_expect(false, NULL);
+    plogger_test_given(tkind_ctest_release_event(&tkind_ctest_obj));
 }
 
 

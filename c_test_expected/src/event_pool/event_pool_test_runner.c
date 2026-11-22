@@ -15,14 +15,13 @@ TEST_GROUP_RUNNER(event_pool)
 {
     RUN_TEST_CASE(event_pool, init_indexes);
     RUN_TEST_CASE(event_pool, init_fail_when_nullptr);
-    RUN_TEST_CASE(event_pool, init_fail_when_count_lt_2);
+    RUN_TEST_CASE(event_pool, init_fail_when_count_lt_1);
     RUN_TEST_CASE(event_pool, init_fail_when_fifos_uninitialized);
     RUN_TEST_CASE(event_pool, init_fail_when_next_events_nullptr);
     RUN_TEST_CASE(event_pool, init_fail_when_fifos_not_empty);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail1);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail2);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail3);
-    RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail4);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail5);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail6);
     RUN_TEST_CASE(event_pool, enqueue_fail_after_init_fail7);
